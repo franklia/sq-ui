@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Create extends Component {
 
@@ -36,12 +37,31 @@ export default class Create extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(`The values are ${this.state.category}, ${this.state.question}, and ${this.state.answer}`)
-    this.setState({
-      category: '',
-      question: '',
-      answer: ''
-    })
+    // console.log(`The values are ${this.state.category}, ${this.state.question}, and ${this.state.answer}`)
+    const dataObject = {
+      category: this.state.category,
+      question: this.state.question,
+      answer: this.state.answer
+    };
+
+    if(dataObject.category && dataObject.question && dataObject.answer){
+      axios.post('http://localhost:3001/api/create', dataObject)
+          // JS6 syntax
+          .then(res => console.log(res))
+          // regular syntax
+          .catch(function(error) {
+              console.log(error)
+          });
+
+      this.setState({
+        category: '',
+        question: '',
+        answer: ''
+      })
+    } else {
+      console.log('One or more of the input fields are blank.')
+    }
+
   }
 
   render() {
