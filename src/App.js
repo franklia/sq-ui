@@ -1,42 +1,43 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import pink from '@material-ui/core/colors/pink';
 
-import Home from './components/Home';
+import Home from './components/Test';
 import Create from './components/Create';
 import Edit from './components/Edit';
 import Notfound from './components/Notfound';
+import NavMenu from './components/NavMenu';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: pink
+  },
+});
 
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="container">
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <Link to={'/'} className="navbar-brand">Spot Quiz</Link>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                  <Link to={'/'} className="nav-link">Home</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/create'} className="nav-link">Create</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/edit'} className="nav-link">Edit</Link>
-                </li>
-              </ul>
+      <React.Fragment>
+        <CssBaseline />
+        <MuiThemeProvider theme={theme}>
+          <Router>
+            <div className="container">
+              <NavMenu />
+              <Switch>
+                  <Route exact path='/' component={ Home } />
+                  <Route path='/create' component={ Create } />
+                  <Route path='/edit' component={ Edit } />
+                  <Route component={ Notfound } />
+              </Switch>
             </div>
-          </nav> <br/>
-          <h2>Welcome to the Spot Quiz</h2> <br/>
-          <Switch>
-              <Route exact path='/' component={ Home } />
-              <Route path='/create' component={ Create } />
-              <Route path='/edit' component={ Edit } />
-              <Route component={ Notfound } />
-          </Switch>
-        </div>
-      </Router>
+          </Router>
+        </MuiThemeProvider>
+      </React.Fragment>
     );
   }
 }

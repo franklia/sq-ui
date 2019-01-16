@@ -46,7 +46,7 @@ export default class Create extends Component {
 
     if(dataObject.category && dataObject.question && dataObject.answer){
       axios.post('http://localhost:3001/api/create', dataObject)
-          // JS6 syntax
+          // ES6 syntax
           .then(res => console.log(res))
           // regular syntax
           .catch(function(error) {
