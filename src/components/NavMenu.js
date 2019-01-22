@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import './css/NavMenu.css';
 
 const styles = {
   root: {
@@ -27,8 +26,8 @@ function NavMenu(props) {
             Spot Quiz
           </Typography>
           <Button><Link to={'/'} className="nav-link">Test</Link></Button>
-          <Button><Link to={'/create'} className="nav-link">Add Question</Link></Button>
-          <Button><Link to={'/edit'} className="nav-link">Edit</Link></Button>
+          <Button><Link to={'/questions/create'} className="nav-link">Add Question</Link></Button>
+          <Button><Link to={'/questions/index'} className="nav-link">View All</Link></Button>
         </Toolbar>
       </AppBar>
     </div>

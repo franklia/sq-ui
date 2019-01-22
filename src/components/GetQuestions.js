@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import EditAccordion from './EditAccordion';
+import QuestionList from './QuestionList';
 
-export default class Edit extends Component {
+export default class GetQuestions extends Component {
     render() {
         return (
             <div>
                 <p>Click on a category to edit questions</p>
-                <EditAccordion />
+                <QuestionList />
             </div>
         )
     }
