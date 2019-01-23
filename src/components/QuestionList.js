@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
-import { Link } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 
 const styles = theme => ({
   root: {
@@ -70,7 +70,7 @@ class QuestionList extends React.Component {
                 <TableCell>{quizQuestion.question}</TableCell>
                 <TableCell>{quizQuestion.answer}</TableCell>
                 <TableCell className='link'>
-                  <Link to={`/questions/${quizQuestion._id}`} className="nav-link">Why
+                  <Link href={`/questions/${quizQuestion._id}`}>
                     <EditIcon />
                   </Link>
                 </TableCell>
