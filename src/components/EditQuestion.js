@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
+import { Typography, Snackbar, IconButton, TextField, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import CategoryDropdown from './ui-elements/CategoryDropdown';
 
 class EditQuestion extends Component {
 
   constructor(props) {
     super(props);
-    this.onChangeCategory = this.onChangeCategory.bind(this);
-    this.onChangeQuestion = this.onChangeQuestion.bind(this);
-    this.onChangeAnswer = this.onChangeAnswer.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-          _id: "",
-          category: "",
-          question: "",
-          answer: "",
-          open: false
+      _id: '',
+      category: '',
+      question: '',
+      answer: '',
+      open: false
     };
   }
 
@@ -42,22 +41,16 @@ class EditQuestion extends Component {
       .catch(error => console.log(error))
   };
 
-    onChangeCategory(event) {
+    handleCategoryChange = category => {
       this.setState({
-        category: event.target.value
+        category: category
+      })
+    }
+
+    onChangeInput = event => {
+      this.setState({
+        [event.target.name]: event.target.value
       });
-    }
-
-    onChangeQuestion(event) {
-      this.setState({
-        question: event.target.value
-      })
-    }
-
-    onChangeAnswer(event) {
-      this.setState({
-        answer: event.target.value
-      })
     }
 
     onSubmit(event) {
@@ -99,23 +92,47 @@ class EditQuestion extends Component {
     render(){
         return (
           <div style={{marginTop: 10}}>
-              <h3>Edit Question</h3>
+              <Typography variant="h4" color='secondary'>Edit Question</Typography>
               <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                      <label>Category:  </label>
-                      <input type="text" className="form-control" value={this.state.category} onChange={this.onChangeCategory}/>
-                  </div>
-                  <div className="form-group">
-                      <label>Question: </label>
-                      <textarea type="text" className="form-control" value={this.state.question} onChange={this.onChangeQuestion}/>
-                  </div>
-                  <div className="form-group">
-                      <label>Answer: </label>
-                      <textarea type="text" className="form-control" value={this.state.answer} onChange={this.onChangeAnswer}/>
-                  </div>
-                  <div className="form-group">
-                      <input type="submit" value="Update Question" className="btn btn-primary"/>
-                  </div>
+                  <CategoryDropdown
+                    category={this.state.category}
+                    onCategoryChange={this.handleCategoryChange}
+                  />
+                  <TextField
+                    style={{marginTop: 30, marginBottom: 20}}
+                    name="question"
+                    value={this.state.question}
+                    onChange={this.onChangeInput}
+                    label="Question"
+                    placeholder="Enter your question"
+                    fullWidth
+                    multiline={true}
+                    rows='5'
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    id="outlined-full-width"
+                    name="answer"
+                    value={this.state.answer}
+                    onChange={this.onChangeInput}
+                    label="Answer"
+                    placeholder="Enter the answer to the question"
+                    fullWidth
+                    multiline={true}
+                    rows='5'
+                    margin="normal"
+                    variant="outlined"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <Button type="submit" variant="contained" color="primary" style={{marginTop: 25}}>
+                    Update Question
+                  </Button>
               </form>
               <Snackbar
                 anchorOrigin={{

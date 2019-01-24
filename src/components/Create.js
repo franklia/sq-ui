@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { TextField, Typography } from '@material-ui/core';
+import { TextField, Typography, Button } from '@material-ui/core';
 
 export default class Create extends Component {
 
@@ -62,50 +62,48 @@ export default class Create extends Component {
   render() {
       return (
         <div>
-        <Typography component="h2" variant="h3" gutterBottom color='secondary'>Add A New Question</Typography>
-            <form onSubmit={this.onSubmit}>
-              <CategoryDropdown
-                category={this.state.category}
-                onCategoryChange={this.handleCategoryChange}
-              />
-
-              <TextField
-                name="question"
-                question={this.state.question}
-                onChange={this.onChangeInput}
-                label="Question"
-                placeholder="Enter your question"
-                fullWidth
-                multiline={true}
-                rows='5'
-                margin="normal"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <TextField
-                id="outlined-full-width"
-                name="answer"
-                question={this.state.answer}
-                onChange={this.onChangeInput}
-                label="Answer"
-                placeholder="Enter the answer to the question"
-                fullWidth
-                multiline={true}
-                rows='5'
-                margin="normal"
-                variant="outlined"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <div className="form-group">
-                  <input type="submit" value="Save Question" className="btn btn-primary"/>
-              </div>
-            </form>
+          <Typography variant="h4" color='secondary'>Add A New Question</Typography>
+          <form onSubmit={this.onSubmit}>
+            <CategoryDropdown
+              category={this.state.category}
+              onCategoryChange={this.handleCategoryChange}
+            />
+            <TextField
+              style={{marginTop: 30, marginBottom: 20}}
+              name="question"
+              value={this.state.question}
+              onChange={this.onChangeInput}
+              label="Question"
+              placeholder="Enter your question"
+              fullWidth
+              multiline={true}
+              rows='5'
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id="outlined-full-width"
+              name="answer"
+              value={this.state.answer}
+              onChange={this.onChangeInput}
+              label="Answer"
+              placeholder="Enter the answer to the question"
+              fullWidth
+              multiline={true}
+              rows='5'
+              margin="normal"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Button type="submit" variant="contained" color="primary" style={{marginTop: 25}}>
+              Save Question
+            </Button>
+          </form>
         </div>
       )
   }
