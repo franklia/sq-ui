@@ -6,3 +6,7 @@
 .link {
   cursor: pointer;
 }
+
+.page-content-wrapper {
+  margin: 50px;
+}

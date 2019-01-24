@@ -1,37 +1,32 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import CategoryDropdown from './ui-elements/CategoryDropdown';
+import { TextField, Typography } from '@material-ui/core';
 
 export default class Create extends Component {
 
   constructor(props) {
     super(props);
-    this.onChangeCategory = this.onChangeCategory.bind(this);
-    this.onChangeQuestion = this.onChangeQuestion.bind(this);
-    this.onChangeAnswer = this.onChangeAnswer.bind(this);
+    this.onChangeInput = this.onChangeInput.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
         category: '',
         question: '',
-        answer:''
+        answer: ''
     }
   }
 
-  onChangeCategory(event) {
+  onChangeInput = event => {
     this.setState({
-      category: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 
-  onChangeQuestion(event) {
+  handleCategoryChange = category => {
     this.setState({
-      question: event.target.value
-    })
-  }
-
-  onChangeAnswer(event) {
-    this.setState({
-      answer: event.target.value
+      category: category
     })
   }
 
@@ -66,24 +61,50 @@ export default class Create extends Component {
 
   render() {
       return (
-        <div style={{marginTop: 10}}>
-            <h3>Add New Question</h3>
+        <div>
+        <Typography component="h2" variant="h3" gutterBottom color='secondary'>Add A New Question</Typography>
             <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                    <label>Category:  </label>
-                    <input type="text" className="form-control" value={this.state.category} onChange={this.onChangeCategory}/>
-                </div>
-                <div className="form-group">
-                    <label>Question: </label>
-                    <textarea type="text" className="form-control" value={this.state.question} onChange={this.onChangeQuestion}/>
-                </div>
-                <div className="form-group">
-                    <label>Answer: </label>
-                    <textarea type="text" className="form-control" value={this.state.answer} onChange={this.onChangeAnswer}/>
-                </div>
-                <div className="form-group">
-                    <input type="submit" value="Save Question" className="btn btn-primary"/>
-                </div>
+              <CategoryDropdown
+                category={this.state.category}
+                onCategoryChange={this.handleCategoryChange}
+              />
+
+              <TextField
+                name="question"
+                question={this.state.question}
+                onChange={this.onChangeInput}
+                label="Question"
+                placeholder="Enter your question"
+                fullWidth
+                multiline={true}
+                rows='5'
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
+              <TextField
+                id="outlined-full-width"
+                name="answer"
+                question={this.state.answer}
+                onChange={this.onChangeInput}
+                label="Answer"
+                placeholder="Enter the answer to the question"
+                fullWidth
+                multiline={true}
+                rows='5'
+                margin="normal"
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
+              <div className="form-group">
+                  <input type="submit" value="Save Question" className="btn btn-primary"/>
+              </div>
             </form>
         </div>
       )
