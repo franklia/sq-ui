@@ -1,22 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
-import Link from '@material-ui/core/Link';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import {
+  TableRow,
+  Paper,
+  TableHead,
+  TableCell,
+  TableBody,
+  Table,
+  IconButton,
+  Link,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button
+} from '@material-ui/core';
+// import { Redirect } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
-    marginLeft: '10px',
-    marginRight: '10px',
   },
   table: {
     minWidth: 700,
@@ -27,8 +36,14 @@ class QuestionList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.deleteQuestion = this.deleteQuestion.bind(this);
+    this.handleClickOpen = this.handleClickOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+
     this.state = {
       quizQuestionsData: [],
+      deleteId: '',
+      dialogOpen: false,
     };
   }
 
@@ -41,10 +56,30 @@ class QuestionList extends React.Component {
   getData = () => {
     axios.get('http://localhost:3001/api/questions/index')
       .then((res) => {
-        console.log(res.data);
         this.setState({quizQuestionsData: res.data});
       }
     )
+      .catch(error => console.log(error))
+  };
+
+  handleClickOpen = (id) => {
+    this.setState({
+      dialogOpen: true,
+      deleteId: id
+    });
+  };
+
+  handleClose = () => {
+    this.setState({ dialogOpen: false });
+  };
+
+  deleteQuestion = () => {
+    console.log(this.state.deleteId);
+    axios.delete(`http://localhost:3001/api/question/delete/${this.state.deleteId}`)
+      .then(() => {
+        this.setState({dialogOpen: false});
+        this.getData();
+      })
       .catch(error => console.log(error))
   };
 
@@ -61,6 +96,7 @@ class QuestionList extends React.Component {
               <TableCell>Question</TableCell>
               <TableCell>Answer</TableCell>
               <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,14 +106,44 @@ class QuestionList extends React.Component {
                 <TableCell>{quizQuestion.question}</TableCell>
                 <TableCell>{quizQuestion.answer}</TableCell>
                 <TableCell className='link'>
-                  <Link href={`/questions/${quizQuestion._id}`}>
-                    <EditIcon />
+                  <Link href={`/question/${quizQuestion._id}`}>
+                    <IconButton>
+                      <EditIcon />
+                    </IconButton>
                   </Link>
+                </TableCell>
+                <TableCell className='link'>
+                  <IconButton>
+                    <DeleteForeverIcon
+                      onClick={() => this.handleClickOpen(quizQuestion._id)}
+                    />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <Dialog
+          open={this.state.dialogOpen}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Delete Question</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you wish to delete this question?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              No
+            </Button>
+            <Button onClick={this.deleteQuestion} color="primary" autoFocus>
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Paper>
     );
   }

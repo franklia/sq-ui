@@ -18,6 +18,9 @@ const theme = createMuiTheme({
     primary: blue,
     secondary: blueGrey,
   },
+  typography: {
+    useNextVariants: true,
+  },
 });
 
 class App extends Component {
@@ -34,7 +37,7 @@ class App extends Component {
                     <Route exact path='/' component={ Home } />
                     <Route path='/questions/create' component={ Create } />
                     <Route exact path='/questions/index' component={ GetQuestions } />
-                    <Route path='/questions/:id' component={ EditQuestion } />
+                    <Route path='/question/:id' component={ EditQuestion } />
                     <Route component={ Notfound } />
                 </Switch>
               </div>

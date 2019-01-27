@@ -40,7 +40,7 @@ export default class Create extends Component {
     };
 
     if(dataObject.category && dataObject.question && dataObject.answer){
-      axios.post('http://localhost:3001/api/create', dataObject)
+      axios.post('http://localhost:3001/api/question/create', dataObject)
           // ES6 syntax
           .then(res => console.log(res))
           // regular syntax
@@ -62,7 +62,7 @@ export default class Create extends Component {
   render() {
       return (
         <div>
-          <Typography variant="h4" color='secondary'>Add A New Question</Typography>
+          <Typography component= 'h4' variant='h4' color='secondary'>Add A New Question</Typography>
           <form onSubmit={this.onSubmit}>
             <CategoryDropdown
               category={this.state.category}

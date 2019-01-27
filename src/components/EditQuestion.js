@@ -28,7 +28,7 @@ class EditQuestion extends Component {
 
   // fetch data from database
   getData = () => {
-    axios.get('http://localhost:3001/api/questions/'+this.props.match.params.id)
+    axios.get('http://localhost:3001/api/question/'+this.props.match.params.id)
       .then((res) => {
         this.setState({
           _id: res.data[0]._id,
@@ -92,7 +92,7 @@ class EditQuestion extends Component {
     render(){
         return (
           <div style={{marginTop: 10}}>
-              <Typography variant="h4" color='secondary'>Edit Question</Typography>
+              <Typography component="h4" variant='h4' color='secondary'>Edit Question</Typography>
               <form onSubmit={this.onSubmit}>
                   <CategoryDropdown
                     category={this.state.category}
