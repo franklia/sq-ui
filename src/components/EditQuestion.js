@@ -92,7 +92,7 @@ class EditQuestion extends Component {
     render(){
         return (
           <div style={{marginTop: 10}}>
-              <Typography component="h4" variant='h4' color='secondary'>Edit Question</Typography>
+              <Typography component="h4" variant='h4' color='secondary'>Edit question</Typography>
               <form onSubmit={this.onSubmit}>
                   <CategoryDropdown
                     category={this.state.category}

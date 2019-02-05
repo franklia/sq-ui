@@ -57,6 +57,7 @@ class QuestionList extends React.Component {
     axios.get('http://localhost:3001/api/questions/index')
       .then((res) => {
         this.setState({quizQuestionsData: res.data});
+        // console.log(this.state.quizQuestionsData);
       }
     )
       .catch(error => console.log(error))
@@ -95,6 +96,7 @@ class QuestionList extends React.Component {
               <TableCell>Category</TableCell>
               <TableCell>Question</TableCell>
               <TableCell>Answer</TableCell>
+              <TableCell>Status</TableCell>
               <TableCell>Edit</TableCell>
               <TableCell>Delete</TableCell>
             </TableRow>
@@ -105,6 +107,7 @@ class QuestionList extends React.Component {
                 <TableCell>{quizQuestion.category}</TableCell>
                 <TableCell>{quizQuestion.question}</TableCell>
                 <TableCell>{quizQuestion.answer}</TableCell>
+                <TableCell>{quizQuestion.status.toString()}</TableCell>
                 <TableCell className='link'>
                   <Link href={`/question/${quizQuestion._id}`}>
                     <IconButton>

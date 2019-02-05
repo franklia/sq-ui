@@ -62,7 +62,7 @@ export default class Create extends Component {
   render() {
       return (
         <div>
-          <Typography component= 'h4' variant='h4' color='secondary'>Add A New Question</Typography>
+          <Typography component= 'h4' variant='h4' color='secondary'>Add a new question</Typography>
           <form onSubmit={this.onSubmit}>
             <CategoryDropdown
               category={this.state.category}
