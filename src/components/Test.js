@@ -90,7 +90,7 @@ export default class Test extends Component {
   renderAnswer = () => {
     const answerContent = (
       <div>
-        <p>{this.state.quizQuestionData.answer}</p>
+        <p style={{whiteSpace: 'pre-line'}}>{this.state.quizQuestionData.answer}</p>
         <Button onClick={this.renderNewQuestion} variant="contained" color="secondary" style={{marginTop: 25, marginRight: 15}}>New Question</Button>
       </div>
     );
@@ -104,7 +104,7 @@ export default class Test extends Component {
     } else {
       return (
         <div>
-          <p style={{marginTop: 35}}>{this.state.quizQuestionData.question}</p>
+          <p style={{marginTop: 35, whiteSpace: 'pre-line'}}>{this.state.quizQuestionData.question}</p>
           <TextField
             id="outlined-full-width"
             name="answer"
