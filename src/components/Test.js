@@ -30,17 +30,11 @@ export default class Test extends Component {
   };
 
   getQuestion = () => {
-    // const testCat = this.state.testCategory;
-    // const { quizQuestionData } = this.state;
     const { testCategory } = this.state;
-    // console.log('This is:' + quizQuestionData );
-    // console.log(`http://localhost:3001/api/question/test/${testCategory}`);
     axios.get(`http://localhost:3001/api/question/test/${testCategory}`)
       .then((res) => {
         this.setState({quizQuestionData: res.data}, () => {
-          // console.log('This is quizQuestionData: ' + this.state.quizQuestionData.question);
         });
-
       }
     )
       .catch(error => console.log(error))

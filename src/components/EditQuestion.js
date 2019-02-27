@@ -21,12 +21,10 @@ class EditQuestion extends Component {
     };
   }
 
-  // when component mounts, first thing it does is fetch all existing data in our db
   componentDidMount() {
     this.getData();
   }
 
-  // fetch data from database
   getData = () => {
     axios.get('http://localhost:3001/api/question/'+this.props.match.params.id)
       .then((res) => {
@@ -76,7 +74,6 @@ class EditQuestion extends Component {
       }
     }
 
-    // Snackbar handlers
     handleClick = () => {
       this.setState({
         open: true

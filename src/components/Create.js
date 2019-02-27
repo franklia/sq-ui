@@ -32,7 +32,6 @@ export default class Create extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    // console.log(`The values are ${this.state.category}, ${this.state.question}, and ${this.state.answer}`)
     const dataObject = {
       category: this.state.category,
       question: this.state.question,
@@ -56,7 +55,6 @@ export default class Create extends Component {
     } else {
       console.log('One or more of the input fields are blank.')
     }
-
   }
 
   render() {

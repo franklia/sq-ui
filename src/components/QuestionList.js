@@ -20,7 +20,6 @@ import {
   DialogTitle,
   Button
 } from '@material-ui/core';
-// import { Redirect } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
@@ -47,17 +46,14 @@ class QuestionList extends React.Component {
     };
   }
 
-  // when component mounts, first thing it does is fetch all existing data in our db
   componentDidMount() {
     this.getData();
   }
 
-  // fetch data from database
   getData = () => {
     axios.get('http://localhost:3001/api/questions/index')
       .then((res) => {
         this.setState({quizQuestionsData: res.data});
-        // console.log(this.state.quizQuestionsData);
       }
     )
       .catch(error => console.log(error))

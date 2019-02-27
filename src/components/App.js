@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { blue, blueGrey } from '@material-ui/core/colors';
-import './components/css/Styles.css';
+import './css/Styles.css';
 
-import Home from './components/Test';
-import Create from './components/Create';
-import GetQuestions from './components/GetQuestions';
-import Notfound from './components/Notfound';
-import NavMenu from './components/NavMenu';
-import EditQuestion from './components/EditQuestion';
+import Test from './Test';
+import Create from './Create';
+import GetQuestions from './GetQuestions';
+import Notfound from './Notfound';
+import NavMenu from './NavMenu';
+import EditQuestion from './EditQuestion';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,7 +33,7 @@ class App extends Component {
               <NavMenu />
               <div className='page-content-wrapper'>
                 <Switch>
-                    <Route exact path='/' component={ Home } />
+                    <Route exact path='/' component={ Test } />
                     <Route path='/questions/create' component={ Create } />
                     <Route exact path='/questions/index' component={ GetQuestions } />
                     <Route path='/question/:id' component={ EditQuestion } />

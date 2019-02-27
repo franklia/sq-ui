@@ -1,4 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Spot Quiz Frontend
+
+This React project is designed to work in unison with it's backend api found here: https://github.com/franklia/spot-quiz-api
+
+The app is designed to assist in learning the fundamentals of any subject matter via repetition. Enter your own questions and answers, then test yourself regularly using a random question generator.
+
+It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+* NPM
+* Google Chrome or Firefox
+
+### Installation
+
+* `git clone https://github.com/franklia/spot-quiz-frontend.git`
+* `cd spot-quiz-frontend`
+* `npm install`
 
 ## Available Scripts
 
@@ -66,3 +87,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Author
+
+Frank Liardet
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
