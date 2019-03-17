@@ -13,13 +13,14 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * NPM
+* React.js
 * Google Chrome or Firefox
 
 ### Installation
 
-* `git clone https://github.com/franklia/spot-quiz-frontend.git`
-* `cd spot-quiz-frontend`
-* `npm install`
+* Clone the repo `git clone https://github.com/franklia/spot-quiz-frontend.git`
+* Navigate into the repo `cd spot-quiz-frontend`
+* Run `npm install` to install the node modules
 
 ## Available Scripts
 

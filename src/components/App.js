@@ -6,7 +6,7 @@ import { blue, blueGrey } from '@material-ui/core/colors';
 import './css/Styles.css';
 
 import Test from './Test';
-import Create from './Create';
+import AddQuestion from './AddQuestion';
 import GetQuestions from './GetQuestions';
 import Notfound from './Notfound';
 import NavMenu from './NavMenu';
@@ -34,7 +34,7 @@ class App extends Component {
               <div className='page-content-wrapper'>
                 <Switch>
                     <Route exact path='/' component={ Test } />
-                    <Route path='/questions/create' component={ Create } />
+                    <Route path='/questions/create' component={ AddQuestion } />
                     <Route exact path='/questions/index' component={ GetQuestions } />
                     <Route path='/question/:id' component={ EditQuestion } />
                     <Route component={ Notfound } />
