@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { TextField, Typography } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
 
 const styles = {
@@ -23,8 +24,38 @@ class SubQuestion extends Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            <p>{this.props.question.question}</p>
-            <p>{this.props.question.answer}</p>
+            <Typography component= 'h6' variant='h6' color='secondary'>Sub Question</Typography>
+            <TextField
+              id={this.props.question.id.toString()}
+              style={{marginTop: 30, marginBottom: 20}}
+              name='question'
+              onChange={this.props.updateInput}
+              label='Question'
+              placeholder='Enter your question'
+              fullWidth
+              multiline={true}
+              rows='3'
+              margin='normal'
+              variant='outlined'
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              id={this.props.question.id.toString()}
+              name='answer'
+              onChange={this.props.updateInput}
+              label='Answer'
+              placeholder='Enter the answer to the question'
+              fullWidth
+              multiline={true}
+              rows='3'
+              margin='normal'
+              variant='outlined'
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </div>
         )}
       </Draggable>

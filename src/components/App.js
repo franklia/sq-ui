@@ -7,6 +7,7 @@ import './css/Styles.css';
 
 import Test from './Test';
 import AddQuestion from './AddQuestion';
+// import Create from './Create';
 import GetQuestions from './GetQuestions';
 import Notfound from './Notfound';
 import NavMenu from './NavMenu';

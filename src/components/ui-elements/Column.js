@@ -20,7 +20,7 @@ class Column extends Component {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {this.props.questions.map((question, index) => <SubQuestion key={question.id} question={question} index={index} />)}
+              {this.props.questions.map((question, index) => <SubQuestion key={question.id} question={question} index={index} updateInput={this.props.updateInput} />)}
               {provided.placeholder}
             </div>
           )}

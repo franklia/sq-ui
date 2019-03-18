@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import CategoryDropdown from './ui-elements/CategoryDropdown';
+import { Typography, Tooltip, Fab, Button } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
 
 const styles = theme => ({
-  root: {
-    // width: '100%',
+  fab: {
+    margin: theme.spacing.unit,
   },
 });
 
@@ -19,23 +23,73 @@ class AddQuestion extends Component {
       questions: {
         1: {
           id: 1,
-          question: 'First Question',
-          answer: 'First Answer'
+          question: '',
+          answer: ''
         },
-        2: {
-          id: 2,
-          question: 'Second Question',
-          answer: 'Second Answer'
-        }
       },
       columns: {
-        'column-1': { id: 'column-1', title: 'Questions', questionIds: [1, 2] }
+        'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
       },
       columnOrder: ['column-1'],
     }
   }
 
-  // This function reorders our column
+  handleCategoryChange = category => {
+    this.setState({
+      category: category
+    })
+  }
+
+  onChangeInput = event => {
+    const questionId = event.target.id;
+    const key = event.target.name;
+    const value = event.target.value;
+    let question = {...this.state.questions[questionId], [key]: value};
+    this.setState({
+      ...this.state,
+      questions: {...this.state.questions, [questionId]: question}
+    });
+  }
+
+  addSubQuestion = () => {
+    const questionsObject = this.state.questions;
+    const questionCountInitial = Object.keys(questionsObject).length;
+    const questionCountNew = questionCountInitial + 1;
+    const subQuestion = { id: questionCountNew, question: '', answer: ''};
+    const questionIdsArray = this.state.columns['column-1'].questionIds;
+    const newQuestionIdsArray = questionIdsArray.concat(questionCountNew);
+
+    this.setState({
+      ...this.state,
+      questions: {...this.state.questions, [questionCountNew]: subQuestion},
+      columns: {'column-1': {id: 'column-1', title: 'Questions', questionIds: newQuestionIdsArray}},
+    });
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    const dataObject = this.state;
+
+    if(dataObject.category){
+      axios.post('http://localhost:3001/api/question/create', dataObject)
+          // ES6 syntax
+          .then(res => console.log(res))
+          // regular syntax
+          .catch(function(error) {
+              console.log(error)
+          });
+
+      this.setState({
+        category: '',
+        question: '',
+        answer: ''
+      })
+    } else {
+      console.log('One or more of the input fields are blank.')
+    }
+  }
+
+  // This function reorders the questions in our column
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
 
@@ -72,23 +126,35 @@ class AddQuestion extends Component {
   };
 
   render() {
-    // const { classes } = this.props;
+    const { classes } = this.props;
 
     return (
       <>
-        <h3>Add Question</h3>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          {this.state.columnOrder.map(columnId => {
-          const column = this.state.columns[columnId];
-          const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
-
-          return <Column key={column.id} column={column} questions={questions} />;
-          })}
-        </DragDropContext>
+        <Typography component= 'h4' variant='h4' color='secondary'>Add a new question</Typography>
+        <form onSubmit={this.onSubmit}>
+          <CategoryDropdown
+            category={this.state.category}
+            onCategoryChange={this.handleCategoryChange}
+          />
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            {this.state.columnOrder.map(columnId => {
+            const column = this.state.columns[columnId];
+            const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
+            return <Column key={column.id} column={column} questions={questions} updateInput={this.onChangeInput.bind(this)} />;
+            })}
+          </DragDropContext>
+          <Tooltip title="Add New Sub Question" aria-label="Add">
+            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.addSubQuestion}>
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+          <Button type="submit" variant="contained" color="primary" style={{marginTop: 25}}>
+            Save Question
+          </Button>
+        </form>
       </>
     );
   }
-
 }
 
 export default withStyles(styles)(AddQuestion);
