@@ -28,7 +28,7 @@ class SubQuestion extends Component {
             <TextField
               id={this.props.question.id.toString()}
               style={{marginTop: 30, marginBottom: 20}}
-              name='question'
+              name='sub_question'
               onChange={this.props.updateInput}
               label='Question'
               placeholder='Enter your question'
@@ -43,7 +43,7 @@ class SubQuestion extends Component {
             />
             <TextField
               id={this.props.question.id.toString()}
-              name='answer'
+              name='sub_answer'
               onChange={this.props.updateInput}
               label='Answer'
               placeholder='Enter the answer to the question'
