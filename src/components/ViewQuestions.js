@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import QuestionList from './QuestionList';
 import { Typography } from '@material-ui/core';
 
-export default class GetQuestions extends Component {
+export default class ViewQuestions extends Component {
   render() {
     return (
       <div>

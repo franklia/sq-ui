@@ -29,6 +29,9 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  category: {
+    textTransform: 'capitalize',
+  }
 });
 
 class QuestionList extends React.Component {
@@ -40,7 +43,7 @@ class QuestionList extends React.Component {
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
-      quizQuestionsData: [],
+      questionsData: [],
       deleteId: '',
       dialogOpen: false,
     };
@@ -53,7 +56,8 @@ class QuestionList extends React.Component {
   getData = () => {
     axios.get('http://localhost:3001/api/questions/index')
       .then((res) => {
-        this.setState({quizQuestionsData: res.data});
+        console.log(res);
+        this.setState({questionsData: res.data});
       }
     )
       .catch(error => console.log(error))
@@ -82,7 +86,7 @@ class QuestionList extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { quizQuestionsData } = this.state;
+    const { questionsData } = this.state;
 
     return (
       <Paper className={classes.root}>
@@ -90,22 +94,32 @@ class QuestionList extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>Category</TableCell>
-              <TableCell>Question</TableCell>
-              <TableCell>Answer</TableCell>
+              <TableCell>Questions</TableCell>
+              <TableCell>Answers</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Edit</TableCell>
               <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {quizQuestionsData.map(quizQuestion => (
-              <TableRow key={quizQuestion._id}>
-                <TableCell>{quizQuestion.category}</TableCell>
-                <TableCell>{quizQuestion.question}</TableCell>
-                <TableCell>{quizQuestion.answer}</TableCell>
-                <TableCell>{quizQuestion.status.toString()}</TableCell>
+            {questionsData.map(question => (
+              <TableRow key={question._id}>
+                <TableCell className={classes.category}>{question.category}</TableCell>
+                <TableCell>
+                  {question.questions.map((question, index) => {
+                    let adjustedIndex = index + 1;
+                    return ` ${adjustedIndex}. ${question.sub_question}`;
+                  })}
+                </TableCell>
+                <TableCell>
+                  {question.questions.map((question, index) => {
+                    let adjustedIndex = index + 1;
+                    return ` ${adjustedIndex}. ${question.sub_answer}`;
+                  })}
+                </TableCell>
+                <TableCell>{question.status.toString()}</TableCell>
                 <TableCell className='link'>
-                  <Link href={`/question/${quizQuestion._id}`}>
+                  <Link href={`/question/${question._id}`}>
                     <IconButton>
                       <EditIcon />
                     </IconButton>
@@ -114,7 +128,7 @@ class QuestionList extends React.Component {
                 <TableCell className='link'>
                   <IconButton>
                     <DeleteForeverIcon
-                      onClick={() => this.handleClickOpen(quizQuestion._id)}
+                      onClick={() => this.handleClickOpen(question._id)}
                     />
                   </IconButton>
                 </TableCell>
@@ -148,6 +162,7 @@ class QuestionList extends React.Component {
   }
 }
 
+// are propTypes required for material ui??
 QuestionList.propTypes = {
   classes: PropTypes.object.isRequired,
 };

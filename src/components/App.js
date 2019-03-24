@@ -8,7 +8,7 @@ import './css/Styles.css';
 import Test from './Test';
 import AddQuestion from './AddQuestion';
 // import Create from './Create';
-import GetQuestions from './GetQuestions';
+import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './NavMenu';
 import EditQuestion from './EditQuestion';
@@ -36,7 +36,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path='/' component={ Test } />
                     <Route path='/questions/create' component={ AddQuestion } />
-                    <Route exact path='/questions/index' component={ GetQuestions } />
+                    <Route exact path='/questions/index' component={ ViewQuestions } />
                     <Route path='/question/:id' component={ EditQuestion } />
                     <Route component={ Notfound } />
                 </Switch>
