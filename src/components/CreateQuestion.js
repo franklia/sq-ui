@@ -3,7 +3,7 @@ import CreateOrUpdateQuestion from './CreateOrUpdateQuestion';
 import { Typography, Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
-class EditQuestion extends Component {
+class CreateQuestion extends Component {
 
   constructor(props){
     super(props);
@@ -28,8 +28,8 @@ class EditQuestion extends Component {
   render(){
     return (
       <div style={{marginTop: 10}}>
-        <Typography component="h4" variant='h4' color='secondary'>Edit question</Typography>
-        <CreateOrUpdateQuestion type='update' buttonText='Update' id={this.props.match.params.id} postUrl='http://localhost:3001/api/question/:id'/>
+        <Typography component="h4" variant='h4' color='secondary'>Add a question</Typography>
+        <CreateOrUpdateQuestion type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -59,4 +59,4 @@ class EditQuestion extends Component {
   }
 }
 
-export default EditQuestion;
+export default CreateQuestion;

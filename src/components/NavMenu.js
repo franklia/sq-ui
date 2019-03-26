@@ -26,7 +26,7 @@ function NavMenu(props) {
             Spot Quiz
           </Typography>
           <Button><Link to={'/'} className="nav-link">Test</Link></Button>
-          <Button><Link to={'/questions/create'} className="nav-link">Add Question</Link></Button>
+          <Button><Link to={'/question/create'} className="nav-link">Add Question</Link></Button>
           <Button><Link to={'/questions/index'} className="nav-link">View All</Link></Button>
         </Toolbar>
       </AppBar>

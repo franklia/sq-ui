@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { Typography, Tooltip, Fab, Button } from '@material-ui/core';
+import { Tooltip, Fab, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
@@ -14,9 +13,11 @@ const styles = theme => ({
   },
 });
 
-class AddQuestion extends Component {
+class CreateOrUpdateQuestion extends Component {
   constructor(props){
     super(props);
+
+    // The state.columns and state.columnOrder are used by the react-beautiful-dnd package to order the sub questions. The actual order on the page is stored in this.state.columns['column-1'].questionIds. We only have one column displayed on the page currently but it is set up to accommodate more than one in future if required.
 
     this.state = {
       category: '',
@@ -32,8 +33,66 @@ class AddQuestion extends Component {
         'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
       },
       columnOrder: ['column-1'],
+      open: false
     }
   };
+
+    componentDidMount() {
+      if (this.props.type === 'update') {
+        this.getData();
+      }
+    };
+
+    getData = () => {
+      axios.get('http://localhost:3001/api/question/' + this.props.id)
+        .then((res) => {
+          // Prepare const categoryData for eventual update to this.state.category
+          const categoryData = res.data[0].category;
+
+          // Prepare const questionsDataObject for eventual update to this.state.questions
+          // First, declare the object
+          let questionsData = {};
+          // Second, get questions array from data
+          const questionsDataArray = res.data[0].questions;
+          // Third, convert questions array into a nested object to match this.state.questions format
+          questionsDataArray.forEach(function(element, index) {
+            questionsData[element.id] = element;
+          });
+
+          // Prepare const columnData for eventual update to this.state.columns (sort by position)
+          function comparePositions(a, b) {
+            if (a.position < b.position) {
+              return -1;
+            }
+            if (a.position > b.position) {
+              return 1;
+            }
+            return 0;
+          }
+
+          const initialQuestionsSort = questionsDataArray.sort(comparePositions);
+          const columnDataArray = initialQuestionsSort.map(question => question.id);
+
+          const columnData = {
+            ...this.state.columns['column-1'],
+            questionIds: columnDataArray
+          };
+
+          // Update state
+          this.setState({
+            ...this.state,
+            category: categoryData,
+            questions: questionsData,
+            columns: {
+              'column-1': columnData
+            }
+          });
+          // console.log('this.state');
+          // console.log(this.state);
+        }
+      )
+        .catch(error => console.log(error))
+    };
 
   handleCategoryChange = category => {
     this.setState({
@@ -56,7 +115,7 @@ class AddQuestion extends Component {
     const questionsObject = this.state.questions;
     const questionCountInitial = Object.keys(questionsObject).length;
     const questionCountNew = questionCountInitial + 1;
-    const subQuestion = { id: `${questionCountNew}`, sub_question: '', sub_answer: '', position: questionCountNew };
+    const subQuestion = { id: questionCountNew, sub_question: '', sub_answer: '', position: questionCountNew };
     const questionIdsArray = this.state.columns['column-1'].questionIds;
     const newQuestionIdsArray = questionIdsArray.concat(questionCountNew);
 
@@ -85,7 +144,7 @@ class AddQuestion extends Component {
       return;
     };
 
-    // Reorder column.questionIds
+    // Reorder column.questionIds to match the new positions of the sub questions
     const column = this.state.columns[source.droppableId];
     const newQuestionIds = Array.from(column.questionIds);
     newQuestionIds.splice(source.index, 1);
@@ -97,7 +156,7 @@ class AddQuestion extends Component {
       questionIds: newQuestionIds,
     };
 
-    // Update the position of each question
+    // Update the position of each question in this.state.questions (in hindsight I should have simply held the positions in this.state.columns because I'm really duplicating it here - this is yet to be refactored)
     const questionsArrayUpdatePositions = newQuestionIds.map(
       (question_id, arrayIndex) => {
         const adjustArrayIndex = arrayIndex + 1;
@@ -107,8 +166,6 @@ class AddQuestion extends Component {
         return newQuestion;
       }
     );
-    // console.log('questionsArrayUpdatePositions:');
-    // console.log(questionsArrayUpdatePositions);
 
     // Prepare const questionsObject for eventual update to this.state.questions
     let questionsObject = {};
@@ -117,61 +174,75 @@ class AddQuestion extends Component {
       questionsObject[element.id] = element;
     });
 
-    // console.log('questionsObject');
-    // console.log(questionsObject);
-
-    // Prepare const newState for upcoming update to this.state
-    const newState = {
+    // Update state
+    this.setState({
       ...this.state,
       questions: questionsObject,
       columns: {
         ...this.state.columns,
         [columnUpdate.id]: columnUpdate,
       }
-    };
-    // console.log('newState');
-    // console.log(newState);
-    // Update state
-    this.setState(newState);
+    });
   };
 
   onSubmit = (event) => {
     event.preventDefault();
+    // Convert nested questions object into an array of the questions
     const question_values = Object.values(this.state.questions);
 
-    if(
+    // First check if all input fields are populated
+    if (
       this.state.category !== ''
       && question_values.every(obj => obj.sub_question !== '')
       && question_values.every(obj => obj.sub_answer !== '')
     ) {
-      const dataObject = {
-        category: this.state.category,
-        questions: question_values,
-        status: false
-      };
-      // console.log(dataObject);
 
-      axios.post('http://localhost:3001/api/question/create', dataObject)
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
+      // This is a nested if statement to check component type (create or update) and post accordingly
+      if (this.props.type === "create") {
 
-      this.setState({
-        category: '',
-        questions: {
-          1: {
-            id: '1',
-            sub_question: '',
-            sub_answer: '',
-            position: 1
+        const dataObject = {
+          category: this.state.category,
+          questions: question_values,
+          status: false
+        };
+
+        axios.post('http://localhost:3001/api/question/create', dataObject)
+          .then(res => console.log(res))
+          .catch(error => console.log(error));
+
+        this.setState({
+          category: '',
+          questions: {
+            1: {
+              id: '1',
+              sub_question: '',
+              sub_answer: '',
+              position: 1
+            },
           },
-        },
-        columns: {
-          'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
-        },
-        columnOrder: ['column-1'],
-      });
+          columns: {
+            'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
+          },
+          columnOrder: ['column-1'],
+        });
 
-    } else {
+      } else if (this.props.type === "update") {
+
+        const dataObject = {
+          _id: this.props.id,
+          category: this.state.category,
+          questions: question_values,
+          status: false
+        };
+
+        axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
+          .then(res => console.log(res))
+          // .then(this.handleClick())
+          .catch(error => console.log(error));
+      }
+
+    // Output an error if one or more of the input field are blank
+  } else {
       console.log('One or more of the input fields are blank.')
     }
   };
@@ -181,7 +252,6 @@ class AddQuestion extends Component {
 
     return (
       <>
-        <Typography component= 'h4' variant='h4' color='secondary'>Add a new question</Typography>
         <CategoryDropdown
           category={this.state.category}
           onCategoryChange={this.handleCategoryChange}
@@ -199,11 +269,11 @@ class AddQuestion extends Component {
           </Fab>
         </Tooltip>
         <Button onClick={this.onSubmit} variant="contained" color="primary" style={{marginTop: 25}}>
-          Save Question
+          {this.props.buttonText} Question
         </Button>
       </>
     );
   }
 }
 
-export default withStyles(styles)(AddQuestion);
+export default withStyles(styles)(CreateOrUpdateQuestion);

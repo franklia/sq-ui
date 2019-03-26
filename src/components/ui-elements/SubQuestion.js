@@ -31,6 +31,7 @@ class SubQuestion extends Component {
               name='sub_question'
               onChange={this.props.updateInput}
               label='Question'
+              value={this.props.question.sub_question}
               placeholder='Enter your question'
               fullWidth
               multiline={true}
@@ -46,6 +47,7 @@ class SubQuestion extends Component {
               name='sub_answer'
               onChange={this.props.updateInput}
               label='Answer'
+              value={this.props.question.sub_answer}
               placeholder='Enter the answer to the question'
               fullWidth
               multiline={true}
