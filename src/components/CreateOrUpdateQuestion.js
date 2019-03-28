@@ -126,6 +126,28 @@ class CreateOrUpdateQuestion extends Component {
     });
   };
 
+  deleteSubQuestion = id => {
+    // Remove question from this.state.questions object
+    const questionsObject = this.state.questions;
+    delete questionsObject[id];
+
+    // Remove question id from this.state.columns['column-1'].questionIds
+    let questionIdsArray = this.state.columns['column-1'].questionIds;
+
+    for (let i = 0; i < questionIdsArray.length; i++){
+      if (questionIdsArray[i] == id) {
+        questionIdsArray.splice(i, 1);
+      }
+    }
+
+    // Update state
+    this.setState({
+      ...this.state,
+      questions: questionsObject,
+      columns: {'column-1': {id: 'column-1', title: 'Questions', questionIds: questionIdsArray}},
+    });
+  };
+
   // This function reorders the questions in our column
   // It was set up using this tutorial for the react-beautiful-dnd library https://egghead.io/lessons/react-course-introduction-beautiful-and-accessible-drag-and-drop-with-react-beautiful-dnd
   onDragEnd = result => {
@@ -258,9 +280,24 @@ class CreateOrUpdateQuestion extends Component {
         />
         <DragDropContext onDragEnd={this.onDragEnd}>
           {this.state.columnOrder.map(columnId => {
-          const column = this.state.columns[columnId];
-          const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
-          return <Column key={column.id} column={column} questions={questions} updateInput={this.onChangeInput.bind(this)} />;
+            const column = this.state.columns[columnId];
+            const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
+
+            const displayDeleteIcon = (() => {
+              if (this.state.columns['column-1'].questionIds.length >= 2) {
+                return true;
+              } else {
+                return false;
+              }
+            })();
+
+            return <Column
+                      key={column.id}
+                      column={column}
+                      questions={questions}
+                      updateInput={this.onChangeInput.bind(this)} deleteSubQuestion={this.deleteSubQuestion.bind(this)}
+                      displayDeleteIcon={displayDeleteIcon}
+                    />;
           })}
         </DragDropContext>
         <Tooltip title="Add New Sub Question" aria-label="Add">
