@@ -17,13 +17,13 @@ class CreateOrUpdateQuestion extends Component {
   constructor(props){
     super(props);
 
-    // The state.columns and state.columnOrder are used by the react-beautiful-dnd package to order the sub questions. The actual order on the page is stored in this.state.columns['column-1'].questionIds. We only have one column displayed on the page currently but it is set up to accommodate more than one in future if required.
+    // The state.columns and state.columnOrder are used by the react-beautiful-dnd package to order the sub questions. The actual order on the page is stored in this.state.columns['column-1'].questionIds. There is only one column displayed on the page currently but it is set up to accommodate more than one in future if required.
 
     this.state = {
       category: '',
       questions: {
         1: {
-          id: '1',
+          id: 1,
           sub_question: '',
           sub_answer: '',
           position: 1
@@ -112,16 +112,27 @@ class CreateOrUpdateQuestion extends Component {
   };
 
   addSubQuestion = () => {
-    const questionsObject = this.state.questions;
-    const questionCountInitial = Object.keys(questionsObject).length;
-    const questionCountNew = questionCountInitial + 1;
-    const subQuestion = { id: questionCountNew, sub_question: '', sub_answer: '', position: questionCountNew };
+    // Determine the new question key
     const questionIdsArray = this.state.columns['column-1'].questionIds;
-    const newQuestionIdsArray = questionIdsArray.concat(questionCountNew);
+    const questionsHighestKey = Math.max(...questionIdsArray);
+    const questionNewKey = questionsHighestKey + 1;
 
+    //Determine the new quesiton position (in hindsight I should have simply held the positions in this.state.columns because I'm really duplicating it here. It should be refactored)
+    const questionsIdsNumber = questionIdsArray.length;
+    const questionNewPosition = questionsIdsNumber + 1;
+
+    // Create new question object
+    const subQuestion = { id: questionNewKey, sub_question: '', sub_answer: '', position: questionNewPosition };
+
+    // Create new questionIds array
+    const newQuestionIdsArray = questionIdsArray.concat(questionNewKey);
+    console.log('newQuestionIdsArray');
+    console.log(newQuestionIdsArray);
+
+    // Update state
     this.setState({
       ...this.state,
-      questions: {...this.state.questions, [questionCountNew]: subQuestion},
+      questions: {...this.state.questions, [questionNewKey]: subQuestion},
       columns: {'column-1': {id: 'column-1', title: 'Questions', questionIds: newQuestionIdsArray}},
     });
   };
