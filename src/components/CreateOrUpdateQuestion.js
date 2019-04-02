@@ -126,8 +126,6 @@ class CreateOrUpdateQuestion extends Component {
 
     // Create new questionIds array
     const newQuestionIdsArray = questionIdsArray.concat(questionNewKey);
-    console.log('newQuestionIdsArray');
-    console.log(newQuestionIdsArray);
 
     // Update state
     this.setState({
@@ -138,6 +136,7 @@ class CreateOrUpdateQuestion extends Component {
   };
 
   deleteSubQuestion = id => {
+    console.log(id);
     // Remove question from this.state.questions object
     const questionsObject = this.state.questions;
     delete questionsObject[id];
@@ -146,7 +145,7 @@ class CreateOrUpdateQuestion extends Component {
     let questionIdsArray = this.state.columns['column-1'].questionIds;
 
     for (let i = 0; i < questionIdsArray.length; i++){
-      if (questionIdsArray[i] == id) {
+      if (questionIdsArray[i] === id) {
         questionIdsArray.splice(i, 1);
       }
     }

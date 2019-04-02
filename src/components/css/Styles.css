@@ -1,12 +1,46 @@
-.nav-link {
-  text-decoration: none;
-  color: #fff;
-}
-
 .link {
   cursor: pointer;
 }
 
 .page-content-wrapper {
-  margin: 50px;
+  margin: 20px;
+}
+
+/* Typography */
+
+p, div {
+  font-size: 20px;
+  color: #7d93b2;
+  font-family: Nunito, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #4c6280;
+  /* color: #234c87; */
+  font-family: Nunito, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 35px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+h4 {
+  font-size: 22px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 20px;
 }
