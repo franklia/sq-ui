@@ -32,6 +32,7 @@ const theme = createMuiTheme({
     }
   },
   typography: {
+    useNextVariants: true,
     fontFamily: [
       'Nunito',
       'sans-serif',

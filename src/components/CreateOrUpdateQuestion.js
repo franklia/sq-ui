@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { Tooltip, Fab, Button } from '@material-ui/core';
+import { Tooltip, Fab, Button, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
@@ -10,6 +10,9 @@ import Column from './ui-elements/Column';
 const styles = theme => ({
   fab: {
     margin: theme.spacing.unit,
+  },
+  topic: {
+    display: 'block',
   },
 });
 
@@ -21,6 +24,7 @@ class CreateOrUpdateQuestion extends Component {
 
     this.state = {
       category: '',
+      topic: '',
       questions: {
         1: {
           id: 1,
@@ -46,15 +50,18 @@ class CreateOrUpdateQuestion extends Component {
     getData = () => {
       axios.get('http://localhost:3001/api/question/' + this.props.id)
         .then((res) => {
+
+          // Check if topic exists and if so, update state
+          const topicExists = Object.keys(res.data[0]).includes('topic');
+          if (topicExists === true) { this.setState({topic: res.data[0].topic })};
+
           // Prepare const categoryData for eventual update to this.state.category
           const categoryData = res.data[0].category;
 
           // Prepare const questionsDataObject for eventual update to this.state.questions
-          // First, declare the object
+          // We need to convert questions array into a nested object to match this.state.questions format
           let questionsData = {};
-          // Second, get questions array from data
           const questionsDataArray = res.data[0].questions;
-          // Third, convert questions array into a nested object to match this.state.questions format
           questionsDataArray.forEach(function(element, index) {
             questionsData[element.id] = element;
           });
@@ -87,8 +94,6 @@ class CreateOrUpdateQuestion extends Component {
               'column-1': columnData
             }
           });
-          // console.log('this.state');
-          // console.log(this.state);
         }
       )
         .catch(error => console.log(error))
@@ -97,7 +102,21 @@ class CreateOrUpdateQuestion extends Component {
   handleCategoryChange = category => {
     this.setState({
       category: category
-    })
+    });
+  };
+
+  // handleTopicChange = event => {
+  //   // const value = event.target.value;
+  //   this.setState({
+  //     topic: event.target.value
+  //   });
+  // }
+
+  // Refactor the two functions above into this one
+  handleDataChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
   };
 
   onChangeInput = event => {
@@ -222,21 +241,36 @@ class CreateOrUpdateQuestion extends Component {
     // Convert nested questions object into an array of the questions
     const question_values = Object.values(this.state.questions);
 
-    // First check if all input fields are populated
+    // Function to check if all input fields are populated and create an error object
+
+    // const topicInput = document.querySelector('#topic');
+    // topicInput.setCustomValidity('');
+    // topicInput.checkValidity();
+
+
+    // const validate = () => {
+    //   if(this.state.category !== ''){ formErrors['category'] = 'You must assign a category'}
+    //   if(question_values.every(obj => obj.sub_question !== ''){ formErrors['category'] = 'You must assign a category'}
+    // }
+
+
     if (
       this.state.category !== ''
       && question_values.every(obj => obj.sub_question !== '')
       && question_values.every(obj => obj.sub_answer !== '')
+      // && this.state.columns['column-1'].questionIds.length > 1
     ) {
 
       // This is a nested if statement to check component type (create or update) and post accordingly
-      if (this.props.type === "create") {
+      if (this.props.type === 'create') {
 
         const dataObject = {
           category: this.state.category,
           questions: question_values,
-          status: false
+          status: false,
         };
+
+        if (this.state.topic !== ''){ dataObject['topic'] = this.state.topic };
 
         axios.post('http://localhost:3001/api/question/create', dataObject)
           .then(res => console.log(res))
@@ -258,7 +292,7 @@ class CreateOrUpdateQuestion extends Component {
           columnOrder: ['column-1'],
         });
 
-      } else if (this.props.type === "update") {
+      } else if (this.props.type === 'update') {
 
         const dataObject = {
           _id: this.props.id,
@@ -266,6 +300,11 @@ class CreateOrUpdateQuestion extends Component {
           questions: question_values,
           status: false
         };
+
+        if (this.state.topic !== '' && this.state.columns['column-1'].questionIds > 1){
+          dataObject['topic'] = this.state.topic 
+        };
+        console.log(dataObject);
 
         axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
           .then(res => console.log(res))
@@ -282,42 +321,65 @@ class CreateOrUpdateQuestion extends Component {
   render() {
     const { classes } = this.props;
 
+    // const isEnabled = this.state.columns['column-1'].questionIds.length === 1 ||
+    //   (this.state.columns['column-1'].questionIds.length > 1 && this.state.topic !== '');
+    // console.log(isEnabled);
+
+    const topic = (
+      <TextField
+      id='topic'
+      name='topic'
+      label='Topic'
+      className={classes.topic}
+      value={this.state.topic}
+      placeholder='Enter a topic'
+      helperText='When you have 2 or more questions, you must add a topic to unify the subject matter.'
+      required={true}
+      InputLabelProps={{ shrink: true }}
+      onChange={this.handleDataChange('topic')}
+      margin='normal'
+      variant='outlined'
+      />
+    );
+
     return (
       <>
-        <CategoryDropdown
-          category={this.state.category}
-          onCategoryChange={this.handleCategoryChange}
-        />
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          {this.state.columnOrder.map(columnId => {
-            const column = this.state.columns[columnId];
-            const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
+        <form onSubmit={() => {}}>
+          <CategoryDropdown
+            category={this.state.category}
+            onCategoryChange={this.handleCategoryChange}
+          />
 
-            const displayDeleteIcon = (() => {
-              if (this.state.columns['column-1'].questionIds.length >= 2) {
-                return true;
-              } else {
-                return false;
-              }
-            })();
+          { /* Dislay topic input field if there is more than one sub question */ }
+          { this.state.columns['column-1'].questionIds.length > 1 ? topic : null }
 
-            return <Column
-                      key={column.id}
-                      column={column}
-                      questions={questions}
-                      updateInput={this.onChangeInput.bind(this)} deleteSubQuestion={this.deleteSubQuestion.bind(this)}
-                      displayDeleteIcon={displayDeleteIcon}
-                    />;
-          })}
-        </DragDropContext>
-        <Tooltip title="Add New Sub Question" aria-label="Add">
-          <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.addSubQuestion}>
-            <AddIcon />
-          </Fab>
-        </Tooltip>
-        <Button onClick={this.onSubmit} variant="contained" color="primary" style={{marginTop: 25}}>
-          {this.props.buttonText} Question
-        </Button>
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            {this.state.columnOrder.map(columnId => {
+              const column = this.state.columns[columnId];
+              const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
+              const displayDeleteIcon = (() => column.questionIds.length >= 2 ? true : false)();
+
+              return <Column
+                        key={column.id}
+                        column={column}
+                        questions={questions}
+                        updateInput={this.onChangeInput.bind(this)} deleteSubQuestion={this.deleteSubQuestion.bind(this)}
+                        displayDeleteIcon={displayDeleteIcon}
+                      />;
+            })}
+          </DragDropContext>
+          <Tooltip title='Add New Sub Question' aria-label='Add'>
+            <Fab color='primary' aria-label='Add' className={classes.fab} onClick={this.addSubQuestion}>
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+          <Button
+            onClick={this.onSubmit} variant='contained' color='primary' style={{marginTop: 25}}
+            // disabled={!isEnabled}
+          >
+            {this.props.buttonText} Question
+          </Button>
+        </form>
       </>
     );
   }

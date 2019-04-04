@@ -22,6 +22,15 @@ These instructions will get you a copy of the project up and running on your loc
 * Navigate into the repo `cd spot-quiz-frontend`
 * Run `npm install` to install the node modules
 
+### About This Project
+
+## CSS and Styling
+
+This project uses the react @material-ui/core library. For the most part I have used the CSS in JS method recommended by the authors. I also utilised their "theme" option, however it didn't always provide the granularity I need so I also have a Styles.css file with some default values.
+
+## What I've Learned Along The way
+
+
 ## Available Scripts
 
 In the project directory, you can run:
