@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  MenuItem,
-  FormControl,
-  Select,
-} from '@material-ui/core';
+import { FormControl, Select,} from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -22,14 +18,6 @@ const styles = theme => ({
 });
 
 class CategoryDropdown extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange = event => {
-    this.props.onCategoryChange(event.target.value);
-  };
 
   render() {
     const { classes } = this.props;
@@ -38,14 +26,16 @@ class CategoryDropdown extends React.Component {
       <FormControl className={classes.formControl}>
         <Select
           value={this.props.category}
-          onChange={this.handleChange}
-          name="category"
+          onChange={this.props.handleCategoryChange}
+          name='category'
           displayEmpty
+          native
+          required
           className={classes.selectEmpty}
         >
-          <MenuItem value="" disabled>Choose a Category</MenuItem>
-          <MenuItem value='javascript'>Javascript</MenuItem>
-          <MenuItem value='react'>React</MenuItem>
+          <option value='' disabled>Choose a Category</option>
+          <option value='javascript'>Javascript</option>
+          <option value='react'>React</option>
         </Select>
       </FormControl>
     );

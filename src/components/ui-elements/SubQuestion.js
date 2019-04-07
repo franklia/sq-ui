@@ -62,6 +62,7 @@ class SubQuestion extends Component {
               label='Question'
               value={this.props.question.sub_question}
               placeholder='Enter your question'
+              required={true}
               fullWidth
               multiline={true}
               rows='3'
@@ -78,6 +79,7 @@ class SubQuestion extends Component {
               label='Answer'
               value={this.props.question.sub_answer}
               placeholder='Enter the answer to the question'
+              required={true}
               fullWidth
               multiline={true}
               rows='3'

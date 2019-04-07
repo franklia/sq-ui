@@ -43,11 +43,11 @@ class CreateOrUpdateQuestion extends Component {
 
     componentDidMount() {
       if (this.props.type === 'update') {
-        this.getData();
+        this.getQuestion();
       }
     };
 
-    getData = () => {
+    getQuestion = () => {
       axios.get('http://localhost:3001/api/question/' + this.props.id)
         .then((res) => {
 
@@ -99,7 +99,8 @@ class CreateOrUpdateQuestion extends Component {
         .catch(error => console.log(error))
     };
 
-  handleCategoryChange = category => {
+  handleCategoryChange = event => {
+    const category = event.target.value
     this.setState({
       category: category
     });
@@ -239,96 +240,69 @@ class CreateOrUpdateQuestion extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     // Convert nested questions object into an array of the questions
-    const question_values = Object.values(this.state.questions);
+    const questionValues = Object.values(this.state.questions);
 
-    // Function to check if all input fields are populated and create an error object
+    // Check component type (create or update) and post accordingly
+    if (this.props.type === 'create') {
 
-    // const topicInput = document.querySelector('#topic');
-    // topicInput.setCustomValidity('');
-    // topicInput.checkValidity();
+      const dataObject = {
+        category: this.state.category,
+        questions: questionValues,
+        status: false,
+      };
 
+      // Add topic text to the dataObject if a value exists
+      if (this.state.topic !== ''){ dataObject['topic'] = this.state.topic };
 
-    // const validate = () => {
-    //   if(this.state.category !== ''){ formErrors['category'] = 'You must assign a category'}
-    //   if(question_values.every(obj => obj.sub_question !== ''){ formErrors['category'] = 'You must assign a category'}
-    // }
+      axios.post('http://localhost:3001/api/question/create', dataObject)
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
 
-
-    if (
-      this.state.category !== ''
-      && question_values.every(obj => obj.sub_question !== '')
-      && question_values.every(obj => obj.sub_answer !== '')
-      // && this.state.columns['column-1'].questionIds.length > 1
-    ) {
-
-      // This is a nested if statement to check component type (create or update) and post accordingly
-      if (this.props.type === 'create') {
-
-        const dataObject = {
-          category: this.state.category,
-          questions: question_values,
-          status: false,
-        };
-
-        if (this.state.topic !== ''){ dataObject['topic'] = this.state.topic };
-
-        axios.post('http://localhost:3001/api/question/create', dataObject)
-          .then(res => console.log(res))
-          .catch(error => console.log(error));
-
-        this.setState({
-          category: '',
-          questions: {
-            1: {
-              id: '1',
-              sub_question: '',
-              sub_answer: '',
-              position: 1
-            },
+      this.setState({
+        category: '',
+        questions: {
+          1: {
+            id: '1',
+            sub_question: '',
+            sub_answer: '',
+            position: 1
           },
-          columns: {
-            'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
-          },
-          columnOrder: ['column-1'],
-        });
+        },
+        columns: {
+          'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
+        },
+        columnOrder: ['column-1'],
+      });
 
-      } else if (this.props.type === 'update') {
+    } else if (this.props.type === 'update') {
 
-        const dataObject = {
-          _id: this.props.id,
-          category: this.state.category,
-          questions: question_values,
-          status: false
-        };
+      const dataObject = {
+        _id: this.props.id,
+        category: this.state.category,
+        questions: questionValues,
+        status: false
+      };
 
-        if (this.state.topic !== '' && this.state.columns['column-1'].questionIds > 1){
-          dataObject['topic'] = this.state.topic 
-        };
-        console.log(dataObject);
+      // Add topic text to the dataObject if a value exists
+      if (this.state.topic !== '' && this.state.columns['column-1'].questionIds > 1){
+        dataObject['topic'] = this.state.topic;
+      };
+      console.log(dataObject);
 
-        axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
-          .then(res => console.log(res))
-          // .then(this.handleClick())
-          .catch(error => console.log(error));
-      }
-
-    // Output an error if one or more of the input field are blank
-  } else {
-      console.log('One or more of the input fields are blank.')
+      axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
     }
   };
 
   render() {
     const { classes } = this.props;
 
-    // const isEnabled = this.state.columns['column-1'].questionIds.length === 1 ||
-    //   (this.state.columns['column-1'].questionIds.length > 1 && this.state.topic !== '');
-    // console.log(isEnabled);
-
     const topic = (
       <TextField
       id='topic'
       name='topic'
+      type='text'
       label='Topic'
       className={classes.topic}
       value={this.state.topic}
@@ -344,10 +318,11 @@ class CreateOrUpdateQuestion extends Component {
 
     return (
       <>
-        <form onSubmit={() => {}}>
+        <form onSubmit={this.onSubmit}>
           <CategoryDropdown
             category={this.state.category}
-            onCategoryChange={this.handleCategoryChange}
+            handleCategoryChange={this.handleCategoryChange}
+            required={true}
           />
 
           { /* Dislay topic input field if there is more than one sub question */ }
@@ -374,8 +349,7 @@ class CreateOrUpdateQuestion extends Component {
             </Fab>
           </Tooltip>
           <Button
-            onClick={this.onSubmit} variant='contained' color='primary' style={{marginTop: 25}}
-            // disabled={!isEnabled}
+            variant='contained' color='primary' style={{marginTop: 25}} type='submit'
           >
             {this.props.buttonText} Question
           </Button>
