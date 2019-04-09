@@ -102,8 +102,22 @@ class Test extends Component {
     });
   };
 
+  goTo(route) {
+    this.props.history.replace(`/${route}`)
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
+
   renderHeader = () => {
     const { classes } = this.props;
+    const { isAuthenticated } = this.props.auth;
+
     if(this.state.testCategory === undefined || this.state.testCategory === '') {
       return (
         <div className={classes.header}>
@@ -113,15 +127,14 @@ class Test extends Component {
             direction='row'
             justify='center'
             alignItems='flex-start'
-            spacing='40'
+            spacing={40}
           >
             {this.state.allCategories.map(category => (
 
-                <Grid item lg={3}>
+                <Grid item lg={3} key={category}>
                   <Paper
                     className={classes.categoryPaper}
                     onClick={() => this.setCategory(category)}
-                    key={category}
                     name={category}
                   >
                     {category}
@@ -129,6 +142,38 @@ class Test extends Component {
                 </Grid>
             ))}
           </Grid>
+
+          <Button
+            onClick={this.goTo.bind(this, '')}
+          >
+            Home
+          </Button>
+
+                <Button
+                  onClick={this.login.bind(this)}
+                >
+                  Log In
+                </Button>
+
+
+                <Button
+                  onClick={this.logout.bind(this)}
+                >
+                  Log Out
+                </Button>
+
+                {
+                  !isAuthenticated() && (
+                    <p>NOT Authenticated</p>
+                  )
+                }
+
+                {
+                  isAuthenticated() && (
+                    <p>IS Authenticated</p>
+                  )
+                }
+
         </div>
       );
     } else {

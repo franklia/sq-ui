@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import CreateOrUpdateQuestion from './CreateOrUpdateQuestion';
-import { Snackbar, IconButton } from '@material-ui/core';
+import { Snackbar, IconButton, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import Auth from './helpers/Auth.js';
 
 class CreateQuestion extends Component {
 
@@ -25,9 +26,15 @@ class CreateQuestion extends Component {
       });
   }
 
+  handleLogin = () => {
+    const auth = new Auth();
+    auth.login();
+  }
+
   render(){
     return (
       <div style={{marginTop: 10}}>
+      <Button onClick={this.handleLogin} variant='contained' color='primary' style={{marginTop: 25}} >Login</Button>
         <h4>Add a question</h4>
         <CreateOrUpdateQuestion type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
         <Snackbar

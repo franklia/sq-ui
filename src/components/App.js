@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-// import { blue, blueGrey, teal } from '@material-ui/core/colors';
 import './css/Styles.css';
 
+import Home from './pages/Home';
 import Test from './Test';
 import CreateQuestion from './CreateQuestion';
 import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './NavMenu';
 import EditQuestion from './EditQuestion';
+
+import Callback from './helpers/Callback';
+import Auth from './helpers/Auth';
+import history from './helpers/history';
 
 const theme = createMuiTheme({
   palette: {
@@ -49,6 +53,14 @@ const styles = theme => ({
   },
 });
 
+const auth = new Auth();
+
+const handleAuthentication = ({location}) => {
+  if (/access_token|id_token|error/.test(location.hash)) {
+    auth.handleAuthentication();
+  }
+}
+
 class App extends Component {
 
   render() {
@@ -57,16 +69,22 @@ class App extends Component {
       <React.Fragment>
         <MuiThemeProvider theme={theme}>
         <CssBaseline />
-          <Router>
+          <Router history={history} component={Home}>
             <div className={classes.bodyBackground}>
-              <NavMenu />
+              <NavMenu auth={auth} />
               <div className='page-content-wrapper'>
                 <Switch>
-                    <Route exact path='/' component={ Test } />
-                    <Route exact path='/question/create' component={ CreateQuestion } />
-                    <Route exact path='/questions/index' component={ ViewQuestions } />
-                    <Route exact path='/question/:id' component={ EditQuestion } />
-                    <Route component={ Notfound } />
+                  <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
+                  <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />
+                  <Route exact path='/question/create' component={ CreateQuestion } />
+                  <Route exact path='/questions/index' component={ ViewQuestions } />
+                  <Route exact path='/question/:id' component={ EditQuestion } />
+                  <Route exact path="/callback" render={(props) => {
+                    handleAuthentication(props);
+                    console.log(props);
+                    return <Callback {...props} />
+                  }}/>
+                  <Route component={ Notfound } />
                 </Switch>
               </div>
             </div>
