@@ -79,7 +79,7 @@ class App extends Component {
                   <Route exact path='/question/create' component={ CreateQuestion } />
                   <Route exact path='/questions/index' component={ ViewQuestions } />
                   <Route exact path='/question/:id' component={ EditQuestion } />
-                  <Route exact path="/callback" render={(props) => {
+                  <Route exact path='/callback' render={(props) => {
                     handleAuthentication(props);
                     console.log(props);
                     return <Callback {...props} />

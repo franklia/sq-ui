@@ -54,8 +54,28 @@ class Test extends Component {
   }
 
   componentDidMount() {
+
     this.getCategories();
+
+    const { auth } = this.props;
+
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      auth.renewSession();
+    }
+
+    console.log('keys');
+    console.log(Object.keys(auth)) // returns 8 keys
+
+    setTimeout(function(){
+      console.log(auth.accessToken);
+      console.log(Object.keys(auth)); // returns 11 keys
+    }, 1000);
   }
+
+  // componentDidMount() {
+  //   this.getCategories();
+  // }
+
 
   getCategories = () => {
     axios.get('http://localhost:3001/api/questions/index/category')
@@ -102,9 +122,9 @@ class Test extends Component {
     });
   };
 
-  goTo(route) {
-    this.props.history.replace(`/${route}`)
-  }
+  // goTo(route) {
+  //   this.props.history.replace(`/${route}`)
+  // }
 
   login() {
     this.props.auth.login();
@@ -116,7 +136,6 @@ class Test extends Component {
 
   renderHeader = () => {
     const { classes } = this.props;
-    const { isAuthenticated } = this.props.auth;
 
     if(this.state.testCategory === undefined || this.state.testCategory === '') {
       return (
@@ -142,38 +161,6 @@ class Test extends Component {
                 </Grid>
             ))}
           </Grid>
-
-          <Button
-            onClick={this.goTo.bind(this, '')}
-          >
-            Home
-          </Button>
-
-                <Button
-                  onClick={this.login.bind(this)}
-                >
-                  Log In
-                </Button>
-
-
-                <Button
-                  onClick={this.logout.bind(this)}
-                >
-                  Log Out
-                </Button>
-
-                {
-                  !isAuthenticated() && (
-                    <p>NOT Authenticated</p>
-                  )
-                }
-
-                {
-                  isAuthenticated() && (
-                    <p>IS Authenticated</p>
-                  )
-                }
-
         </div>
       );
     } else {
@@ -271,6 +258,7 @@ class Test extends Component {
   };
 
   render() {
+
     const { classes } = this.props;
 
     return (

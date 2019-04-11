@@ -12,7 +12,7 @@ export default class Auth {
     redirectUri: 'http://localhost:3000/callback',
     responseType: 'token id_token',
     audience: 'http://localhost:3001/api/',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor() {
@@ -63,16 +63,66 @@ export default class Auth {
     history.replace('/test');
   }
 
-  renewSession() {
+  // renewSession() {
+  //   this.auth0.checkSession({}, (err, authResult) => {
+  //      if (authResult && authResult.accessToken && authResult.idToken) {
+  //        // Originally the line below was recommended but I removed it and added the code below
+  //        // this.setSession(authResult);
+  //
+  //        // Set isLoggedIn flag in localStorage
+  //        localStorage.setItem('isLoggedIn', 'true');
+  //
+  //        // Set the time that the access token will expire at
+  //        let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+  //        this.accessToken = authResult.accessToken;
+  //        this.idToken = authResult.idToken;
+  //        this.expiresAt = expiresAt;
+  //
+  //        // console.log(this.accessToken);
+  //        history.replace(window.location.pathname);
+  //
+  //      } else if (err) {
+  //        this.logout();
+  //        console.log(err);
+  //        alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+  //      }
+  //   });
+  // }
+
+  renewSession(callback) {
     this.auth0.checkSession({}, (err, authResult) => {
        if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
+         // Originally the line below was recommended but I removed it and added the code below
+         // this.setSession(authResult);
+
+         // Set isLoggedIn flag in localStorage
+         localStorage.setItem('isLoggedIn', 'true');
+
+         // Set the time that the access token will expire at
+         let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+         this.accessToken = authResult.accessToken;
+         this.idToken = authResult.idToken;
+         this.expiresAt = expiresAt;
+
+         // console.log(this.accessToken);
+         history.replace(window.location.pathname);
+         this.getProfile((err, profile) => {console.log(profile);})
+
        } else if (err) {
          this.logout();
          console.log(err);
          alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
        }
+
     });
+    // console.log('log');
+    // let auth = this.accessToken;
+    //
+    // setTimeout(function(){
+    //   console.log(auth);
+    //   console.log(Object.keys(auth)); // returns 11 keys
+    // }, 1000);
+    // callback(this.accessToken);
   }
 
   logout() {
@@ -97,5 +147,15 @@ export default class Auth {
     // access token's expiry time
     let expiresAt = this.expiresAt;
     return new Date().getTime() < expiresAt;
+  }
+
+  getProfile(callback) {
+
+    this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+      if (profile) {
+        this.userProfile = profile;
+      }
+      callback(err, profile);
+    });
   }
 }

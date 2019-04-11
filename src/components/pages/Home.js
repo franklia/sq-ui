@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 
 class Home extends Component {
-  goTo(route) {
-    this.props.history.replace(`/${route}`)
-  }
 
   login() {
     this.props.auth.login();
@@ -14,31 +11,15 @@ class Home extends Component {
     this.props.auth.logout();
   }
 
-  componentDidMount() {
-    const { renewSession } = this.props.auth;
-
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-      renewSession();
-    }
-  }
-
   render() {
     const { isAuthenticated } = this.props.auth;
+    // const auth = this.props;
+    // console.log('auth.accessToken');
+    // console.log(auth.auth.accessToken);
+    // console.log(auth);
 
     return (
       <div>
-      <Button
-        onClick={this.login.bind(this)}
-      >
-        Log In
-      </Button>
-
-
-      <Button
-        onClick={this.logout.bind(this)}
-      >
-        Log Out
-      </Button>
 
       {
         !isAuthenticated() && (
