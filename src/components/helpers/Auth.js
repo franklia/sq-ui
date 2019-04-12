@@ -5,13 +5,14 @@ export default class Auth {
   accessToken;
   idToken;
   expiresAt;
+  userProfile;
 
   auth0 = new auth0.WebAuth({
-    domain: 'lobo.au.auth0.com',
-    clientID: 'cUpYkQ7nEcptcWHoouNc5gTj3A3XJaGZ',
-    redirectUri: 'http://localhost:3000/callback',
+    domain: process.env.REACT_APP_AUTH0_DOMAIN,
+    clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_REDIRECT_URL,
     responseType: 'token id_token',
-    audience: 'http://localhost:3001/api/',
+    audience: process.env.REACT_APP_AUDIENCE,
     scope: 'openid profile'
   });
 
@@ -23,6 +24,7 @@ export default class Auth {
     this.getAccessToken = this.getAccessToken.bind(this);
     this.getIdToken = this.getIdToken.bind(this);
     this.renewSession = this.renewSession.bind(this);
+    this.getProfile = this.getProfile.bind(this);
   }
 
   login() {
@@ -92,8 +94,6 @@ export default class Auth {
   renewSession(callback) {
     this.auth0.checkSession({}, (err, authResult) => {
        if (authResult && authResult.accessToken && authResult.idToken) {
-         // Originally the line below was recommended but I removed it and added the code below
-         // this.setSession(authResult);
 
          // Set isLoggedIn flag in localStorage
          localStorage.setItem('isLoggedIn', 'true');
@@ -104,25 +104,16 @@ export default class Auth {
          this.idToken = authResult.idToken;
          this.expiresAt = expiresAt;
 
-         // console.log(this.accessToken);
          history.replace(window.location.pathname);
-         this.getProfile((err, profile) => {console.log(profile);})
+
+         callback(this.accessToken);
 
        } else if (err) {
          this.logout();
          console.log(err);
          alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
        }
-
     });
-    // console.log('log');
-    // let auth = this.accessToken;
-    //
-    // setTimeout(function(){
-    //   console.log(auth);
-    //   console.log(Object.keys(auth)); // returns 11 keys
-    // }, 1000);
-    // callback(this.accessToken);
   }
 
   logout() {
@@ -150,12 +141,14 @@ export default class Auth {
   }
 
   getProfile(callback) {
+  // getProfile() {
 
     this.auth0.client.userInfo(this.accessToken, (err, profile) => {
       if (profile) {
         this.userProfile = profile;
       }
-      callback(err, profile);
+      // console.log(this.userProfile.sub);
+      callback(profile);
     });
   }
 }

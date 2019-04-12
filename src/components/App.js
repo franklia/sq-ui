@@ -77,7 +77,8 @@ class App extends Component {
                   <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                   <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />
                   <Route exact path='/question/create' component={ CreateQuestion } />
-                  <Route exact path='/questions/index' component={ ViewQuestions } />
+                  <Route exact path='/questions/index' render={(props) => <ViewQuestions auth={auth} {...props} />} />
+                  // <Route exact path='/questions/index' component={ ViewQuestions } />
                   <Route exact path='/question/:id' component={ EditQuestion } />
                   <Route exact path='/callback' render={(props) => {
                     handleAuthentication(props);

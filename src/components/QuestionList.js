@@ -50,12 +50,30 @@ class QuestionList extends React.Component {
   }
 
   componentDidMount() {
-    this.getData();
+
+    const { auth } = this.props;
+
+    if (auth.userProfile) {
+      this.getQuestions(auth.userProfile.sub);
+      auth.renewSession(() => {});
+      // The else if below renews user data if the page is refreshed
+    } else if (localStorage.getItem('isLoggedIn') === 'true') {
+      auth.renewSession((profile) => {
+        auth.getProfile((profile) => {
+          if (profile) {
+            this.setState({ userId: profile.sub },
+              () => this.getQuestions(profile.sub)
+            )
+          }
+        })
+      });
+    }
   }
 
-  getData = () => {
-    axios.get('http://localhost:3001/api/questions/index')
+  getQuestions = (userId) => {
+    axios.get('http://localhost:3001/api/questions/index', { params: { userId: userId } })
       .then((res) => {
+        console.log('response');
         console.log(res);
         this.setState({questionsData: res.data});
       }
@@ -79,7 +97,7 @@ class QuestionList extends React.Component {
     axios.delete(`http://localhost:3001/api/question/delete/${this.state.deleteId}`)
       .then(() => {
         this.setState({dialogOpen: false});
-        this.getData();
+        this.getQuestions();
       })
       .catch(error => console.log(error))
   };

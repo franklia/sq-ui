@@ -7,7 +7,7 @@ export default class ViewQuestions extends Component {
     return (
       <div>
         <Typography component='h4' variant='h4' color='secondary'>All questions</Typography>
-        <QuestionList />
+        <QuestionList auth={this.props.auth}/>
       </div>
     )
   }

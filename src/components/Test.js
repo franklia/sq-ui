@@ -47,40 +47,43 @@ class Test extends Component {
     this.state = {
       subQuestionsAsked: [],
       subQuestionsToAsk: [],
-      allCategories: [],
+      adminCategories: [],
+      userCategories: [],
       testCategory: '',
+      userId: '',
       questionAskedExpanded: false
     }
   }
 
   componentDidMount() {
 
-    this.getCategories();
-
     const { auth } = this.props;
 
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-      auth.renewSession();
+    if (auth.userProfile) {
+      this.getCategories(auth.userProfile.sub);
+      auth.renewSession(() => {});
+      // The else if below renews user data if the page is refreshed
+    } else if (localStorage.getItem('isLoggedIn') === 'true') {
+      auth.renewSession((profile) => {
+        auth.getProfile((profile) => {
+          if (profile) {
+            this.setState({ userId: profile.sub },
+              () => this.getCategories(profile.sub)
+            )
+          }
+        })
+      });
     }
-
-    console.log('keys');
-    console.log(Object.keys(auth)) // returns 8 keys
-
-    setTimeout(function(){
-      console.log(auth.accessToken);
-      console.log(Object.keys(auth)); // returns 11 keys
-    }, 1000);
   }
 
-  // componentDidMount() {
-  //   this.getCategories();
-  // }
-
-
-  getCategories = () => {
-    axios.get('http://localhost:3001/api/questions/index/category')
+  getCategories = (userId) => {
+    axios.get('http://localhost:3001/api/questions/index/category?', { params: { userId: userId } })
       .then((res) => {
-        this.setState({allCategories: res.data});
+        // console.log(res);
+        this.setState({
+          adminCategories: res.data.adminCategories,
+          userCategories: res.data.userCategories
+        });
       }
     )
       .catch(error => console.log(error))
@@ -148,7 +151,7 @@ class Test extends Component {
             alignItems='flex-start'
             spacing={40}
           >
-            {this.state.allCategories.map(category => (
+            {this.state.adminCategories.map(category => (
 
                 <Grid item lg={3} key={category}>
                   <Paper
