@@ -25,6 +25,7 @@ class CreateOrUpdateQuestion extends Component {
     this.state = {
       category: '',
       topic: '',
+      userId: '',
       questions: {
         1: {
           id: 1,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js'
 // import { CSSTransitionGroup } from 'react-transition-group'
 import { Button, Card, CardHeader, CardContent, CardActions, Collapse, Grid, Paper } from '@material-ui/core';
 import TouchApp from '@material-ui/icons/TouchApp';
@@ -59,21 +60,30 @@ class Test extends Component {
 
     const { auth } = this.props;
 
-    if (auth.userProfile) {
-      this.getCategories(auth.userProfile.sub);
-      auth.renewSession(() => {});
-      // The else if below renews user data if the page is refreshed
-    } else if (localStorage.getItem('isLoggedIn') === 'true') {
-      auth.renewSession((profile) => {
-        auth.getProfile((profile) => {
-          if (profile) {
-            this.setState({ userId: profile.sub },
-              () => this.getCategories(profile.sub)
-            )
-          }
-        })
-      });
-    }
+    ConfirmUserCredentials(auth, this.setUserId, this.getCategories);
+
+    // if (auth.userProfile) {
+    //   console.log('first if statement');
+    //   this.setState({ userId: auth.userProfile.sub });
+    //   this.getCategories(auth.userProfile.sub);
+    //   auth.renewSession(() => {});
+    //   // This renews user data and updates state if the page is refreshed
+    // } else if (localStorage.getItem('isLoggedIn') === 'true') {
+    //   console.log('second if statement');
+    //   auth.renewSession((profile) => {
+    //     auth.getProfile((profile) => {
+    //       if (profile) {
+    //         this.setState({ userId: profile.sub },
+    //           () => this.getCategories(profile.sub)
+    //         )
+    //       }
+    //     })
+    //   });
+    // }
+  }
+
+  setUserId = id => {
+    this.setState({ userId: id })
   }
 
   getCategories = (userId) => {
@@ -200,8 +210,8 @@ class Test extends Component {
       const nextSubQuestion = [this.state.subQuestionsToAsk[0]];
       const updateSubQuestionsAsked = nextSubQuestion.concat(this.state.subQuestionsAsked);
       const updateSubQuestionsToAsk = this.state.subQuestionsToAsk.splice(1);
-      console.log('updateSubQuestionsAsked');
-      console.log(updateSubQuestionsAsked);
+      // console.log('updateSubQuestionsAsked');
+      // console.log(updateSubQuestionsAsked);
       this.setState({
         questionAskedExpanded: !this.state.questionAskedExpanded,
         subQuestionsAsked: updateSubQuestionsAsked,
