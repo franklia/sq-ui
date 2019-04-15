@@ -34,8 +34,9 @@ class CategoryDropdown extends React.Component {
           className={classes.selectEmpty}
         >
           <option value='' disabled>Choose a Category</option>
-          <option value='javascript'>Javascript</option>
-          <option value='react'>React</option>
+          {this.props.userCategories.map(category =>
+            <option key={category._id} id={category._id} value={category._id}>{category.name}</option>
+          )}
         </Select>
       </FormControl>
     );

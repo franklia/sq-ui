@@ -1,5 +1,10 @@
-import history from './history';
+// import History from './History';
 import auth0 from 'auth0-js';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory({
+  forceRefresh: false
+});
 
 export default class Auth {
   accessToken;

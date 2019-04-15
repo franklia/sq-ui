@@ -29,7 +29,7 @@ class EditQuestion extends Component {
     return (
       <div style={{marginTop: 10}}>
         <Typography component="h4" variant='h4' color='secondary'>Edit question</Typography>
-        <CreateOrUpdateQuestion type='update' buttonText='Update' id={this.props.match.params.id} postUrl='http://localhost:3001/api/question/:id'/>
+        <CreateOrUpdateQuestion auth={this.props.auth} type='update' buttonText='Update' id={this.props.match.params.id} postUrl='http://localhost:3001/api/question/:id'/>
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js'
+import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 // import { CSSTransitionGroup } from 'react-transition-group'
 import { Button, Card, CardHeader, CardContent, CardActions, Collapse, Grid, Paper } from '@material-ui/core';
 import TouchApp from '@material-ui/icons/TouchApp';
@@ -50,58 +50,38 @@ class Test extends Component {
       subQuestionsToAsk: [],
       adminCategories: [],
       userCategories: [],
-      testCategory: '',
-      userId: '',
+      testCategoryId: '',
+      testCategoryName: '',
+      auth0_id: '',
       questionAskedExpanded: false
     }
   }
 
-  componentDidMount() {
-
+  componentDidMount = () => {
     const { auth } = this.props;
-
-    ConfirmUserCredentials(auth, this.setUserId, this.getCategories);
-
-    // if (auth.userProfile) {
-    //   console.log('first if statement');
-    //   this.setState({ userId: auth.userProfile.sub });
-    //   this.getCategories(auth.userProfile.sub);
-    //   auth.renewSession(() => {});
-    //   // This renews user data and updates state if the page is refreshed
-    // } else if (localStorage.getItem('isLoggedIn') === 'true') {
-    //   console.log('second if statement');
-    //   auth.renewSession((profile) => {
-    //     auth.getProfile((profile) => {
-    //       if (profile) {
-    //         this.setState({ userId: profile.sub },
-    //           () => this.getCategories(profile.sub)
-    //         )
-    //       }
-    //     })
-    //   });
-    // }
+    ConfirmUserCredentials(auth, this.setAuth0Id, this.getCategories);
   }
 
-  setUserId = id => {
-    this.setState({ userId: id })
+  setAuth0Id = id => {
+    this.setState({ auth0_id: id })
   }
 
   getCategories = (userId) => {
     axios.get('http://localhost:3001/api/questions/index/category?', { params: { userId: userId } })
       .then((res) => {
-        // console.log(res);
+        // console.log(res.data.adminCategories);
         this.setState({
           adminCategories: res.data.adminCategories,
-          userCategories: res.data.userCategories
-        });
-      }
-    )
+          userCategories: res.data.userCategories,
+        }, () => console.log(this.state))
+
+      })
       .catch(error => console.log(error))
-  };
+  }
 
   getQuestion = () => {
-    const { testCategory } = this.state;
-    axios.get(`http://localhost:3001/api/question/test/${testCategory}`)
+    const { testCategoryId } = this.state;
+    axios.get(`http://localhost:3001/api/question/test/${testCategoryId}`)
       .then((res) => {
         const firstQuestion = res.data.questions[0];
         const subsequentQuestions = res.data.questions.slice(1);
@@ -115,8 +95,13 @@ class Test extends Component {
       .catch(error => console.log(error))
   };
 
-  setCategory = category => {
-    this.setState({ testCategory: category }, () => {
+  setCategory = event => {
+    this.setState({
+      testCategoryId: event.target.getAttribute('categoryid'),
+      testCategoryName: event.target.getAttribute('categoryname')
+    }, () => {
+      console.log('State');
+      console.log(this.state);
       this.getQuestion();
     });
   };
@@ -150,7 +135,7 @@ class Test extends Component {
   renderHeader = () => {
     const { classes } = this.props;
 
-    if(this.state.testCategory === undefined || this.state.testCategory === '') {
+    if(this.state.testCategoryId === undefined || this.state.testCategoryId === '') {
       return (
         <div className={classes.header}>
           <h1>Choose a category to test</h1>
@@ -163,13 +148,14 @@ class Test extends Component {
           >
             {this.state.adminCategories.map(category => (
 
-                <Grid item lg={3} key={category}>
+                <Grid item lg={3} key={category._id}>
                   <Paper
                     className={classes.categoryPaper}
-                    onClick={() => this.setCategory(category)}
-                    name={category}
+                    onClick={this.setCategory}
+                    categoryid={category._id}
+                    categoryname={category.name}
                   >
-                    {category}
+                    {category.name}
                   </Paper>
                 </Grid>
             ))}
@@ -179,7 +165,7 @@ class Test extends Component {
     } else {
       return (
         <div className={classes.header}>
-          <h1>You're currently testing <span className={classes.capitalize}>{this.state.testCategory}</span></h1>
+          <h1>You're currently testing <span className={classes.capitalize}>{this.state.testCategoryName}</span></h1>
           <span style={{cursor: 'pointer', color: 'blue'}} onClick={this.resetCategory}>(change category)</span>
         </div>
       );
@@ -210,13 +196,11 @@ class Test extends Component {
       const nextSubQuestion = [this.state.subQuestionsToAsk[0]];
       const updateSubQuestionsAsked = nextSubQuestion.concat(this.state.subQuestionsAsked);
       const updateSubQuestionsToAsk = this.state.subQuestionsToAsk.splice(1);
-      // console.log('updateSubQuestionsAsked');
-      // console.log(updateSubQuestionsAsked);
       this.setState({
         questionAskedExpanded: !this.state.questionAskedExpanded,
         subQuestionsAsked: updateSubQuestionsAsked,
         subQuestionsToAsk: updateSubQuestionsToAsk,
-      }, () => console.log(this.state));
+      });
     }
   }
 
@@ -230,7 +214,6 @@ class Test extends Component {
         <p>Click card to reveal answer</p>
       </>
     );
-    console.log(this.state);
 
     if(this.state.subQuestionsAsked === undefined || this.state.subQuestionsAsked.length === 0) {
       return null;

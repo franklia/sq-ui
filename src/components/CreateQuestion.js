@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import CreateOrUpdateQuestion from './CreateOrUpdateQuestion';
-import { Snackbar, IconButton, Button } from '@material-ui/core';
+import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import Auth from './helpers/Auth.js';
 
 class CreateQuestion extends Component {
 
@@ -30,7 +29,7 @@ class CreateQuestion extends Component {
     return (
       <div style={{marginTop: 10}}>
         <h4>Add a question</h4>
-        <CreateOrUpdateQuestion type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
+        <CreateOrUpdateQuestion auth={this.props.auth} type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',

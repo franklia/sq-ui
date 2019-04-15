@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import Auth from './helpers/Auth';
-// import history from './helpers/history';
 import Button from '@material-ui/core/Button';
 import SchoolIcon from '@material-ui/icons/School';
 
@@ -58,19 +56,19 @@ class NavMenu extends Component {
 
   render() {
 
-    const { classes, auth } = this.props;
+    const { classes } = this.props;
 
     return (
         <div className={classes.navBar}>
           <SchoolIcon color='primary' className={classes.schoolIcon}/>
           <h1 className={classes.logo}>Spot Quiz</h1>
-              <Link to={{ pathname: '/', authResult: auth.authResult }} className={classes.navLinks}>Home</Link>
-              <Link to={{ pathname: '/test', authResult: auth.authResult }} className={classes.navLinks}>Test</Link>
+              <Link to='/' className={classes.navLinks}>Home</Link>
+              <Link to='/test' className={classes.navLinks}>Test</Link>
               {
                 localStorage.isLoggedIn && (
                   <>
-                    <Link to={{ pathname: '/question/create', authResult: auth.authResult }} className={classes.navLinks}>Add Question</Link>
-                    <Link to={{ pathname: '/questions/index', authResult: auth.authResult }} className={classes.navLinks}>View All</Link>
+                    <Link to='/question/create' className={classes.navLinks}>Add Question</Link>
+                    <Link to='/questions/index' className={classes.navLinks}>View All</Link>
                     <Button onClick={this.logout} variant='contained' color="primary" className={classes.button}>Logout</Button>
                   </>
                 )

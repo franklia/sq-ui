@@ -15,7 +15,12 @@ import EditQuestion from './EditQuestion';
 
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
-import history from './helpers/history';
+// import History from './helpers/History';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory({
+  forceRefresh: true
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -76,10 +81,9 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                   <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />
-                  <Route exact path='/question/create' component={ CreateQuestion } />
+                  <Route exact path='/question/create' render={(props) => <CreateQuestion auth={auth} {...props} />} />
                   <Route exact path='/questions/index' render={(props) => <ViewQuestions auth={auth} {...props} />} />
-                  // <Route exact path='/questions/index' component={ ViewQuestions } />
-                  <Route exact path='/question/:id' component={ EditQuestion } />
+                  <Route exact path='/question/:id' render={(props) => <EditQuestion auth={auth} {...props} />} />
                   <Route exact path='/callback' render={(props) => {
                     handleAuthentication(props);
                     console.log(props);

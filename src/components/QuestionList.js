@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   TableRow,
   Paper,
@@ -38,67 +40,49 @@ class QuestionList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.deleteQuestion = this.deleteQuestion.bind(this);
-    this.handleClickOpen = this.handleClickOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-
     this.state = {
       questionsData: [],
+      auth0_id: '',
       deleteId: '',
       dialogOpen: false,
     };
   }
 
-  componentDidMount() {
-
+  componentDidMount = () => {
     const { auth } = this.props;
+    ConfirmUserCredentials(auth, this.setAuth0Id, this.getQuestions);
+  }
 
-    if (auth.userProfile) {
-      this.getQuestions(auth.userProfile.sub);
-      auth.renewSession(() => {});
-      // The else if below renews user data if the page is refreshed
-    } else if (localStorage.getItem('isLoggedIn') === 'true') {
-      auth.renewSession((profile) => {
-        auth.getProfile((profile) => {
-          if (profile) {
-            this.setState({ userId: profile.sub },
-              () => this.getQuestions(profile.sub)
-            )
-          }
-        })
-      });
-    }
+  setAuth0Id = id => {
+    this.setState({ auth0_id: id })
   }
 
   getQuestions = (userId) => {
     axios.get('http://localhost:3001/api/questions/index', { params: { userId: userId } })
       .then((res) => {
-        console.log('response');
-        console.log(res);
         this.setState({questionsData: res.data});
       }
     )
       .catch(error => console.log(error))
   };
 
-  handleClickOpen = (id) => {
+  openDeleteModal = (id) => {
     this.setState({
       dialogOpen: true,
       deleteId: id
     });
   };
 
-  handleClose = () => {
+  closeModal = () => {
     this.setState({ dialogOpen: false });
   };
 
   deleteQuestion = () => {
-    console.log(this.state.deleteId);
+    this.setState({dialogOpen: false});
     axios.delete(`http://localhost:3001/api/question/delete/${this.state.deleteId}`)
       .then(() => {
-        this.setState({dialogOpen: false});
-        this.getQuestions();
-      })
+          this.getQuestions(this.state.auth0_id);
+        })
       .catch(error => console.log(error))
   };
 
@@ -137,7 +121,7 @@ class QuestionList extends React.Component {
                 </TableCell>
                 <TableCell>{question.status.toString()}</TableCell>
                 <TableCell className='link'>
-                  <Link href={`/question/${question._id}`}>
+                  <Link component={RouterLink} to={`/question/${question._id}`} >
                     <IconButton>
                       <EditIcon />
                     </IconButton>
@@ -146,7 +130,7 @@ class QuestionList extends React.Component {
                 <TableCell className='link'>
                   <IconButton>
                     <DeleteForeverIcon
-                      onClick={() => this.handleClickOpen(question._id)}
+                      onClick={() => this.openDeleteModal(question._id)}
                     />
                   </IconButton>
                 </TableCell>
@@ -156,7 +140,7 @@ class QuestionList extends React.Component {
         </Table>
         <Dialog
           open={this.state.dialogOpen}
-          onClose={this.handleClose}
+          onClose={this.closeModal}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -167,7 +151,7 @@ class QuestionList extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={this.closeModal} color="primary">
               No
             </Button>
             <Button onClick={this.deleteQuestion} color="primary" autoFocus>

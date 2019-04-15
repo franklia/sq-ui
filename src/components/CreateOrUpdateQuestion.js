@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
 import { Tooltip, Fab, Button, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory({
+  forceRefresh: true
+});
 
 const styles = theme => ({
   fab: {
@@ -20,12 +26,13 @@ class CreateOrUpdateQuestion extends Component {
   constructor(props){
     super(props);
 
-    // The state.columns and state.columnOrder are used by the react-beautiful-dnd package to order the sub questions. The actual order on the page is stored in this.state.columns['column-1'].questionIds. There is only one column displayed on the page currently but it is set up to accommodate more than one in future if required.
+    // The "columns" and "columnOrder" are used by the react-beautiful-dnd package to order the sub questions. The actual order on the page is stored in this.state.columns['column-1'].questionIds. There is only one column displayed on the page currently but it is set up to accommodate more than one in future if required.
 
     this.state = {
       category: '',
+      userCategories: [],
       topic: '',
-      userId: '',
+      auth0_id: '',
       questions: {
         1: {
           id: 1,
@@ -44,9 +51,25 @@ class CreateOrUpdateQuestion extends Component {
 
     componentDidMount() {
       if (this.props.type === 'update') {
-        this.getQuestion();
+        ConfirmUserCredentials(this.props.auth, this.setUserData, this.getQuestion);
+      } else {
+        ConfirmUserCredentials(this.props.auth, this.setUserData, () => {});
       }
     };
+
+    setUserData = id => {
+      axios.get('http://localhost:3001/api/user/categories?', { params: { auth0Id: id } })
+        .then((res) => {
+          console.log('category data');
+          console.log(res.data[0].categories);
+          this.setState({
+            ...this.state,
+            auth0_id: id,
+            userCategories: res.data[0].categories,
+          })
+        })
+        .catch(error => console.log(error))
+    }
 
     getQuestion = () => {
       axios.get('http://localhost:3001/api/question/' + this.props.id)
@@ -101,9 +124,9 @@ class CreateOrUpdateQuestion extends Component {
     };
 
   handleCategoryChange = event => {
-    const category = event.target.value
+    const categoryId = event.target.value;
     this.setState({
-      category: category
+      category: categoryId
     });
   };
 
@@ -247,6 +270,7 @@ class CreateOrUpdateQuestion extends Component {
     if (this.props.type === 'create') {
 
       const dataObject = {
+        auth0_id: this.state.auth0_id,
         category: this.state.category,
         questions: questionValues,
         status: false,
@@ -279,6 +303,7 @@ class CreateOrUpdateQuestion extends Component {
 
       const dataObject = {
         _id: this.props.id,
+        auth0_id: this.state.auth0_id,
         category: this.state.category,
         questions: questionValues,
         status: false
@@ -292,6 +317,7 @@ class CreateOrUpdateQuestion extends Component {
 
       axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
         .then(res => console.log(res))
+        .then(history.replace('/questions/index'))
         .catch(error => console.log(error));
     }
   };
@@ -322,8 +348,10 @@ class CreateOrUpdateQuestion extends Component {
         <form onSubmit={this.onSubmit}>
           <CategoryDropdown
             category={this.state.category}
+            userCategories={this.state.userCategories}
             handleCategoryChange={this.handleCategoryChange}
             required={true}
+            auth0Id={this.state.auth0_id}
           />
 
           { /* Dislay topic input field if there is more than one sub question */ }

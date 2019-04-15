@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-// import { Button } from '@material-ui/core';
+import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 
 class Home extends Component {
+
+  componentDidMount = () => {
+    const { auth } = this.props;
+    ConfirmUserCredentials(auth, this.setAuth0Id, () => {});
+  }
+
+  setAuth0Id = id => {
+    this.setState({ auth0_id: id })
+  }
 
   login() {
     this.props.auth.login();
