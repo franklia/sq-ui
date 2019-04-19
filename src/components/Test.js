@@ -100,8 +100,6 @@ class Test extends Component {
       testCategoryId: event.target.getAttribute('categoryid'),
       testCategoryName: event.target.getAttribute('categoryname')
     }, () => {
-      console.log('State');
-      console.log(this.state);
       this.getQuestion();
     });
   };
