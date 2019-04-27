@@ -12,6 +12,7 @@ import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './NavMenu';
 import EditQuestion from './EditQuestion';
+import Categories from './pages/Categories';
 
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
@@ -19,7 +20,7 @@ import Auth from './helpers/Auth';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory({
-  forceRefresh: true
+  forceRefresh: false
 });
 
 const theme = createMuiTheme({
@@ -86,9 +87,9 @@ class App extends Component {
                   <Route exact path='/question/:id' render={(props) => <EditQuestion auth={auth} {...props} />} />
                   <Route exact path='/callback' render={(props) => {
                     handleAuthentication(props);
-                    console.log(props);
                     return <Callback {...props} />
                   }}/>
+                  <Route exact path="/categories" render={(props) => <Categories auth={auth} {...props} />} />
                   <Route component={ Notfound } />
                 </Switch>
               </div>

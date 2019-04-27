@@ -1,4 +1,3 @@
-// import History from './History';
 import auth0 from 'auth0-js';
 import { createBrowserHistory } from 'history';
 
@@ -116,7 +115,7 @@ export default class Auth {
        } else if (err) {
          this.logout();
          console.log(err);
-         alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
+         alert(`This page was trying to renew its authentication token but has timed out. Please refresh the page.`);
        }
     });
   }

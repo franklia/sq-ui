@@ -3,10 +3,11 @@ import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { Tooltip, Fab, Button, TextField } from '@material-ui/core';
+import { Tooltip, Fab, Button, TextField, Modal } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
+import ManageCategories from './ui-elements/ManageCategories';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory({
@@ -31,8 +32,10 @@ class CreateOrUpdateQuestion extends Component {
     this.state = {
       category: '',
       userCategories: [],
+      receivedCategories: false,
+      open: false,
       topic: '',
-      auth0_id: '',
+      auth0Id: '',
       questions: {
         1: {
           id: 1,
@@ -45,11 +48,10 @@ class CreateOrUpdateQuestion extends Component {
         'column-1': { id: 'column-1', title: 'Questions', questionIds: [1] }
       },
       columnOrder: ['column-1'],
-      open: false
     }
   };
 
-    componentDidMount() {
+    componentDidMount = () => {
       if (this.props.type === 'update') {
         ConfirmUserCredentials(this.props.auth, this.setUserData, this.getQuestion);
       } else {
@@ -61,12 +63,21 @@ class CreateOrUpdateQuestion extends Component {
       axios.get('http://localhost:3001/api/user/categories?', { params: { auth0Id: id } })
         .then((res) => {
           console.log('categories data');
-          console.log(res.data[0].categories);
-          this.setState({
-            ...this.state,
-            auth0_id: id,
-            userCategories: res.data[0].categories,
-          })
+          console.log(res.data);
+          if (res.data.length < 1){
+            this.setState({
+              ...this.state,
+              auth0Id: id,
+              receivedCategories: true
+            })
+          } else {
+            this.setState({
+              ...this.state,
+              auth0Id: id,
+              userCategories: res.data[0].categories,
+              receivedCategories: true
+            })
+          }
         })
         .catch(error => console.log(error))
     }
@@ -272,7 +283,7 @@ class CreateOrUpdateQuestion extends Component {
     if (this.props.type === 'create') {
 
       const dataObject = {
-        auth0_id: this.state.auth0_id,
+        auth0_id: this.state.auth0Id,
         category: this.state.category,
         questions: questionValues,
         status: false,
@@ -305,7 +316,7 @@ class CreateOrUpdateQuestion extends Component {
 
       const dataObject = {
         _id: this.props.id,
-        auth0_id: this.state.auth0_id,
+        auth0_id: this.state.auth0Id,
         category: this.state.category,
         questions: questionValues,
         status: false
@@ -322,6 +333,14 @@ class CreateOrUpdateQuestion extends Component {
         .then(history.replace('/questions/index'))
         .catch(error => console.log(error));
     }
+  };
+
+  handleModalOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleModalClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -351,9 +370,11 @@ class CreateOrUpdateQuestion extends Component {
           <CategoryDropdown
             category={this.state.category}
             userCategories={this.state.userCategories}
+            receivedCategories={this.state.receivedCategories}
             handleCategoryChange={this.handleCategoryChange}
             required={true}
-            auth0Id={this.state.auth0_id}
+            handleModalOpen={this.handleModalOpen}
+            handleModalClose={this.handleModalClose}
           />
 
           { /* Dislay topic input field if there is more than one sub question */ }
@@ -385,6 +406,9 @@ class CreateOrUpdateQuestion extends Component {
             {this.props.buttonText} Question
           </Button>
         </form>
+        <Modal open={this.state.open}>
+          <ManageCategories userCategories={this.state.userCategories}/>
+        </Modal>
       </>
     );
   }

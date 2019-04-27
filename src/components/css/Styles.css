@@ -1,5 +1,9 @@
-.link {
+a, .link {
   cursor: pointer;
+}
+
+a:hover , .link:hover {
+  text-decoration: none !important;
 }
 
 .page-content-wrapper {
@@ -9,7 +13,7 @@
 /* Typography */
 
 p, div {
-  font-size: 20px;
+  font-size: 16px;
   color: #7d93b2;
   font-family: Nunito, sans-serif;
 }

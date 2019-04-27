@@ -3,8 +3,13 @@ import { withStyles } from '@material-ui/core/styles';
 import loading from './loading.svg';
 
 const styles = theme => ({
-  wrapper: {
+  loadingImg: {
     margin: 'auto',
+    display: 'block',
+    paddingTop: 60
+  },
+  loadingText: {
+    textAlign: 'center',
   },
 });
 
@@ -15,8 +20,8 @@ class Callback extends Component {
 
     return (
       <div className={classes.wrapper}>
-        <img src={loading} alt="loading"/>
-        <h4>Loading...</h4>
+        <img src={loading} className={classes.loadingImg} alt="loading"/>
+        <h4 className={classes.loadingText}>Loading...</h4>
       </div>
     );
   }
