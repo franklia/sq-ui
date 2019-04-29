@@ -7,7 +7,7 @@ import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import { Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import DialogCreateCategory from '../ui-elements/DialogCreateCategory';
+import ModalCreateCategory from '../ui-elements/ModalCreateCategory';
 
 const styles = theme => ({
   narrowCells: {
@@ -23,7 +23,7 @@ class Categories extends Component {
       auth0Id: '',
       receivedCategories: false,
       userCategories: [],
-      DialogCreateCategoryOpen: false,
+      CreateCategoryModalOpen: false,
     }
   }
 
@@ -35,8 +35,6 @@ class Categories extends Component {
   setUserData = id => {
     axios.get('http://localhost:3001/api/user/categories?', { params: { auth0Id: id } })
       .then((res) => {
-        console.log('categories data');
-        console.log(res.data);
         if (res.data.length < 1){
           this.setState({
             ...this.state,
@@ -55,15 +53,15 @@ class Categories extends Component {
       .catch(error => console.log(error))
   }
 
-  openCreateDialog = () => {
+  openCreateModal = () => {
     this.setState({
-      DialogCreateCategoryOpen: true,
+      CreateCategoryModalOpen: true,
     })
   }
 
-  closeCreateDialog = (name) => {
+  closeCreateModal = (name) => {
     this.setState({
-      DialogCreateCategoryOpen: false,
+      CreateCategoryModalOpen: false,
     })
   }
 
@@ -104,13 +102,14 @@ class Categories extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <Button onClick={this.openCreateDialog} id='DialogCreateCategoryOpen' variant='contained' color='primary' style={{marginTop: 25}} type='button'>
+        <Button onClick={this.openCreateModal} variant='contained' color='primary' style={{marginTop: 25}} type='button'>
           Add New Category
         </Button>
-        <DialogCreateCategory
-          DialogCreateCategoryOpen={this.state.DialogCreateCategoryOpen}
-          closeCreateDialog={this.closeCreateDialog}
+        <ModalCreateCategory
+          CreateCategoryModalOpen={this.state.CreateCategoryModalOpen}
+          closeCreateModal={this.closeCreateModal}
           auth0Id={this.state.auth0Id}
+          setUserData={this.setUserData}
         />
       </div>
     );

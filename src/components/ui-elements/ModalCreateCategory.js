@@ -11,14 +11,14 @@ const styles = theme => ({
   },
 });
 
-class DialogCreateCategory extends Component {
+class ModalCreateCategory extends Component {
   constructor(props){
     super(props);
 
     this.state = {
       categoryName: '',
     }
-  }
+  };
 
   createCategory = () => {
 
@@ -27,9 +27,22 @@ class DialogCreateCategory extends Component {
       categoryName: this.state.categoryName
     }
 
+    const redrawCategories = id => {
+      this.props.setUserData(id);
+    }
+
     axios.put('http://localhost:3001/api/user/category/create', dataObject)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        redrawCategories(this.props.auth0Id);
+      })
       .catch(error => console.log(error));
+
+    const closeModal = () => {
+      this.props.closeCreateModal();
+    }
+
+    closeModal();
   };
 
   handleChange = name => event => {
@@ -44,7 +57,7 @@ class DialogCreateCategory extends Component {
 
     return (
       <Dialog
-        open={this.props.DialogCreateCategoryOpen}
+        open={this.props.CreateCategoryModalOpen}
         onClose={this.props.closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -53,17 +66,17 @@ class DialogCreateCategory extends Component {
         <DialogContentText>Categories are used to group questions so that you can focus on that category during a test</DialogContentText>
         <DialogContent>
           <TextField
-            id="outlined-name"
-            label="Enter category name"
+            id='outlined-name'
+            label='Enter category name'
             className={classes.root}
             value={this.state.categoryName}
             onChange={this.handleChange('categoryName')}
-            margin="normal"
-            variant="outlined"
+            margin='normal'
+            variant='outlined'
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.closeCreateDialog} color="primary">
+          <Button onClick={this.props.closeCreateModal} color="primary">
             Cancel
           </Button>
           <Button onClick={this.createCategory} color="primary" autoFocus>
@@ -75,8 +88,8 @@ class DialogCreateCategory extends Component {
   }
 }
 
-DialogCreateCategory.propTypes = {
+ModalCreateCategory.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DialogCreateCategory);
+export default withStyles(styles)(ModalCreateCategory);

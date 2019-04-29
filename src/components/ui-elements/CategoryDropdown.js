@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { FormControl, Select, MenuItem, InputLabel, FormHelperText, CircularProgress, Link } from '@material-ui/core';
+import ModalCreateCategory from './ModalCreateCategory';
 
 const styles = theme => ({
   root: {
@@ -19,6 +20,26 @@ const styles = theme => ({
 });
 
 class CategoryDropdown extends React.Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      CreateCategoryModalOpen: false,
+    }
+  }
+
+  openCreateModal = () => {
+    this.setState({
+      CreateCategoryModalOpen: true,
+    })
+  }
+
+  closeCreateModal = (name) => {
+    this.setState({
+      CreateCategoryModalOpen: false,
+    })
+  }
 
   render() {
     const { classes, userCategories, receivedCategories } = this.props;
@@ -56,7 +77,13 @@ class CategoryDropdown extends React.Component {
 
       return (
         <>
-          <p>You haven't created any categories. <Link  className={classes.link} onClick={this.props.handleModalOpen}>Create one now</Link> (it takes 10 seconds)</p>
+          <p>You haven't created any categories. <Link  className={classes.link} onClick={this.openCreateModal}>Create one now</Link> (it takes 10 seconds)</p>
+          <ModalCreateCategory
+            CreateCategoryModalOpen={this.state.CreateCategoryModalOpen}
+            closeCreateModal={this.closeCreateModal}
+            auth0Id={this.state.auth0Id}
+            setUserData={this.setUserData}
+          />
         </>
       )
     }

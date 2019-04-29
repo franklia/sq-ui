@@ -81,6 +81,7 @@ class QuestionList extends React.Component {
     this.setState({dialogOpen: false});
     axios.delete(`http://localhost:3001/api/question/delete/${this.state.deleteId}`)
       .then(() => {
+          // This causes component to re-mount and data to be updated
           this.getQuestions(this.state.auth0_id);
         })
       .catch(error => console.log(error))

@@ -3,11 +3,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
 import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { Tooltip, Fab, Button, TextField, Modal } from '@material-ui/core';
+import { Tooltip, Fab, Button, TextField } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './ui-elements/Column';
-import ManageCategories from './ui-elements/ManageCategories';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory({
@@ -33,7 +32,6 @@ class CreateOrUpdateQuestion extends Component {
       category: '',
       userCategories: [],
       receivedCategories: false,
-      open: false,
       topic: '',
       auth0Id: '',
       questions: {
@@ -335,13 +333,13 @@ class CreateOrUpdateQuestion extends Component {
     }
   };
 
-  handleModalOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleModalClose = () => {
-    this.setState({ open: false });
-  };
+  // handleModalOpen = () => {
+  //   this.setState({ open: true });
+  // };
+  //
+  // handleModalClose = () => {
+  //   this.setState({ open: false });
+  // };
 
   render() {
     const { classes } = this.props;
@@ -406,9 +404,6 @@ class CreateOrUpdateQuestion extends Component {
             {this.props.buttonText} Question
           </Button>
         </form>
-        <Modal open={this.state.open}>
-          <ManageCategories userCategories={this.state.userCategories}/>
-        </Modal>
       </>
     );
   }
