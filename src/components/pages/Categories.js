@@ -110,6 +110,7 @@ class Categories extends Component {
           closeCreateModal={this.closeCreateModal}
           auth0Id={this.state.auth0Id}
           setUserData={this.setUserData}
+          parentComponent='Categories.js'
         />
       </div>
     );

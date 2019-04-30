@@ -81,8 +81,9 @@ class CategoryDropdown extends React.Component {
           <ModalCreateCategory
             CreateCategoryModalOpen={this.state.CreateCategoryModalOpen}
             closeCreateModal={this.closeCreateModal}
-            auth0Id={this.state.auth0Id}
-            setUserData={this.setUserData}
+            auth0Id={this.props.auth0Id}
+            parentComponent='CategoryDropdown.js'
+            setUserData={this.props.setUserData}
           />
         </>
       )

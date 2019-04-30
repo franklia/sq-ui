@@ -24,8 +24,10 @@ class ModalCreateCategory extends Component {
 
     const dataObject = {
       auth0Id: this.props.auth0Id,
-      categoryName: this.state.categoryName
+      categoryName: this.state.categoryName,
     }
+
+    console.log(dataObject);
 
     const redrawCategories = id => {
       this.props.setUserData(id);
@@ -34,7 +36,11 @@ class ModalCreateCategory extends Component {
     axios.put('http://localhost:3001/api/user/category/create', dataObject)
       .then(res => {
         console.log(res);
-        redrawCategories(this.props.auth0Id);
+        if (this.props.parentComponent === 'Categories.js'){
+          redrawCategories(this.props.auth0Id);
+        } else if (this.props.parentComponent === 'CategoryDropdown.js') {
+          this.props.setUserData(this.props.auth0Id);
+        }
       })
       .catch(error => console.log(error));
 

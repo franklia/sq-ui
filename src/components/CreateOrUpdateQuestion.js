@@ -373,6 +373,8 @@ class CreateOrUpdateQuestion extends Component {
             required={true}
             handleModalOpen={this.handleModalOpen}
             handleModalClose={this.handleModalClose}
+            auth0Id={this.state.auth0Id}
+            setUserData={this.setUserData}
           />
 
           { /* Dislay topic input field if there is more than one sub question */ }
