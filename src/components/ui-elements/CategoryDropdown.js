@@ -25,19 +25,19 @@ class CategoryDropdown extends React.Component {
     super(props);
 
     this.state = {
-      CreateCategoryModalOpen: false,
+      createCategoryModalOpen: false,
     }
   }
 
-  openCreateModal = () => {
+  openModal = (stateName) => {
     this.setState({
-      CreateCategoryModalOpen: true,
+      [stateName]: true,
     })
   }
 
-  closeCreateModal = (name) => {
+  closeModal = (stateName) => {
     this.setState({
-      CreateCategoryModalOpen: false,
+      [stateName]: false,
     })
   }
 
@@ -77,10 +77,10 @@ class CategoryDropdown extends React.Component {
 
       return (
         <>
-          <p>You haven't created any categories. <Link  className={classes.link} onClick={this.openCreateModal}>Create one now</Link> (it takes 10 seconds)</p>
+          <p>You haven't created any categories. <Link  className={classes.link} onClick={() => this.openModal('createCategoryModalOpen')}>Create one now</Link> (it takes 10 seconds)</p>
           <ModalCreateCategory
-            CreateCategoryModalOpen={this.state.CreateCategoryModalOpen}
-            closeCreateModal={this.closeCreateModal}
+            createCategoryModalOpen={this.state.createCategoryModalOpen}
+            closeModal={this.closeModal}
             auth0Id={this.props.auth0Id}
             parentComponent='CategoryDropdown.js'
             setUserData={this.props.setUserData}

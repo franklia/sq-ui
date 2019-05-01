@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -8,6 +7,8 @@ import { Paper, Table, TableHead, TableRow, TableCell, TableBody, Button, IconBu
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ModalCreateCategory from '../ui-elements/ModalCreateCategory';
+import ModalUpdateCategory from '../ui-elements/ModalUpdateCategory';
+import ModalDeleteCategory from '../ui-elements/ModalDeleteCategory';
 
 const styles = theme => ({
   narrowCells: {
@@ -23,7 +24,12 @@ class Categories extends Component {
       auth0Id: '',
       receivedCategories: false,
       userCategories: [],
-      CreateCategoryModalOpen: false,
+      updateCategoryName: '',
+      createCategoryModalOpen: false,
+      deleteCategoryModalOpen: false,
+      updateCategoryModalOpen: false,
+      updateOrDeleteCategoryId: '',
+
     }
   }
 
@@ -53,17 +59,40 @@ class Categories extends Component {
       .catch(error => console.log(error))
   }
 
-  openCreateModal = () => {
+  openModal = (stateName) => {
     this.setState({
-      CreateCategoryModalOpen: true,
+      [stateName]: true,
     })
   }
 
-  closeCreateModal = (name) => {
+  closeModal = (stateName) => {
     this.setState({
-      CreateCategoryModalOpen: false,
+      [stateName]: false,
     })
   }
+
+  openUpdateOrDeleteModal = (stateName, categoryId, categoryName) => {
+    this.setState({
+      [stateName]: true,
+      updateOrDeleteCategoryId: categoryId,
+      updateCategoryName: categoryName,
+    });
+
+    // autoFocus in Material UI Input fields has a bug so this was used to focus on element
+    setTimeout(
+      () => {
+        if (document.getElementById('outlined-name')){
+          document.getElementById('outlined-name').focus();
+        }
+      }, 500
+    );
+  }
+
+  handleCategoryTextChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
 
   render() {
 
@@ -89,12 +118,12 @@ class Categories extends Component {
                   </TableCell>
                   <TableCell className='link' align='center'>
                     <IconButton>
-                      <EditIcon onClick={() => {}} />
+                      <EditIcon onClick={() => this.openUpdateOrDeleteModal('updateCategoryModalOpen', category._id, category.name)} />
                     </IconButton>
                   </TableCell>
                   <TableCell className='link' align='center'>
                     <IconButton>
-                      <DeleteForeverIcon onClick={() => this.openDeleteModal(category._id)} />
+                      <DeleteForeverIcon onClick={() => this.openUpdateOrDeleteModal('deleteCategoryModalOpen', category._id)} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -102,15 +131,30 @@ class Categories extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <Button onClick={this.openCreateModal} variant='contained' color='primary' style={{marginTop: 25}} type='button'>
+        <Button onClick={() => this.openModal('createCategoryModalOpen')} variant='contained' color='primary' style={{marginTop: 25}} type='button'>
           Add New Category
         </Button>
         <ModalCreateCategory
-          CreateCategoryModalOpen={this.state.CreateCategoryModalOpen}
-          closeCreateModal={this.closeCreateModal}
+          createCategoryModalOpen={this.state.createCategoryModalOpen}
+          closeModal={this.closeModal}
           auth0Id={this.state.auth0Id}
           setUserData={this.setUserData}
-          parentComponent='Categories.js'
+        />
+        <ModalUpdateCategory
+          updateCategoryModalOpen={this.state.updateCategoryModalOpen}
+          closeModal={this.closeModal}
+          auth0Id={this.state.auth0Id}
+          updateOrDeleteCategoryId={this.state.updateOrDeleteCategoryId}
+          updateCategoryName={this.state.updateCategoryName}
+          setUserData={this.setUserData}
+          handleCategoryTextChange={this.handleCategoryTextChange}
+        />
+        <ModalDeleteCategory
+          deleteCategoryModalOpen={this.state.deleteCategoryModalOpen}
+          closeModal={this.closeModal}
+          auth0Id={this.state.auth0Id}
+          updateOrDeleteCategoryId={this.state.updateOrDeleteCategoryId}
+          setUserData={this.setUserData}
         />
       </div>
     );

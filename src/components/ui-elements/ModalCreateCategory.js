@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-// import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, TextField } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  TextField
+} from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -21,7 +28,6 @@ class ModalCreateCategory extends Component {
   };
 
   createCategory = () => {
-
     const dataObject = {
       auth0Id: this.props.auth0Id,
       categoryName: this.state.categoryName,
@@ -29,26 +35,13 @@ class ModalCreateCategory extends Component {
 
     console.log(dataObject);
 
-    const redrawCategories = id => {
-      this.props.setUserData(id);
-    }
-
     axios.put('http://localhost:3001/api/user/category/create', dataObject)
       .then(res => {
         console.log(res);
-        if (this.props.parentComponent === 'Categories.js'){
-          redrawCategories(this.props.auth0Id);
-        } else if (this.props.parentComponent === 'CategoryDropdown.js') {
-          this.props.setUserData(this.props.auth0Id);
-        }
+        this.props.setUserData(this.props.auth0Id);
+        this.props.closeModal('createCategoryModalOpen');
       })
       .catch(error => console.log(error));
-
-    const closeModal = () => {
-      this.props.closeCreateModal();
-    }
-
-    closeModal();
   };
 
   handleChange = name => event => {
@@ -63,7 +56,7 @@ class ModalCreateCategory extends Component {
 
     return (
       <Dialog
-        open={this.props.CreateCategoryModalOpen}
+        open={this.props.createCategoryModalOpen}
         onClose={this.props.closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -82,7 +75,7 @@ class ModalCreateCategory extends Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.closeCreateModal} color="primary">
+          <Button onClick={() => this.props.closeModal('createCategoryModalOpen')} color="primary">
             Cancel
           </Button>
           <Button onClick={this.createCategory} color="primary" autoFocus>

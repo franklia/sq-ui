@@ -333,14 +333,6 @@ class CreateOrUpdateQuestion extends Component {
     }
   };
 
-  // handleModalOpen = () => {
-  //   this.setState({ open: true });
-  // };
-  //
-  // handleModalClose = () => {
-  //   this.setState({ open: false });
-  // };
-
   render() {
     const { classes } = this.props;
 
