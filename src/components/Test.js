@@ -69,7 +69,6 @@ class Test extends Component {
   getCategories = (userId) => {
     axios.get('http://localhost:3001/api/questions/index/category?', { params: { userId: userId } })
       .then((res) => {
-        // console.log(res.data.adminCategories);
         this.setState({
           adminCategories: res.data.adminCategories,
           userCategories: res.data.userCategories,
@@ -106,7 +105,8 @@ class Test extends Component {
 
   resetCategory = () => {
     this.setState({
-      testCategory: '',
+      testCategoryId: '',
+      testCategoryName: '',
       subQuestionsToAsk: [],
       subQuestionsAsked: []
     });

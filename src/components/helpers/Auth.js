@@ -1,9 +1,5 @@
 import auth0 from 'auth0-js';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory({
-  forceRefresh: false
-});
+import history from './history';
 
 export default class Auth {
   accessToken;
@@ -40,7 +36,7 @@ export default class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
-        history.replace('/test');
+        history.replace('/home');
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);
       }
@@ -151,7 +147,6 @@ export default class Auth {
       if (profile) {
         this.userProfile = profile;
       }
-      // console.log(this.userProfile.sub);
       callback(profile);
     });
   }

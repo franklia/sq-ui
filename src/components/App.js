@@ -16,12 +16,7 @@ import Categories from './pages/Categories';
 
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
-// import History from './helpers/History';
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory({
-  forceRefresh: false
-});
+import history from './helpers/history';
 
 const theme = createMuiTheme({
   palette: {
