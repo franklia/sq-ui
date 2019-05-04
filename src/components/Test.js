@@ -1,46 +1,46 @@
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+// import PropTypes from 'prop-types';
+// import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
-// import { CSSTransitionGroup } from 'react-transition-group'
-import { Button, Card, CardHeader, CardContent, CardActions, Collapse, Grid, Paper } from '@material-ui/core';
-import TouchApp from '@material-ui/icons/TouchApp';
+import { CSSTransition } from 'react-transition-group';
+import { Button, Grid, Paper } from '@material-ui/core';
+// import TouchApp from '@material-ui/icons/TouchApp';
 import axios from 'axios';
 
-const styles = theme => ({
-  wrapper: {
+// const styles = theme => ({
+//   wrapper: {
+//
+//   },
+//   header: {
+//     marginTop: 50,
+//     marginBottom: 40,
+//     textAlign: 'center',
+//   },
+//   categoryPaper: {
+//     textTransform: 'uppercase',
+//     padding: '40px 20px',
+//   },
+//   cardColumn: {
+//     maxWidth: 500,
+//   },
+//   question: {
+//     background: '#fff',
+//     marginTop: 15,
+//     whiteSpace: 'pre-line'
+//   },
+//   answer: {
+//     background: '#f6f8ff'
+//   },
+//   cardActions: {
+//     color: 'grey',
+//   },
+//   capitalize: {
+//     textTransform: 'capitalize'
+//   }
+// });
 
-  },
-  header: {
-    marginTop: 50,
-    marginBottom: 40,
-    textAlign: 'center',
-  },
-  categoryPaper: {
-    textTransform: 'uppercase',
-    padding: '40px 20px',
-  },
-  cardColumn: {
-    maxWidth: 500,
-  },
-  question: {
-    background: '#fff',
-    marginTop: 15,
-    whiteSpace: 'pre-line'
-  },
-  answer: {
-    background: '#f6f8ff'
-  },
-  cardActions: {
-    color: 'grey',
-  },
-  capitalize: {
-    textTransform: 'capitalize'
-  }
-});
-
-class Test extends Component {
+export default class Test extends Component {
 
   constructor(props) {
     super(props);
@@ -53,18 +53,19 @@ class Test extends Component {
       testCategoryId: '',
       testCategoryName: '',
       auth0_id: '',
-      questionAskedExpanded: false
+      questionAskedExpanded: false,
+      CardDisplayed: true,
     }
   }
 
   componentDidMount = () => {
     const { auth } = this.props;
     ConfirmUserCredentials(auth, this.setAuth0Id, this.getCategories);
-  }
+  };
 
   setAuth0Id = id => {
     this.setState({ auth0_id: id })
-  }
+  };
 
   getCategories = (userId) => {
     axios.get('http://localhost:3001/api/questions/index/category?', { params: { userId: userId } })
@@ -76,7 +77,7 @@ class Test extends Component {
 
       })
       .catch(error => console.log(error))
-  }
+  };
 
   getQuestion = () => {
     const { testCategoryId } = this.state;
@@ -110,7 +111,7 @@ class Test extends Component {
       subQuestionsToAsk: [],
       subQuestionsAsked: []
     });
-  }
+  };
 
   revealAnswerClick = () => {
     this.setState({
@@ -124,18 +125,18 @@ class Test extends Component {
 
   login() {
     this.props.auth.login();
-  }
+  };
 
   logout() {
     this.props.auth.logout();
-  }
+  };
 
   renderHeader = () => {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     if(this.state.testCategoryId === undefined || this.state.testCategoryId === '') {
       return (
-        <div className={classes.header}>
+        <div className='header'>
           <h1>Choose a category to test</h1>
           <Grid
             container
@@ -148,7 +149,7 @@ class Test extends Component {
 
                 <Grid item lg={3} key={category._id}>
                   <Paper
-                    className={classes.categoryPaper}
+                    className='categoryPaper'
                     onClick={this.setCategory}
                     categoryid={category._id}
                     categoryname={category.name}
@@ -162,12 +163,16 @@ class Test extends Component {
       );
     } else {
       return (
-        <div className={classes.header}>
-          <h1>You're currently testing <span className={classes.capitalize}>{this.state.testCategoryName}</span></h1>
+        <div className='header'>
+          <h1>You're currently testing <span className='capitalize'>{this.state.testCategoryName}</span></h1>
           <span style={{cursor: 'pointer', color: 'blue'}} onClick={this.resetCategory}>(change category)</span>
         </div>
       );
     }
+  };
+
+  flipCard = () => {
+    document.querySelector("#question-card").classList.toggle("flip")
   };
 
   // renderNewQuestion = () => {
@@ -204,59 +209,111 @@ class Test extends Component {
 
 
   renderQuestionAsked = () => {
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
-    const displayClickPrompt = (
-      <>
-        <TouchApp/>
-        <p>Click card to reveal answer</p>
-      </>
-    );
+    // const displayClickPrompt = (
+    //   <>
+    //     <TouchApp/>
+    //     <p>Click card to reveal answer</p>
+    //   </>
+    // );
 
     if(this.state.subQuestionsAsked === undefined || this.state.subQuestionsAsked.length === 0) {
       return null;
     } else {
       return (
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="flex-start"
+        <>
+        <CSSTransition
+          in={this.state.CardDisplayed}
+          appear={true}
+          onEntered={this.flipCard}
+          timeout={1200}
+          classNames='flip-container'
         >
-          <Grid item lg={12} className={classes.cardColumn} onClick={this.revealAnswerClick}>
-            <Card className={classes.questionAskedCard}>
-              <CardHeader subheader="Sub question 1 of 3" />
-              <CardContent className={classes.question}>
-                <p>{this.state.subQuestionsAsked[0].sub_question}</p>
-              </CardContent>
-              <CardActions className={classes.cardActions}>
-                { this.state.questionAskedExpanded === false ? displayClickPrompt : null }
-              </CardActions>
-              <Collapse in={this.state.questionAskedExpanded} className={classes.answer} timeout="auto" unmountOnExit>
-                <CardContent>
-                  <p style={{whiteSpace: 'pre-line'}}>{this.state.subQuestionsAsked[0].sub_answer}</p>
-                  <Button
-                    onClick={this.renderNewQuestion}
-                    variant="contained" color="secondary"
-                    style={{marginTop: 25, marginRight: 15}}
-                  >
-                    {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
-                  </Button>
-                </CardContent>
-              </Collapse>
-            </Card>
-          </Grid>
-        </Grid>
+        <div id='question-card' class="flip-container" onTouchStart={() => "this.classList.toggle('hover');"}>
+        	<div class="flipper">
+        		<div class="front">
+        			<h1>Let's Play!</h1>
+              <h1>?</h1>
+        		</div>
+        		<div class="back">
+              <div class='back-card-question'>
+          			<p>{this.state.subQuestionsAsked[0].sub_question}</p>
+
+                <Button
+                  onClick={() => this.setState({ answerDisplayed: !this.state.answerDisplayed })}
+                  variant="contained" color="secondary"
+                >
+                  Show Answer
+                </Button>
+
+              </div>
+
+              {this.state.answerDisplayed === true ?
+                <div class='back-card-answer'>
+                  <p>{this.state.subQuestionsAsked[0].sub_answer}</p>
+                </div>
+                : null
+              }
+
+        		</div>
+        	</div>
+        </div>
+        </CSSTransition>
+
+        <Button
+          onClick={this.flipCard}
+          variant="contained" color="secondary"
+          style={{marginTop: 25, marginRight: 15}}
+        >
+          Flip Card
+        </Button>
+
+
+        {
+        // <Grid
+        //   container
+        //   direction="row"
+        //   justify="center"
+        //   alignItems="flex-start"
+        // >
+        //   <Grid item lg={12} className='cardColumn' onClick={this.revealAnswerClick}>
+        //     <Card className='questionAskedCard'>
+        //       <CardHeader subheader="Sub question 1 of 3" />
+        //       <CardContent className='question'>
+        //         <p>{this.state.subQuestionsAsked[0].sub_question}</p>
+        //       </CardContent>
+        //       <CardActions className='cardActions'>
+        //         { this.state.questionAskedExpanded === false ? displayClickPrompt : null }
+        //       </CardActions>
+        //       <Collapse in={this.state.questionAskedExpanded} className='answer' timeout="auto" unmountOnExit>
+        //         <CardContent>
+        //           <p style={{whiteSpace: 'pre-line'}}>{this.state.subQuestionsAsked[0].sub_answer}</p>
+        //           <Button
+        //             onClick={this.renderNewQuestion}
+        //             variant="contained" color="secondary"
+        //             style={{marginTop: 25, marginRight: 15}}
+        //           >
+        //             {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
+        //           </Button>
+        //         </CardContent>
+        //       </Collapse>
+        //     </Card>
+        //   </Grid>
+        // </Grid>
+      }
+
+      </>
       );
     }
   };
 
   render() {
 
-    const { classes } = this.props;
+    // const { classes } = this.props;
 
     return (
-      <div className={classes.wrapper}>
+      <div className='wrapper'>
         {this.renderHeader()}
         {this.renderQuestionAsked()}
       </div>
@@ -264,8 +321,8 @@ class Test extends Component {
   }
 }
 
-Test.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Test);
+// Test.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
+//
+// export default withStyles(styles)(Test);
