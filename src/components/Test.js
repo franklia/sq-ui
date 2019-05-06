@@ -253,7 +253,7 @@ export default class Test extends Component {
           key={this.state.parentQuestionAsked[0]}
           in={this.state.parentCardDisplayed}
           appear={true}
-          timeout={1200}
+          timeout={940}
           classNames='sub-questions'
         >
           <Grid container >
@@ -263,7 +263,7 @@ export default class Test extends Component {
                 key={this.state.subQuestionsAsked[0]}
                 in={this.state.parentCardDisplayed}
                 appear={true}
-                timeout={1200}
+                timeout={300}
                 classNames='sub-questions'
               >
               <Grid item lg={1} md={1} sm={2} xs={3} className='sub-question-asked'>
@@ -282,36 +282,28 @@ export default class Test extends Component {
           in={this.state.parentCardDisplayed}
           appear={true}
           onEntered={this.flipCard}
-          timeout={1200}
+          timeout={900}
           classNames='flip-container'
         >
-        <div id='question-card' class='flip-container' onTouchStart={() => "this.classList.toggle('hover');"}>
+        <div id='question-card' class='flip-container'>
         	<div class='flipper'>
         		<div class='front' id='front-of-card'>
         			<h1>Let's Play!</h1>
               <h1>?</h1>
         		</div>
             {/* Transition for sub question currently being asked */}
-            <TransitionGroup>
-            <CSSTransition
-              key={this.state.subQuestionBeingAsked[0]}
-              in={this.state.parentCardDisplayed}
-              appear={true}
-              timeout={1200}
-              classNames='flip-container'
-            >
+
         		<div class='back' id='back-of-card'>
               <div class='back-card-question'>
           			<p>{this.state.subQuestionBeingAsked[0].sub_question}</p>
-
                 <Button
                   onClick={this.revealAnswer}
                   variant='contained' color='secondary'
                 >
                   Show Answer
                 </Button>
-
               </div>
+
               {/* Transition for displaying sub answer currently being asked */}
               {this.state.subAnswerDisplayed === true ?
                 <TransitionGroup>
@@ -336,8 +328,7 @@ export default class Test extends Component {
                 : null
               }
         		</div>
-            </CSSTransition>
-          </TransitionGroup>
+
         	</div>
         </div>
         </CSSTransition>
