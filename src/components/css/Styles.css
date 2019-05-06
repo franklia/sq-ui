@@ -51,7 +51,7 @@ h6 {
 
 /* Test Page Styles */
 
-/* React Transition Group Styles */
+/* Parent Question Transition Group */
 
 .flip-container-appear {
   opacity: 0;
@@ -68,7 +68,7 @@ h6 {
 }
 .flip-container-enter.flip-container-enter-active {
   opacity: 1;
-  transition: opacity 1000ms linear
+  transition: opacity 1200ms linear
 }
 .flip-container-enter-done {
 
@@ -78,7 +78,7 @@ h6 {
 }
 .flip-container-exit.flip-container-exit-active {
   opacity: 0;
-  transition: opacity 1000ms linear
+  transition: opacity 1200ms linear
 }
 .flip-container-exit-done {
   opacity: 0;
@@ -95,10 +95,14 @@ h6 {
 		transform: rotateY(180deg);
 	}
 
+.flip-container {
+  margin: 30px 0;
+}
+
 .flip-container, .front, .back {
-	width: 400px;
+	width: 600px;
 	/* height: 480px; */
-  min-height: 280px;
+  /* min-height: 280px; */
 }
 
 /* flip speed goes here */
@@ -148,4 +152,91 @@ h6 {
   background-color: #E5F0FF;
   padding: 20px;
   margin-top: 20px;
+}
+
+/* Answer on back of card */
+.answer-slider {
+  overflow-y: hidden;
+	max-height: 500px; /* approximate max height */
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slider.closed {
+  max-height: 0;
+}
+
+/* Sub Questions */
+
+.sub-question-asked {
+  background-color: #E5F0FF;
+  padding: 10px;
+}
+
+/* Sub Question Displayed Transition Group */
+
+.sub-question-displayed-appear {
+  opacity: 0;
+}
+.sub-question-displayed-appear.sub-question-displayed-appear-active {
+  opacity: 1;
+  transition: opacity 1200ms linear;
+}
+.sub-question-displayed-appear-done: {
+
+}
+.sub-question-displayed-enter {
+  opacity: 0;
+}
+.sub-question-displayed-enter.sub-question-displayed-enter-active {
+  opacity: 1;
+  transition: opacity 1200ms linear
+}
+.sub-question-displayed-enter-done {
+
+}
+.sub-question-displayed-exit {
+  opacity: 1;
+}
+.sub-question-displayed-exit.sub-question-displayed-exit-active {
+  opacity: 0;
+  transition: opacity 1200ms linear
+}
+.sub-question-displayed-exit-done {
+  opacity: 0;
+}
+
+/* Sub Questions Asked Transition Group */
+
+.sub-questions-appear {
+  opacity: 0;
+}
+.sub-questions-appear.sub-questions-appear-active {
+  opacity: 1;
+  transition: opacity 1200ms linear;
+}
+.sub-questions-appear-done: {
+
+}
+.sub-questions-enter {
+  opacity: 0;
+}
+.sub-questions-enter.sub-questions-enter-active {
+  opacity: 1;
+  transition: opacity 1200ms linear
+}
+.sub-questions-enter-done {
+
+}
+.sub-questions-exit {
+  opacity: 1;
+}
+.sub-questions-exit.sub-questions-exit-active {
+  opacity: 0;
+  transition: opacity 1200ms linear
+}
+.sub-questions-exit-done {
+  opacity: 0;
 }
