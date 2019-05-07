@@ -10,7 +10,7 @@ import Test from './Test';
 import CreateQuestion from './CreateQuestion';
 import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
-import NavMenu from './NavMenu';
+import NavMenu from './ui-elements/NavMenu';
 import EditQuestion from './EditQuestion';
 import Categories from './pages/Categories';
 
@@ -33,7 +33,7 @@ const theme = createMuiTheme({
       // contrastText: will be calculated to contrast with palette.primary.main
     },
     background: {
-      default: '#fafcff', // this is applied to the html <body> tag
+      default: '#EFF6FF', // this is applied to the html <body> tag
     }
   },
   typography: {
@@ -73,7 +73,7 @@ class App extends Component {
           <Router history={history} component={Home}>
             <div className={classes.bodyBackground}>
               <NavMenu auth={auth} />
-              <div className='page-content-wrapper'>
+              <div>
                 <Switch>
                   <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                   <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />

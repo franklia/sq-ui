@@ -1,5 +1,62 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
+import { Grid, Button } from '@material-ui/core'
+
+const styles = theme => ({
+  container: {
+    textAlign: 'center',
+  },
+  heading: {
+    fontSize: 48,
+    marginTop: 100,
+  },
+  subText: {
+    fontSize: 18,
+    lineHeight: '36px',
+    marginBottom: 40,
+    maxWidth: 800,
+    margin: 'auto',
+  },
+  instructionsContainer: {
+    marginBottom: 20,
+    textAlign: 'left',
+  },
+  instructionsNumbers: {
+    borderRadius: '50%',
+    border: '1px solid',
+    height: 25,
+    width: 25,
+    display: 'inline-block',
+    margin: '0 20px 0 0',
+    textAlign: 'center',
+  },
+  instructionsText: {
+    fontSize: 18,
+  },
+  buttonRow: {
+    margin: '30px 0 0 0',
+  },
+  ctaMinorButton: {
+    border: '1px solid #ceddf2',
+    backgroundColor: '#EFF6FF',
+    fontWeight: 600,
+    textDecoration: 'none',
+    fontSize: 18,
+    display: 'inline-flex',
+    color: '#7d93b2',
+    textTransform: 'capitalize',
+    borderRadius: '8px',
+    boxShadow: 'none',
+    padding: '8px 40px',
+    '&:hover': {
+      backgroundColor: '#9eb4d2',
+      borderColor: '#9eb4d2',
+      color: '#fff',
+    }
+  }
+});
 
 class Home extends Component {
 
@@ -21,29 +78,41 @@ class Home extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props.auth;
-    // const auth = this.props;
-    // console.log('auth.accessToken');
-    // console.log(auth.auth.accessToken);
-    // console.log(auth);
+    // const { isAuthenticated } = this.props.auth;
+    const { classes } = this.props;
 
     return (
-      <div>
-
-      {
-        !isAuthenticated() && (
-          <p>NOT Authenticated</p>
-        )
-      }
-
-      {
-        isAuthenticated() && (
-          <p>IS Authenticated</p>
-        )
-      }
+      <div className={classes.container}>
+        <h1 className={classes.heading}>Repetition is the mother of all skill</h1>
+        <p className={classes.subText}>Becoming an expert in any field takes time and dedication. I built Spot Quiz to improve my coding skills, but it can be used to learn anything. Getting started is easy:</p>
+        <Grid container justify='center'>
+          <Grid item>
+            <div className={classes.instructionsContainer}>
+              <div className={classes.instructionsNumbers}>1</div><span className={classes.instructionsText}>Create a category to group subject matter</span>
+            </div>
+            <div className={classes.instructionsContainer}>
+              <div className={classes.instructionsNumbers}>2</div><span className={classes.instructionsText}>Add a series of questions and answers</span>
+            </div>
+            <div className={classes.instructionsContainer}>
+              <div className={classes.instructionsNumbers}>3</div><span className={classes.instructionsText}>Test yourself regularly to build your skills</span>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container spacing={40} justify='center' className={classes.buttonRow}>
+          <Grid item>
+            <Button href='/test' variant='contained' className='button-general'>Test Drive</Button>
+          </Grid>
+          <Grid item>
+            <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-export default Home;
+Home.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Home);

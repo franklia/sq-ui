@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  /* background-color: #EFF6FF; */
+}
+
 a, .link {
   cursor: pointer;
 }
@@ -6,9 +11,9 @@ a:hover , .link:hover {
   text-decoration: none !important;
 }
 
-.page-content-wrapper {
+/* .page-content-wrapper {
   margin: 20px;
-}
+} */
 
 /* Typography */
 
@@ -47,6 +52,19 @@ h5 {
 
 h6 {
   font-size: 20px;
+}
+
+.button-general {
+  text-decoration: none !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  display: inline-flex !important;
+  color: #fff !important;
+  text-transform: capitalize !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 15px rgba(125,147,178,.3) !important;
+  padding: 8px 40px !important;
+  background-color: #ff5c72 !important;
 }
 
 /* Test Page Styles */
