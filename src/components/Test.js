@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
-// import PropTypes from 'prop-types';
-// import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Button, Grid, Paper } from '@material-ui/core';
@@ -50,14 +47,14 @@ export default class Test extends Component {
       subQuestionsAsked: [],
       subQuestionBeingAsked: [],
       subQuestionsToAsk: [],
+      subQuestionsNumber: '',
       adminCategories: [],
       userCategories: [],
       testCategoryId: '',
       testCategoryName: '',
       auth0_id: '',
-      parentCardDisplayed: true,
-      childCardDisplayed: true,
-      subAnswerDisplayed: false,
+      subAnswerDisplayed: true,
+      showAnswerButtonDisplayed: true,
     }
   }
 
@@ -77,7 +74,6 @@ export default class Test extends Component {
           adminCategories: res.data.adminCategories,
           userCategories: res.data.userCategories,
         }, () => console.log(this.state))
-
       })
       .catch(error => console.log(error))
   };
@@ -89,13 +85,16 @@ export default class Test extends Component {
         const parentQuestion = res.data._id;
         const firstSubQuestion = res.data.questions[0];
         const subsequentSubQuestions = res.data.questions.slice(1);
+        const subQuestionsNumber = res.data.questions.length;
         this.setState({
           parentQuestionAsked: [parentQuestion],
           subQuestionBeingAsked: [firstSubQuestion],
           subQuestionsToAsk: subsequentSubQuestions,
           subQuestionsAsked: [],
+          subQuestionsNumber: subQuestionsNumber,
           subAnswerDisplayed: !this.state.subAnswerDisplayed,
-        }, () => console.log(this.state));
+          showAnswerButtonDisplayed: true,
+        });
       }
     )
       .catch(error => console.log(error))
@@ -119,21 +118,7 @@ export default class Test extends Component {
     });
   };
 
-  // goTo(route) {
-  //   this.props.history.replace(`/${route}`)
-  // }
-
-  login() {
-    this.props.auth.login();
-  };
-
-  logout() {
-    this.props.auth.logout();
-  };
-
   renderHeader = () => {
-    // const { classes } = this.props;
-
     if(this.state.testCategoryId === undefined || this.state.testCategoryId === '') {
       return (
         <div className='header'>
@@ -171,49 +156,16 @@ export default class Test extends Component {
     }
   };
 
-  setCardHeight = () => {
-    const backOfCard = document.getElementById('back-of-card');
-    const backOfCardHeight = backOfCard.offsetHeight;
-    console.log(backOfCardHeight);
-    // const frontOfCard = document.getElementById('front-of-card');
-    // const frontOfCardHeight = frontOfCard.offsetHeight;
-    // if (backOfCardHeight === '' || backOfCardHeight === null){
-      document.getElementById('question-card').style.height = `${backOfCardHeight}px`;
-    // }
-    // else {
-    //   document.getElementById('question-card').style.height = `${backOfCardHeight}px`;
-    // }
-
-  }
-
   flipCard = () => {
     document.querySelector('#question-card').classList.toggle('flip');
-    // this.setCardHeight();
   };
 
   revealAnswer = () => {
-    this.setState(
-      { subAnswerDisplayed: !this.state.subAnswerDisplayed },
-      // this.setCardHeight()
-    );
+    this.setState({
+      subAnswerDisplayed: !this.state.subAnswerDisplayed,
+      showAnswerButtonDisplayed: !this.state.showAnswerButtonDisplayed,
+    });
   }
-
-  // renderNewQuestion = () => {
-  //   // const removeAnswer = null;
-  //   ReactDOM.render(null, document.getElementById('answer'));
-  //   this.getQuestion();
-  // };
-
-  // renderAnswer = () => {
-  //   const answerContent = (
-  //     <div>
-  //       <p style={{whiteSpace: 'pre-line'}}>{this.state.subQuestionsToAsk[0].sub_answer}</p>
-  //       <Button onClick={this.renderNewQuestion} variant='contained' color='secondary' style={{marginTop: 25, marginRight: 15}}>New Question</Button>
-  //     </div>
-  //   );
-  //
-  //   ReactDOM.render(answerContent, document.getElementById('answer'));
-  // };
 
   renderNewQuestion = () => {
     if (this.state.subQuestionsToAsk === undefined || this.state.subQuestionsToAsk.length === 0) {
@@ -222,169 +174,108 @@ export default class Test extends Component {
       const nextSubQuestion = [this.state.subQuestionsToAsk[0]];
       const updateSubQuestionsAsked = this.state.subQuestionsAsked.concat(this.state.subQuestionBeingAsked);
       const updateSubQuestionsToAsk = this.state.subQuestionsToAsk.splice(1);
+
       this.setState({
         subQuestionBeingAsked: nextSubQuestion,
         subQuestionsAsked: updateSubQuestionsAsked,
         subQuestionsToAsk: updateSubQuestionsToAsk,
         subAnswerDisplayed: !this.state.subAnswerDisplayed,
-      });
+        showAnswerButtonDisplayed: !this.state.showAnswerButtonDisplayed,
+      })
     }
   }
 
-
   renderQuestionAsked = () => {
-    // const { classes } = this.props;
-
-    // const displayClickPrompt = (
-    //   <>
-    //     <TouchApp/>
-    //     <p>Click card to reveal answer</p>
-    //   </>
-    // );
-
     if(this.state.subQuestionBeingAsked === undefined || this.state.subQuestionBeingAsked.length === 0) {
       return null;
     } else {
       return (
         <>
-        {/* Transitions for minimised sub questions already asked */}
+        {/* Container and transition for parent question */}
         <TransitionGroup>
-        <CSSTransition
-          key={this.state.parentQuestionAsked[0]}
-          in={this.state.parentCardDisplayed}
-          appear={true}
-          timeout={940}
-          classNames='sub-questions'
-        >
-          <Grid container >
-            {this.state.subQuestionsAsked.map(subQuestion => (
-              <TransitionGroup>
-              <CSSTransition
-                key={this.state.subQuestionsAsked[0]}
-                in={this.state.parentCardDisplayed}
-                appear={true}
-                timeout={300}
-                classNames='sub-questions'
-              >
-              <Grid item lg={1} md={1} sm={2} xs={3} className='sub-question-asked'>
-                {subQuestion.id}
-              </Grid>
-              </CSSTransition>
-              </TransitionGroup>
-            ))}
-          </Grid>
-        </CSSTransition>
-        </TransitionGroup>
-        {/* Transition for parent question */}
-        <TransitionGroup>
-        <CSSTransition
-          key={this.state.parentQuestionAsked[0]}
-          in={this.state.parentCardDisplayed}
-          appear={true}
-          onEntered={this.flipCard}
-          timeout={900}
-          classNames='flip-container'
-        >
-        <div id='question-card' class='flip-container'>
-        	<div class='flipper'>
-        		<div class='front' id='front-of-card'>
-        			<h1>Let's Play!</h1>
-              <h1>?</h1>
-        		</div>
-            {/* Transition for sub question currently being asked */}
-
-        		<div class='back' id='back-of-card'>
-              <div class='back-card-question'>
-          			<p>{this.state.subQuestionBeingAsked[0].sub_question}</p>
-                <Button
-                  onClick={this.revealAnswer}
-                  variant='contained' color='secondary'
-                >
-                  Show Answer
-                </Button>
-              </div>
-
-              {/* Transition for displaying sub answer currently being asked */}
-              {this.state.subAnswerDisplayed === true ?
-                <TransitionGroup>
-                  <CSSTransition
-                    key={this.state.subQuestionBeingAsked[0]}
-                    in={this.state.parentCardDisplayed}
-                    appear={true}
-                    timeout={1200}
-                    classNames='sub-question-displayed'
-                  >
-                    <div class='back-card-answer'>
-                      <p>{this.state.subQuestionBeingAsked[0].sub_answer}</p>
+          <CSSTransition
+            key={this.state.parentQuestionAsked[0]}
+            in={true}
+            appear={true}
+            onEntered={this.flipCard}
+            timeout={900}
+            classNames='flip-container'
+          >
+            <div id='question-card' class='flip-container'>
+            	<div class='flipper'>
+                {/* Front of card */}
+            		<div class='front' id='front-of-card'>
+            			<h1>Let's Play!</h1>
+                  <h1>?</h1>
+            		</div>
+                {/* Back of card containing sub questions */}
+        		    <div class='back' id='back-of-card'>
+                  {/* Display summary and transition for sub questions already asked */}
+                  {this.state.subQuestionsAsked !== [] || this.state.subQuestionsAsked !== null ?
+                    this.state.subQuestionsAsked.map(subQuestion => (
+                      <TransitionGroup>
+                        <CSSTransition
+                          key={this.state.subQuestionsAsked[0]}
+                          in={true}
+                          appear={true}
+                          timeout={300}
+                          classNames='sub-questions'
+                        >
+                          <div className='sub-questions-asked-container'>
+                            <span>{`${subQuestion.id} of ${this.state.subQuestionsNumber}`}</span>
+                            <p>{subQuestion.sub_question}</p>
+                            <div className='sub-question-asked-answer-wrapper'>
+                              <p className='sub-question-asked-answer'>{subQuestion.sub_answer}</p>
+                            </div>
+                          </div>
+                        </CSSTransition>
+                      </TransitionGroup>
+                    ))
+                    : null
+                  }
+                  {/* Display sub question currently being asked */}
+                  <div class='back-card-question'>
+                    <span>{`${this.state.subQuestionBeingAsked[0].id} of ${this.state.subQuestionsNumber}`}</span>
+              			<p>{this.state.subQuestionBeingAsked[0].sub_question}</p>
+                    {this.state.showAnswerButtonDisplayed === true ?
                       <Button
-                        onClick={this.renderNewQuestion}
+                        onClick={this.revealAnswer}
                         variant='contained' color='secondary'
                       >
-                        {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
+                        Show Answer
                       </Button>
+                      : null
+                    }
+                  </div>
+                  {/* Display sub answer currently being asked */}
+                  {this.state.subAnswerDisplayed === true ?
+                    <div class='back-card-answer'>
+                      <p>{this.state.subQuestionBeingAsked[0].sub_answer}</p>
                     </div>
-                  </CSSTransition>
-                </TransitionGroup>
-                : null
-              }
-        		</div>
-
-        	</div>
-        </div>
-        </CSSTransition>
+                    : null
+                  }
+                  {/* Display button to trigger new question */}
+                  {this.state.subAnswerDisplayed === true ?
+                    <Button
+                      onClick={this.renderNewQuestion}
+                      variant='contained' color='secondary'
+                      style={{margin: 10}}
+                    >
+                      {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
+                    </Button>
+                    : null
+                  }
+                </div>
+            	</div>
+            </div>
+          </CSSTransition>
         </TransitionGroup>
-{
-        // <Button
-        //   onClick={this.flipCard}
-        //   variant='contained' color='secondary'
-        //   style={{marginTop: 25, marginRight: 15}}
-        // >
-        //   Flip Card
-        // </Button>
-}
-
-        {
-        // <Grid
-        //   container
-        //   direction='row'
-        //   justify='center'
-        //   alignItems='flex-start'
-        // >
-        //   <Grid item lg={12} className='cardColumn' onClick={this.revealAnswerClick}>
-        //     <Card className='questionAskedCard'>
-        //       <CardHeader subheader='Sub question 1 of 3' />
-        //       <CardContent className='question'>
-        //         <p>{this.state.subQuestionsAsked[0].sub_question}</p>
-        //       </CardContent>
-        //       <CardActions className='cardActions'>
-        //         { this.state.questionAskedExpanded === false ? displayClickPrompt : null }
-        //       </CardActions>
-        //       <Collapse in={this.state.questionAskedExpanded} className='answer' timeout='auto' unmountOnExit>
-        //         <CardContent>
-        //           <p style={{whiteSpace: 'pre-line'}}>{this.state.subQuestionsAsked[0].sub_answer}</p>
-        //           <Button
-        //             onClick={this.renderNewQuestion}
-        //             variant='contained' color='secondary'
-        //             style={{marginTop: 25, marginRight: 15}}
-        //           >
-        //             {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
-        //           </Button>
-        //         </CardContent>
-        //       </Collapse>
-        //     </Card>
-        //   </Grid>
-        // </Grid>
-      }
-
       </>
       );
     }
   };
 
   render() {
-
-    // const { classes } = this.props;
-
     return (
       <div className='wrapper'>
         {this.renderHeader()}
@@ -393,9 +284,3 @@ export default class Test extends Component {
     )
   }
 }
-
-// Test.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-//
-// export default withStyles(styles)(Test);

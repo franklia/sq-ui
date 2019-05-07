@@ -121,7 +121,7 @@ h6 {
 	top: 0;
 	left: 0;
 
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: #fff;
   /* height: 300px;
   width: 300px; */
@@ -133,11 +133,16 @@ h6 {
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
+  /* background: linear-gradient(90deg,#ff5c72,#a485f2); */
+  background-color: #e5f0ff;
+  height: 500px;
 }
 
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
+  min-height: 500px;
+  margin-bottom: 50px;
 }
 
 .flip-container.flip .flipper {
@@ -146,13 +151,47 @@ h6 {
 
 .back-card-question {
   padding: 20px;
+  opacity: 1;
 }
+
+/* .fade {
+  opacity: 0;
+  transition: opacity 1500ms linear;
+} */
 
 .back-card-answer {
   background-color: #E5F0FF;
   padding: 20px;
-  margin-top: 20px;
+  margin: 0 10px 10px 10px;
+  border-left: 3px solid;
 }
+
+.sub-questions-asked-container {
+  background-color: #E5F0FF;
+  opacity: 0.5;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.sub-questions-asked-container.closed {
+	max-height: 0;
+}
+
+.sub-question-asked-answer-wrapper {
+  padding: 20px 30px;
+}
+
+.sub-question-asked-answer {
+  padding: 0 10px;
+  border-left: 2px solid;
+}
+
+/* .sub-question-asked-answer{
+  margin: 0;
+  padding: 0 20px;
+} */
 
 /* Answer on back of card */
 .answer-slider {
@@ -226,9 +265,7 @@ h6 {
   opacity: 1;
   transition: opacity 1200ms linear;
 }
-.sub-questions-appear-done: {
 
-}
 .sub-questions-enter {
   opacity: 0;
 }
@@ -236,10 +273,8 @@ h6 {
   opacity: 1;
   transition: opacity 1200ms linear
 }
-.sub-questions-enter-done {
 
-}
-.sub-questions-exit {
+/* .sub-questions-exit {
   opacity: 1;
 }
 .sub-questions-exit.sub-questions-exit-active {
@@ -248,4 +283,4 @@ h6 {
 }
 .sub-questions-exit-done {
   opacity: 0;
-}
+} */
