@@ -7,7 +7,7 @@ import './css/Styles.css';
 
 import Home from './pages/Home';
 import Test from './Test';
-import CreateQuestion from './CreateQuestion';
+import CreateQuestions from './pages/CreateQuestions';
 import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './ui-elements/NavMenu';
@@ -50,7 +50,8 @@ const theme = createMuiTheme({
 const styles = theme => ({
   bodyBackground: {
     maxWidth: 1280,
-    margin: 'auto'
+    margin: 'auto',
+    padding: 30,
   },
 });
 
@@ -77,7 +78,7 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                   <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />
-                  <Route exact path='/question/create' render={(props) => <CreateQuestion auth={auth} {...props} />} />
+                  <Route exact path='/question/create' render={(props) => <CreateQuestions auth={auth} {...props} />} />
                   <Route exact path='/questions/index' render={(props) => <ViewQuestions auth={auth} {...props} />} />
                   <Route exact path='/question/:id' render={(props) => <EditQuestion auth={auth} {...props} />} />
                   <Route exact path='/callback' render={(props) => {

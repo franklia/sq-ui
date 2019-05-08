@@ -22,7 +22,7 @@ const styles = theme => ({
   },
   navBar: {
     display: 'flex',
-    marginTop: 30,
+    // marginTop: 30,
   },
   navLinks: {
     textDecoration: 'none',
@@ -73,7 +73,7 @@ class NavMenu extends Component {
               {
                 localStorage.isLoggedIn && (
                   <>
-                    <NavLink to='/question/create' className={classes.navLinks} activeStyle={{color: '#ff5c72'}}>Add Question</NavLink>
+                    <NavLink to='/question/create' className={classes.navLinks} activeStyle={{color: '#ff5c72'}}>Add Questions</NavLink>
                     <NavLink to='/questions/index' className={classes.navLinks} activeStyle={{color: '#ff5c72'}}>Manage Questions</NavLink>
                     <Button onClick={this.logout} variant='contained' color="primary" className={classes.button}>Logout</Button>
                   </>

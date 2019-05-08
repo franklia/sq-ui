@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CreateOrUpdateQuestion from './CreateOrUpdateQuestion';
+import CreateOrUpdateQuestion from './ui-elements/CreateOrUpdateQuestion';
 import { Typography, Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 

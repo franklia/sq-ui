@@ -10,7 +10,7 @@ const styles = theme => ({
   },
   heading: {
     fontSize: 48,
-    marginTop: 100,
+    marginTop: 80,
   },
   subText: {
     fontSize: 18,
@@ -84,7 +84,7 @@ class Home extends Component {
     return (
       <div className={classes.container}>
         <h1 className={classes.heading}>Repetition is the mother of all skill</h1>
-        <p className={classes.subText}>Becoming an expert in any field takes time and dedication. I built Spot Quiz to improve my coding skills, but it can be used to learn anything. Getting started is easy:</p>
+        <p className={classes.subText}>Becoming an expert in your field takes time and dedication. I built Spot Quiz to improve my coding skills, but you can use it to learn anything. Getting started is easy:</p>
         <Grid container justify='center'>
           <Grid item>
             <div className={classes.instructionsContainer}>

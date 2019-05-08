@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
+import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
-import CategoryDropdown from './ui-elements/CategoryDropdown';
-import { Tooltip, Fab, Button, TextField } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import CategoryDropdown from '../ui-elements/CategoryDropdown';
+import { Tooltip, Button, TextField, Link } from '@material-ui/core';
+import AddCircle from '@material-ui/icons/AddCircle';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 import { DragDropContext } from 'react-beautiful-dnd';
-import Column from './ui-elements/Column';
+import Column from '../ui-elements/Column';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory({
@@ -14,11 +15,44 @@ const history = createBrowserHistory({
 });
 
 const styles = theme => ({
-  fab: {
-    margin: theme.spacing.unit,
+  addSubQuestionRow: {
+    margin: '10px 0 40px 0',
+  },
+  addCircleIcon: {
+    position: 'relative',
+    top: 5,
+    margin: '0 5px 0 7px',
+  },
+  helpOutlineIcon: {
+    margin: '0 0 0 5px',
+    fontSize: 18,
+    position: 'relative',
+    top: 3,
   },
   topic: {
     display: 'block',
+    margin: '0 0 40px 0',
+    '& p': {
+      margin: '10px 0'
+    },
+  },
+  htmlTooltip: {
+    backgroundColor: '#627a9c',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 250,
+    border: '1px solid #dadde9',
+    opacity: 1,
+    padding: 20,
+  },
+  toolTipPopper: {
+    opacity: 1,
+  },
+  toolTipSubText: {
+    lineHeight: 1.3,
+    color: '#fff',
+  },
+  addSubQuestionLink: {
+    color: '#627a9c',
   },
 });
 
@@ -345,7 +379,7 @@ class CreateOrUpdateQuestion extends Component {
       className={classes.topic}
       value={this.state.topic}
       placeholder='Enter a topic'
-      helperText='When you have 2 or more questions, you must add a topic to unify the subject matter.'
+      helperText='For two or more questions, add a topic to describe the subject (e.g. "ES6 Functions")'
       required={true}
       InputLabelProps={{ shrink: true }}
       onChange={this.handleDataChange('topic')}
@@ -376,27 +410,45 @@ class CreateOrUpdateQuestion extends Component {
             {this.state.columnOrder.map(columnId => {
               const column = this.state.columns[columnId];
               const questions = column.questionIds.map(questionId => this.state.questions[questionId]);
-              const displayDeleteIcon = (() => column.questionIds.length >= 2 ? true : false)();
+              const displayHeadingAndDeleteIcon = (() => column.questionIds.length >= 2 ? true : false)();
 
               return <Column
                         key={column.id}
                         column={column}
                         questions={questions}
                         updateInput={this.onChangeInput.bind(this)} deleteSubQuestion={this.deleteSubQuestion.bind(this)}
-                        displayDeleteIcon={displayDeleteIcon}
+                        displayHeadingAndDeleteIcon={displayHeadingAndDeleteIcon}
                       />;
             })}
           </DragDropContext>
-          <Tooltip title='Add New Sub Question' aria-label='Add'>
-            <Fab color='primary' aria-label='Add' className={classes.fab} onClick={this.addSubQuestion}>
-              <AddIcon />
-            </Fab>
-          </Tooltip>
-          <Button
-            variant='contained' color='primary' style={{marginTop: 25}} type='submit'
-          >
-            {this.props.buttonText} Question
-          </Button>
+          <div className={classes.addSubQuestionRow}>
+            <AddCircle className={classes.addCircleIcon} />
+            <Link className={classes.addSubQuestionLink} onClick={this.addSubQuestion}>Add sub question</Link>
+            <Tooltip
+              classes={{
+                tooltip: classes.htmlTooltip,
+                popper: classes.toolTipPopper,
+              }}
+              title={
+                <React.Fragment>
+                  <p className={classes.toolTipSubText}>Sometimes you'll want to ask a series of questions in a row. For example:</p>
+                  <p className={classes.toolTipSubText}>1. What is ES6?</p>
+                  <p className={classes.toolTipSubText}>2. What is the syntax for writing javascript functions in ES6?</p>
+                  <p className={classes.toolTipSubText}>By adding sub questions you can ensure these questions are asked consecutively during otherwise random tests.</p>
+                </React.Fragment>
+              }
+              aria-label='Add'
+            >
+              <HelpOutline className={classes.helpOutlineIcon} />
+            </Tooltip>
+          </div>
+          <div>
+            <Button
+              variant='contained' className='button-general' type='submit'
+            >
+              {this.props.buttonText} Question
+            </Button>
+          </div>
         </form>
       </>
     );

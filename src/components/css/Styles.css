@@ -11,15 +11,15 @@ a:hover , .link:hover {
   text-decoration: none !important;
 }
 
-/* .page-content-wrapper {
+.page-content-wrapper {
   margin: 20px;
-} */
+}
 
 /* Typography */
 
 p, div {
   font-size: 16px;
-  color: #7d93b2;
+  color: #627a9c;
   font-family: Nunito, sans-serif;
 }
 
@@ -31,23 +31,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 30px;
 }
 
 h2 {
-  font-size: 35px;
-}
-
-h3 {
   font-size: 28px;
 }
 
+h3 {
+  font-size: 26px;
+}
+
 h4 {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 h5 {
-  font-size: 18px;
+  font-size: 22px;
 }
 
 h6 {
@@ -65,6 +65,26 @@ h6 {
   box-shadow: 0 10px 15px rgba(125,147,178,.3) !important;
   padding: 8px 40px !important;
   background-color: #ff5c72 !important;
+}
+
+.cta-minor-button {
+  border: 1px solid #ceddf2;
+  backgroundColor: #EFF6FF;
+  fontWeight: 600px;
+  textDecoration: none;
+  fontSize: 18;
+  display: inline-flex;
+  color: #7d93b2;
+  textTransform: capitalize;
+  borderRadius: 8px;
+  boxShadow: none;
+  padding: 8px 40px;
+}
+
+.cta-minor-button:hover: {
+  backgroundColor: #9eb4d2;
+  borderColor: #9eb4d2;
+  color: #fff;
 }
 
 /* Test Page Styles */

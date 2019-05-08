@@ -27,7 +27,7 @@ class Column extends Component {
                   index={index}
                   updateInput={this.props.updateInput}
                   deleteSubQuestion={this.props.deleteSubQuestion}
-                  displayDeleteIcon={this.props.displayDeleteIcon}
+                  displayHeadingAndDeleteIcon={this.props.displayHeadingAndDeleteIcon}
                 />)}
               {provided.placeholder}
             </div>

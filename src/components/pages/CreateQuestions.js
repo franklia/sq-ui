@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CreateOrUpdateQuestion from './CreateOrUpdateQuestion';
+import CreateOrUpdateQuestion from '../ui-elements/CreateOrUpdateQuestion';
 import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -27,8 +27,8 @@ class CreateQuestion extends Component {
 
   render(){
     return (
-      <div style={{marginTop: 10}}>
-        <h4>Add a question</h4>
+      <div style={{marginTop: 30}}>
+        <h1>Add a question</h1>
         <CreateOrUpdateQuestion auth={this.props.auth} type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
         <Snackbar
           anchorOrigin={{
