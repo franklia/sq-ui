@@ -22,7 +22,7 @@ const styles = theme => ({
   },
   navBar: {
     display: 'flex',
-    // marginTop: 30,
+    marginBottom: 30,
   },
   navLinks: {
     textDecoration: 'none',

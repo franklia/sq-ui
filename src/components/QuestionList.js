@@ -20,7 +20,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button
+  Button,
+  CircularProgress
 } from '@material-ui/core';
 
 const styles = theme => ({
@@ -30,6 +31,9 @@ const styles = theme => ({
   },
   table: {
     minWidth: 700,
+    '& th': {
+      fontSize: 16,
+    }
   },
   category: {
     textTransform: 'capitalize',
@@ -41,6 +45,7 @@ class QuestionList extends React.Component {
     super(props);
 
     this.state = {
+      receivedData: false,
       questionsData: [],
       auth0_id: '',
       deleteId: '',
@@ -60,7 +65,11 @@ class QuestionList extends React.Component {
   getQuestions = (userId) => {
     axios.get('http://localhost:3001/api/questions/index', { params: { userId: userId } })
       .then((res) => {
-        this.setState({questionsData: res.data});
+        console.log(res.data);
+        this.setState({
+          questionsData: res.data,
+          receivedData: true,
+        });
       }
     )
       .catch(error => console.log(error))
@@ -89,83 +98,95 @@ class QuestionList extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { questionsData } = this.state;
+    const { receivedData, questionsData } = this.state;
 
-    return (
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Category</TableCell>
-              <TableCell>Questions</TableCell>
-              <TableCell>Answers</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {questionsData.map(question => (
-              <TableRow key={question._id}>
-                <TableCell className={classes.category}>{question.category}</TableCell>
-                <TableCell>
-                  {question.questions.map((question, index) => {
-                    let adjustedIndex = index + 1;
-                    return ` ${adjustedIndex}. ${question.sub_question}`;
-                  })}
-                </TableCell>
-                <TableCell>
-                  {question.questions.map((question, index) => {
-                    let adjustedIndex = index + 1;
-                    return ` ${adjustedIndex}. ${question.sub_answer}`;
-                  })}
-                </TableCell>
-                <TableCell>{question.status.toString()}</TableCell>
-                <TableCell className='link'>
-                  <Link component={RouterLink} to={`/question/${question._id}`} >
-                    <IconButton>
-                      <EditIcon />
-                    </IconButton>
-                  </Link>
-                </TableCell>
-                <TableCell className='link'>
-                  <IconButton>
-                    <DeleteForeverIcon
-                      onClick={() => this.openDeleteModal(question._id)}
-                    />
-                  </IconButton>
-                </TableCell>
+    if (receivedData === false){
+      return (
+        <>
+          <CircularProgress className={classes.progress} />
+          <p>Loading questions...</p>
+        </>
+      );
+    } else if (receivedData === true && questionsData.length === 0) {
+      return (
+        <p>You haven't added any questions yet. <Link component={RouterLink} to='/question/create'  className={classes.link}>Add some now</Link></p>
+      )
+    } else if (receivedData === true && questionsData.length > 0) {
+      return (
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Category</TableCell>
+                <TableCell>Questions</TableCell>
+                <TableCell>Answers</TableCell>
+                {/* <TableCell>Status</TableCell> */}
+                <TableCell>Edit</TableCell>
+                <TableCell>Delete</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Dialog
-          open={this.state.dialogOpen}
-          onClose={this.closeModal}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Delete Question</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you wish to delete this question?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeModal} color="primary">
-              No
-            </Button>
-            <Button onClick={this.deleteQuestion} color="primary" autoFocus>
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    );
+            </TableHead>
+            <TableBody>
+              {questionsData.map(question => (
+                <TableRow key={question._id}>
+                  <TableCell className={classes.category}>{question.categoryName}</TableCell>
+                  <TableCell>
+                    {question.questions.map((question, index) => {
+                      let adjustedIndex = index + 1;
+                      return ` ${adjustedIndex}. ${question.sub_question}`;
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    {question.questions.map((question, index) => {
+                      let adjustedIndex = index + 1;
+                      return ` ${adjustedIndex}. ${question.sub_answer}`;
+                    })}
+                  </TableCell>
+                  {/* <TableCell>{question.status.toString()}</TableCell> */}
+                  <TableCell className='link'>
+                    <Link component={RouterLink} to={`/question/${question._id}`} >
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
+                    </Link>
+                  </TableCell>
+                  <TableCell className='link'>
+                    <IconButton>
+                      <DeleteForeverIcon
+                        onClick={() => this.openDeleteModal(question._id)}
+                      />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Dialog
+            open={this.state.dialogOpen}
+            onClose={this.closeModal}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Delete Question</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you wish to delete this question?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.closeModal} color="primary">
+                No
+              </Button>
+              <Button onClick={this.deleteQuestion} color="primary" autoFocus>
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      )
+    }
   }
 }
 
-// are propTypes required for material ui??
 QuestionList.propTypes = {
   classes: PropTypes.object.isRequired,
 };

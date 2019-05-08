@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { FormControl, Select, Button, MenuItem, InputLabel, FormHelperText, CircularProgress, Link } from '@material-ui/core';
@@ -36,9 +35,6 @@ const styles = theme => ({
     },
     margin: '15px 0 0 40px',
   },
-  selectEmpty: {
-    // marginTop: theme.spacing.unit * 2,
-  },
 });
 
 class CategoryDropdown extends Component {
@@ -69,7 +65,7 @@ class CategoryDropdown extends Component {
     if (receivedCategories === false){
       return (
         <>
-          <CircularProgress className={classes.progress} />
+          <CircularProgress />
           <p>Loading categories...</p>
         </>
       );
@@ -87,7 +83,6 @@ class CategoryDropdown extends Component {
               onChange={this.props.handleCategoryChange}
               name='category'
               required
-              className={classes.selectEmpty}
               variant='outlined'
             >
               {this.props.userCategories.map(category =>
@@ -105,7 +100,8 @@ class CategoryDropdown extends Component {
 
       return (
         <>
-          <p>You haven't created any categories. <Link className={classes.link} onClick={() => this.openModal('createCategoryModalOpen')}>Create one now</Link> (it takes 10 seconds)</p>
+          <p>You haven't created any categories.
+          <Link className={classes.link} onClick={() => this.openModal('createCategoryModalOpen')}> Create one now</Link> (it takes 10 seconds)</p>
           <ModalCreateCategory
             createCategoryModalOpen={this.state.createCategoryModalOpen}
             closeModal={this.closeModal}

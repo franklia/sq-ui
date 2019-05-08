@@ -379,7 +379,7 @@ class CreateOrUpdateQuestion extends Component {
       className={classes.topic}
       value={this.state.topic}
       placeholder='Enter a topic'
-      helperText='For two or more questions, add a topic to describe the subject (e.g. "ES6 Functions")'
+      helperText='For two or more sub questions, add a topic to describe the subject (e.g. "ES6 Functions")'
       required={true}
       InputLabelProps={{ shrink: true }}
       onChange={this.handleDataChange('topic')}

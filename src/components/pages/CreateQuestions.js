@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 import CreateOrUpdateQuestion from '../ui-elements/CreateOrUpdateQuestion';
 import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+
+const styles = theme => ({
+  // pageContainer: {
+    // margin: 30,
+  // },
+});
 
 class CreateQuestion extends Component {
 
@@ -26,8 +34,11 @@ class CreateQuestion extends Component {
   }
 
   render(){
+
+    const { classes } = this.props;
+
     return (
-      <div style={{marginTop: 30}}>
+      <div className={classes.pageContainer}>
         <h1>Add a question</h1>
         <CreateOrUpdateQuestion auth={this.props.auth} type='create' buttonText='Save' postUrl='http://localhost:3001/api/question/create'/>
         <Snackbar
@@ -59,4 +70,8 @@ class CreateQuestion extends Component {
   }
 }
 
-export default CreateQuestion;
+CreateQuestion.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(CreateQuestion);
