@@ -26,7 +26,7 @@ const styles = theme => ({
     width: '15%',
   },
   table: {
-    '& th': {
+    '& th, td': {
       fontSize: 16,
     },
     marginBottom: 30,

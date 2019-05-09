@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { FormControl, Select, Button, MenuItem, InputLabel, FormHelperText, CircularProgress, Link } from '@material-ui/core';
+import { FormControl, Select, Button, InputLabel, FormHelperText, CircularProgress, Link } from '@material-ui/core';
 import ModalCreateCategory from './ModalCreateCategory';
 
 const styles = theme => ({
@@ -12,9 +12,6 @@ const styles = theme => ({
   formControl: {
     margin: '0 0 40px 0',
     width: 350,
-  },
-  categoryLabel: {
-    transform: 'translate(3px, 24px) scale(1)',
   },
   manageCategoriesButton: {
     border: '1px solid #ceddf2',
@@ -72,25 +69,24 @@ class CategoryDropdown extends Component {
     } else if (receivedCategories === true && userCategories.length > 0) {
       return (
         <>
-          <FormControl className={classes.formControl}>
-            <InputLabel
-              className={classes.categoryLabel}
-            >
-              Choose a category
-            </InputLabel>
+          <FormControl required className={classes.formControl}>
+            <InputLabel htmlFor="age-native-required">Choose a category</InputLabel>
             <Select
               value={this.props.category}
               onChange={this.props.handleCategoryChange}
               name='category'
               required
-              variant='outlined'
+              native={true}
+              inputProps={{
+                id: 'age-native-required',
+              }}
             >
+              <option value=''></option>
               {this.props.userCategories.map(category =>
-                <MenuItem key={category._id} id={category._id} value={category._id}>{category.name}</MenuItem>
+                <option key={category._id} id={category._id} value={category._id}>{category.name}</option>
               )}
             </Select>
-
-            <FormHelperText>A category contains questions on a similar theme (e.g. Javascript)</FormHelperText>
+            <FormHelperText>Categories contains questions on a similar theme (e.g. Javascript)</FormHelperText>
           </FormControl>
           <Button href='/categories' className={classes.manageCategoriesButton}>Manage Categories</Button>
 

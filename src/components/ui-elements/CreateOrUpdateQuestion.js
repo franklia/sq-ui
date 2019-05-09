@@ -443,9 +443,7 @@ class CreateOrUpdateQuestion extends Component {
             </Tooltip>
           </div>
           <div>
-            <Button
-              variant='contained' className='button-general' type='submit'
-            >
+            <Button variant='contained' className='button-general' type='submit'>
               {this.props.buttonText} Question
             </Button>
           </div>
