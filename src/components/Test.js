@@ -1,41 +1,9 @@
 import React, { Component } from 'react';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper } from '@material-ui/core';
+import { Button, Grid, Paper, Link } from '@material-ui/core';
 // import TouchApp from '@material-ui/icons/TouchApp';
 import axios from 'axios';
-
-// const styles = theme => ({
-//   wrapper: {
-//
-//   },
-//   header: {
-//     marginTop: 50,
-//     marginBottom: 40,
-//     textAlign: 'center',
-//   },
-//   categoryPaper: {
-//     textTransform: 'uppercase',
-//     padding: '40px 20px',
-//   },
-//   cardColumn: {
-//     maxWidth: 500,
-//   },
-//   question: {
-//     background: '#fff',
-//     marginTop: 15,
-//     whiteSpace: 'pre-line'
-//   },
-//   answer: {
-//     background: '#f6f8ff'
-//   },
-//   cardActions: {
-//     color: 'grey',
-//   },
-//   capitalize: {
-//     textTransform: 'capitalize'
-//   }
-// });
 
 export default class Test extends Component {
 
@@ -114,27 +82,28 @@ export default class Test extends Component {
       testCategoryId: '',
       testCategoryName: '',
       subQuestionsToAsk: [],
-      subQuestionsAsked: []
+      subQuestionsAsked: [],
+      subQuestionBeingAsked: []
     });
   };
 
   renderHeader = () => {
     if(this.state.testCategoryId === undefined || this.state.testCategoryId === '') {
       return (
-        <div className='header'>
-          <h1>Choose a category to test</h1>
+        <>
+          <h1 className='center-align'>Choose a category to test</h1>
           <Grid
             container
             direction='row'
-            justify='center'
             alignItems='flex-start'
+            justify='center'
             spacing={40}
           >
             {this.state.adminCategories.map(category => (
 
                 <Grid item lg={3} key={category._id}>
                   <Paper
-                    className='categoryPaper'
+                    className='test-category-paper'
                     onClick={this.setCategory}
                     categoryid={category._id}
                     categoryname={category.name}
@@ -144,13 +113,24 @@ export default class Test extends Component {
                 </Grid>
             ))}
           </Grid>
-        </div>
+        </>
       );
     } else {
       return (
-        <div className='header'>
-          <h1>You're currently testing <span className='capitalize'>{this.state.testCategoryName}</span></h1>
-          <span style={{cursor: 'pointer', color: 'blue'}} onClick={this.resetCategory}>(change category)</span>
+        <div className='test-header'>
+          <Grid
+            container
+            direction='row'
+            alignItems='flex-start'
+            justify='center'
+            spacing={40}
+          >
+            <Grid item lg={6} className='test-in-progress'>
+              <h1 className='center-align'>Test in progress...</h1>
+              <h6 className='test-sub-heading center-align'>Category being tested: <span className='word-highlight'>{this.state.testCategoryName}</span></h6>
+              <button onClick={this.resetCategory} className='test-manage-categories-button'>Change Category</button>
+            </Grid>
+          </Grid>
         </div>
       );
     }
@@ -201,6 +181,14 @@ export default class Test extends Component {
             timeout={900}
             classNames='flip-container'
           >
+          <Grid
+            container
+            direction='row'
+            alignItems='flex-start'
+            justify='center'
+            spacing={40}
+          >
+            <Grid item lg={6}>
             <div id='question-card' class='flip-container'>
             	<div class='flipper'>
                 {/* Front of card */}
@@ -268,6 +256,8 @@ export default class Test extends Component {
                 </div>
             	</div>
             </div>
+            </Grid>
+          </Grid>
           </CSSTransition>
         </TransitionGroup>
       </>

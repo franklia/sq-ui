@@ -67,27 +67,79 @@ h6 {
   background-color: #ff5c72 !important;
 }
 
-.cta-minor-button {
-  border: 1px solid #ceddf2;
-  backgroundColor: #EFF6FF;
-  fontWeight: 600px;
-  textDecoration: none;
-  fontSize: 18;
-  display: inline-flex;
-  color: #7d93b2;
-  textTransform: capitalize;
-  borderRadius: 8px;
-  boxShadow: none;
-  padding: 8px 40px;
+.word-highlight {
+  color: #ff5c72;
 }
 
-.cta-minor-button:hover: {
-  backgroundColor: #9eb4d2;
-  borderColor: #9eb4d2;
-  color: #fff;
+.center-align {
+  text-align: center;
 }
 
 /* Test Page Styles */
+
+.test-header {
+  /* margin-bottom: 40px; */
+}
+
+.test-category-paper {
+  text-transform: uppercase;
+  padding: 40px 20px;
+  margin-top: 30px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.test-sub-heading {
+  margin: 40px 0 15px 0;
+}
+
+.test-card-column {
+  max-width: 500px;
+}
+
+.test-question {
+  background: #fff;
+  margin-top: 15px;
+  white-space: pre-line;
+}
+
+.test-answer {
+  background: #f6f8ff;
+}
+
+.test-card-actions {
+  color: grey;
+}
+
+.test-capitalize {
+  text-transform: capitalize;
+}
+
+.test-manage-categories-button {
+  border: 1px solid #ceddf2;
+  background-color: #EFF6FF;
+  font-weight: 600px;
+  text-decoration: none;
+  font-size: 14px;
+  color: #7d93b2;
+  border-radius: 8px;
+  box-shadow: none;
+  display: table;
+  margin: auto;
+  /* padding: 4px 20px;
+  margin: 15px 0 0 40px; */
+},
+
+.test-manage-categories-button:hover {
+  background-color: #9eb4d2;
+  border-color: #9eb4d2;
+  color: #fff;
+}
+
+.test-in-progress {
+  padding-top: 0 !important;
+}
 
 /* Parent Question Transition Group */
 

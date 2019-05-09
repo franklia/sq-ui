@@ -7,7 +7,6 @@ import DragIndicator from '@material-ui/icons/DragIndicator';
 
 const styles = {
   container: {
-   // padding: '20px 30px',
    marginBottom: 20,
    borderRadius: 8,
    boxShadow: '0 8px 15px rgba(125,147,178,.25)',
@@ -17,6 +16,9 @@ const styles = {
      boxShadow: '0 20px 30px rgba(125,147,178,.15)',
     }
   },
+  questionContainer: {
+    maxWidth: '80%',
+  },
   questionAndAnswerContainer: {
     padding: '20px 30px',
   },
@@ -25,7 +27,6 @@ const styles = {
     padding: '11px 30px 0',
     minHeight: 53,
     borderRadius: '8px 8px 0 0',
-
   },
   heading: {
     float: 'left',
@@ -75,6 +76,7 @@ class SubQuestion extends Component {
     );
 
     return (
+      <div className={classes.questionContainer}>
       <Draggable draggableId={this.props.question.id} index={this.props.index}>
         {(provided) => (
           <div className={classes.container}
@@ -123,6 +125,7 @@ class SubQuestion extends Component {
           </div>
         )}
       </Draggable>
+      </div>
     )
   }
 }

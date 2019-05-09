@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
@@ -9,13 +10,13 @@ const styles = theme => ({
     textAlign: 'center',
   },
   heading: {
-    fontSize: 48,
-    marginTop: 80,
+    fontSize: 35,
+    margin: '40px 0',
   },
   subText: {
     fontSize: 18,
-    lineHeight: '36px',
-    marginBottom: 40,
+    lineHeight: '45px',
+    marginBottom: 50,
     maxWidth: 800,
     margin: 'auto',
   },
@@ -83,8 +84,8 @@ class Home extends Component {
 
     return (
       <div className={classes.container}>
-        <h1 className={classes.heading}>Repetition is the mother of all skill</h1>
-        <p className={classes.subText}>Becoming an expert in your field takes time and dedication. I built Spot Quiz to improve my coding skills, but you can use it to learn anything. Getting started is easy:</p>
+        <h1 className={classes.heading}>Skills are learned via <span className='word-highlight'>repetition</span></h1>
+        <p className={classes.subText}>Becoming an expert in your field takes time and dedication. Spot Quiz was created to help improve the author's coding skills, but you can use it to learn anything. Getting started is easy...</p>
         <Grid container justify='center'>
           <Grid item>
             <div className={classes.instructionsContainer}>
@@ -100,7 +101,7 @@ class Home extends Component {
         </Grid>
         <Grid container spacing={40} justify='center' className={classes.buttonRow}>
           <Grid item>
-            <Button href='/test' variant='contained' className='button-general'>Test Drive</Button>
+            <Button component={Link} to='/test' variant='contained' className='button-general'>Test Drive</Button>
           </Grid>
           <Grid item>
             <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
