@@ -12,7 +12,7 @@ import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './ui-elements/NavMenu';
 import EditQuestion from './EditQuestion';
-import Categories from './pages/Categories';
+import ManageCategories from './pages/ManageCategories';
 
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
@@ -85,7 +85,7 @@ class App extends Component {
                     handleAuthentication(props);
                     return <Callback {...props} />
                   }}/>
-                  <Route exact path="/categories" render={(props) => <Categories auth={auth} {...props} />} />
+                  <Route exact path="/categories" render={(props) => <ManageCategories auth={auth} {...props} />} />
                   <Route component={ Notfound } />
                 </Switch>
               </div>
