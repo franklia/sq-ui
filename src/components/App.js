@@ -13,10 +13,10 @@ import Notfound from './Notfound';
 import NavMenu from './ui-elements/NavMenu';
 import EditQuestion from './EditQuestion';
 import ManageCategories from './pages/ManageCategories';
-
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
 import history from './helpers/history';
+import Copyright from '@material-ui/icons/Copyright';
 
 const theme = createMuiTheme({
   palette: {
@@ -52,7 +52,23 @@ const styles = theme => ({
     maxWidth: 1280,
     margin: 'auto',
     padding: 30,
+    '@media (max-width: 1150px)': {
+      padding: 10,
+    },
   },
+  footerContainer: {
+    maxWidth: 1280,
+    padding: '3px 40px 10px',
+    color: '#fff',
+    margin: 'auto',
+    fontSize: 18,
+    fontWeight: 800,
+  },
+  copyright: {
+    position: 'relative',
+    top: 6,
+    marginRight: 10,
+  }
 });
 
 const auth = new Auth();
@@ -69,6 +85,7 @@ class App extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
+        <div className='page-wrapper'>
         <MuiThemeProvider theme={theme}>
         <CssBaseline />
           <Router history={history} component={Home}>
@@ -92,10 +109,15 @@ class App extends Component {
             </div>
           </Router>
         </MuiThemeProvider>
+        </div>
+        <footer class='footer'>
+          <div className={classes.footerContainer}>
+            <Copyright className={classes.copyright} /><span>Frank Liardet</span>
+          </div>
+        </footer>
       </React.Fragment>
     );
   }
 }
 
-// export default ;
 export default withStyles(styles)(App);

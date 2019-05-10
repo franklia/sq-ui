@@ -1,7 +1,27 @@
+/* Sticky Footer */
+
 html, body {
   height: 100%;
-  /* background-color: #EFF6FF; */
 }
+
+body {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.page-wrapper {
+  flex: 1 0 auto;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: #7d93b2;
+  color: #fff;
+}
+
+/* Defaults */
 
 a, .link {
   cursor: pointer;
@@ -73,6 +93,12 @@ h6 {
 
 .center-align {
   text-align: center;
+}
+
+.body-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 /* Test Page Styles */
