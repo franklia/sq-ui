@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper, Link } from '@material-ui/core';
+import { Button, Grid, Paper, Hidden } from '@material-ui/core';
 // import TouchApp from '@material-ui/icons/TouchApp';
 import axios from 'axios';
 
@@ -101,7 +101,7 @@ export default class Test extends Component {
           >
             {this.state.adminCategories.map(category => (
 
-                <Grid item lg={3} key={category._id}>
+                <Grid item lg={3} md={3} sm={6} xs={12} key={category._id}>
                   <Paper
                     className='test-category-paper'
                     onClick={this.setCategory}
@@ -125,10 +125,12 @@ export default class Test extends Component {
             justify='center'
             spacing={40}
           >
-            <Grid item lg={6} className='test-in-progress'>
-              <h1 className='center-align'>Test in progress...</h1>
+            <Grid item lg={6} className='test-in-progress-text-container'>
+              <Hidden xsDown>
+                <h1 className='center-align test-in-progress-heading'>Test in progress...</h1>
+              </Hidden>
               <h6 className='test-sub-heading center-align'>Category being tested: <span className='word-highlight'>{this.state.testCategoryName}</span></h6>
-              <button onClick={this.resetCategory} className='test-manage-categories-button'>Change Category</button>
+              <button onClick={this.resetCategory} className='test-change-categories-button'>Change Category</button>
             </Grid>
           </Grid>
         </div>
@@ -137,7 +139,11 @@ export default class Test extends Component {
   };
 
   flipCard = () => {
-    document.querySelector('#question-card').classList.toggle('flip');
+    setTimeout(
+      () => {
+        document.querySelector('#question-card').classList.toggle('flip');
+      }, 100
+    )
   };
 
   revealAnswer = () => {
@@ -193,11 +199,13 @@ export default class Test extends Component {
             	<div class='flipper'>
                 {/* Front of card */}
             		<div class='front' id='front-of-card'>
-            			<h1>Let's Play!</h1>
-                  <h1>?</h1>
+            			<h1>Question</h1>
+                  <h1 class='front-question-mark'>?</h1>
             		</div>
                 {/* Back of card containing sub questions */}
-        		    <div class='back' id='back-of-card'>
+        		     <div className='back' id='back-of-card'>
+                {/*  <div className='card-border-top'>
+                  </div>*/}
                   {/* Display summary and transition for sub questions already asked */}
                   {this.state.subQuestionsAsked !== [] || this.state.subQuestionsAsked !== null ?
                     this.state.subQuestionsAsked.map(subQuestion => (
@@ -210,7 +218,7 @@ export default class Test extends Component {
                           classNames='sub-questions'
                         >
                           <div className='sub-questions-asked-container'>
-                            <span>{`${subQuestion.id} of ${this.state.subQuestionsNumber}`}</span>
+                            <span className='test-question-numbering'>{`${subQuestion.id} of ${this.state.subQuestionsNumber}`}</span>
                             <p>{subQuestion.sub_question}</p>
                             <div className='sub-question-asked-answer-wrapper'>
                               <p className='sub-question-asked-answer'>{subQuestion.sub_answer}</p>
@@ -223,8 +231,8 @@ export default class Test extends Component {
                   }
                   {/* Display sub question currently being asked */}
                   <div class='back-card-question'>
-                    <span>{`${this.state.subQuestionBeingAsked[0].id} of ${this.state.subQuestionsNumber}`}</span>
-              			<p>{this.state.subQuestionBeingAsked[0].sub_question}</p>
+                    <span className='test-question-numbering'>{`${this.state.subQuestionBeingAsked[0].id} of ${this.state.subQuestionsNumber}`}</span>
+              			<p className='test-question-paragraph'>{this.state.subQuestionBeingAsked[0].sub_question}</p>
                     {this.state.showAnswerButtonDisplayed === true ?
                       <Button
                         onClick={this.revealAnswer}

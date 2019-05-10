@@ -104,7 +104,7 @@ h6 {
 /* Test Page Styles */
 
 .test-header {
-  /* margin-bottom: 40px; */
+
 }
 
 .test-category-paper {
@@ -124,7 +124,7 @@ h6 {
   max-width: 500px;
 }
 
-.test-question {
+/* .test-question {
   background: #fff;
   margin-top: 15px;
   white-space: pre-line;
@@ -132,20 +132,20 @@ h6 {
 
 .test-answer {
   background: #f6f8ff;
-}
+} */
 
 .test-card-actions {
   color: grey;
 }
 
-.test-capitalize {
+/* .test-capitalize {
   text-transform: capitalize;
-}
+} */
 
-.test-manage-categories-button {
+.test-change-categories-button {
   border: 1px solid #ceddf2;
   background-color: #EFF6FF;
-  font-weight: 600px;
+  font-weight: 500;
   text-decoration: none;
   font-size: 14px;
   color: #7d93b2;
@@ -153,19 +153,24 @@ h6 {
   box-shadow: none;
   display: table;
   margin: auto;
-  /* padding: 4px 20px;
-  margin: 15px 0 0 40px; */
-},
+  padding: 6px 10px;
+}
 
-.test-manage-categories-button:hover {
-  background-color: #9eb4d2;
-  border-color: #9eb4d2;
+.test-change-categories-button:hover {
+  background-color: #9eb4d2 !important;
+  border-color: #9eb4d2 ;
   color: #fff;
 }
 
-.test-in-progress {
+.test-in-progress-text-container {
   padding-top: 0 !important;
 }
+
+.test-question-paragraph {
+  white-space: pre-wrap;
+}
+
+
 
 /* Parent Question Transition Group */
 
@@ -174,12 +179,12 @@ h6 {
 }
 .flip-container-appear.flip-container-appear-active {
   opacity: 1;
-  transition: opacity 900ms linear;
+  transition: opacity 300ms linear;
 }
-.flip-container-appear-done: {
+/* .flip-container-appear-done: {
 
-}
-.flip-container-enter {
+} */
+/* .flip-container-enter {
   opacity: 0;
 }
 .flip-container-enter.flip-container-enter-active {
@@ -198,7 +203,7 @@ h6 {
 }
 .flip-container-exit-done {
   opacity: 0;
-}
+} */
 
 
 /* entire container, keeps perspective */
@@ -217,8 +222,6 @@ h6 {
 
 .flip-container, .front, .back {
 	width: 600px;
-	/* height: 480px; */
-  /* min-height: 280px; */
 }
 
 /* flip speed goes here */
@@ -232,15 +235,11 @@ h6 {
 /* hide back of pane during swap */
 .front, .back {
 	backface-visibility: hidden;
-
 	position: absolute;
 	top: 0;
 	left: 0;
-
   border-radius: 10px;
   background-color: #fff;
-  /* height: 300px;
-  width: 300px; */
   box-shadow: 0px 7px 8px -4px rgba(0,0,0,0.2), 0px 13px 19px 2px rgba(0,0,0,0.14), 0px 5px 24px 4px rgba(0,0,0,0.12);
 }
 
@@ -249,9 +248,25 @@ h6 {
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
-  /* background: linear-gradient(90deg,#ff5c72,#a485f2); */
-  background-color: #e5f0ff;
+  background: linear-gradient(90deg,#ff5c72,#a485f2);
+  /* background-color: #ff5c72; */
+  /* background-color: #e5f0ff; */
+  color: #fff;
   height: 500px;
+  opacity: 0.9;
+}
+
+.front h1 {
+  font-size: 70px;
+  text-align: center;
+  color: #fff;
+  margin: 90px 0 0 0;
+  font-weight: 800;
+}
+
+.front-question-mark {
+  font-size: 150px !important;
+  margin: 0 !important;
 }
 
 /* back, initially hidden pane */
@@ -259,6 +274,13 @@ h6 {
 	transform: rotateY(180deg);
   min-height: 500px;
   margin-bottom: 50px;
+  border-top: 5px solid #7d93b2;
+  padding: 20px;
+}
+
+.card-border-top {
+  min-height: 5px;
+  background: linear-gradient(90deg,#ff5c72,#a485f2);
 }
 
 .flip-container.flip .flipper {
@@ -266,7 +288,6 @@ h6 {
 }
 
 .back-card-question {
-  padding: 20px;
   opacity: 1;
 }
 
@@ -277,9 +298,18 @@ h6 {
 
 .back-card-answer {
   background-color: #E5F0FF;
-  padding: 20px;
   margin: 0 10px 10px 10px;
   border-left: 3px solid;
+}
+
+.test-question-numbering {
+  float: right;
+  margin-bottom: 10px;
+}
+
+.test-question-paragraph {
+  margin: 0px 0 40px;
+  clear: both;
 }
 
 .sub-questions-asked-container {
@@ -400,3 +430,27 @@ h6 {
 .sub-questions-exit-done {
   opacity: 0;
 } */
+
+/* Media Queries */
+
+@media only screen and (max-width: 760px) {
+  .flip-container, .front, .back {
+  	width: 500px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .test-sub-heading {
+    margin-top: 0;
+  }
+
+  .flip-container, .front, .back {
+  	width: 400px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .flip-container, .front, .back {
+  	width: 350px;
+  }
+}

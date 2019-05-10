@@ -28,6 +28,9 @@ const styles = theme => ({
     marginRight: 15,
     '@media (max-width: 1150px)': {
       fontSize: 48,
+    },
+    '@media (max-width: 400px)': {
+      fontSize: 44,
     }
   },
   logoText: {
@@ -37,6 +40,10 @@ const styles = theme => ({
     position: 'relative',
     bottom: 18,
     '@media (max-width: 1150px)': {
+      fontSize: 24,
+      bottom: 15,
+    },
+    '@media (max-width: 600px)': {
       fontSize: 24,
       bottom: 15,
     }

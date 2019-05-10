@@ -50,7 +50,7 @@ const styles = theme => ({
     textTransform: 'capitalize',
     borderRadius: '8px',
     boxShadow: 'none',
-    padding: '8px 40px',
+    padding: '7px 40px',
     '&:hover': {
       backgroundColor: '#9eb4d2',
       borderColor: '#9eb4d2',
