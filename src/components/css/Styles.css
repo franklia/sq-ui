@@ -138,10 +138,6 @@ h6 {
   color: grey;
 }
 
-/* .test-capitalize {
-  text-transform: capitalize;
-} */
-
 .test-change-categories-button {
   border: 1px solid #ceddf2;
   background-color: #EFF6FF;
@@ -165,56 +161,6 @@ h6 {
 .test-in-progress-text-container {
   padding-top: 0 !important;
 }
-
-.test-question-paragraph {
-  white-space: pre-wrap;
-}
-
-
-
-/* Parent Question Transition Group */
-
-.flip-container-appear {
-  opacity: 0;
-}
-.flip-container-appear.flip-container-appear-active {
-  opacity: 1;
-  transition: opacity 300ms linear;
-}
-/* .flip-container-appear-done: {
-
-} */
-/* .flip-container-enter {
-  opacity: 0;
-}
-.flip-container-enter.flip-container-enter-active {
-  opacity: 1;
-  transition: opacity 900ms linear
-}
-.flip-container-enter-done {
-
-}
-.flip-container-exit {
-  opacity: 1;
-}
-.flip-container-exit.flip-container-exit-active {
-  opacity: 0;
-  transition: opacity 1200ms linear
-}
-.flip-container-exit-done {
-  opacity: 0;
-} */
-
-
-/* entire container, keeps perspective */
-/* .flip-container {
-	perspective: 1000px;
-} */
-
-	/* flip the pane when hovered */
-	/* .flip-container:hover .flipper, .flip-container.hover .flipper {
-		transform: rotateY(180deg);
-	} */
 
 .flip-container {
   margin: 30px 0;
@@ -248,9 +194,9 @@ h6 {
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
-  background: linear-gradient(90deg,#ff5c72,#a485f2);
+  /* background: linear-gradient(90deg,#ff5c72,#a485f2); */
   /* background-color: #ff5c72; */
-  /* background-color: #e5f0ff; */
+  background-color: #7d93b2;
   color: #fff;
   height: 500px;
   opacity: 0.9;
@@ -287,38 +233,40 @@ h6 {
 	transform: rotateY(180deg);
 }
 
-.back-card-question {
-  opacity: 1;
+.sub-question-being-asked-container {
+  padding: 10px;
 }
 
-/* .fade {
-  opacity: 0;
-  transition: opacity 1500ms linear;
-} */
-
 .back-card-answer {
-  background-color: #E5F0FF;
-  margin: 0 10px 10px 10px;
-  border-left: 3px solid;
+  font-weight: 800;
+  padding-top: 10px;
 }
 
 .test-question-numbering {
   float: right;
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .test-question-paragraph {
-  margin: 0px 0 40px;
   clear: both;
+  white-space: pre-wrap;
+}
+
+.test-show-answer-button {
+  margin-top: 14px !important;
+}
+
+.test-new-question-button {
+  margin-top: 23px !important;
 }
 
 .sub-questions-asked-container {
   background-color: #E5F0FF;
-  opacity: 0.5;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid;
+  opacity: 0.7;
+  padding: 20px 20px 10px;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 
 .sub-questions-asked-container.closed {
@@ -326,18 +274,25 @@ h6 {
 }
 
 .sub-question-asked-answer-wrapper {
-  padding: 20px 30px;
+  /* padding: 20px 30px; */
 }
+
+/* .sub-question-asked {
+  background-color: #E5F0FF;
+  padding: 10px;
+} */
 
 .sub-question-asked-answer {
-  padding: 0 10px;
-  border-left: 2px solid;
+  /* font-weight: 800; */
+  /* padding: 0 10px; */
+  /* border-left: 2px solid; */
 }
 
-/* .sub-question-asked-answer{
-  margin: 0;
-  padding: 0 20px;
-} */
+.test-line-separator {
+  min-height: 3px;
+  background-color: #ff5c72;
+  max-width: 50px;
+}
 
 /* Answer on back of card */
 .answer-slider {
@@ -353,21 +308,49 @@ h6 {
   max-height: 0;
 }
 
-/* Sub Questions */
+/* Parent Question Transition Group */
 
-.sub-question-asked {
-  background-color: #E5F0FF;
-  padding: 10px;
+.flip-container-appear {
+  opacity: 0;
+}
+.flip-container-appear.flip-container-appear-active {
+  opacity: 1;
+  transition: opacity 300ms linear;
+}
+.flip-container-appear-done: {
+
+}
+.flip-container-enter {
+  opacity: 0;
+}
+.flip-container-enter.flip-container-enter-active {
+  opacity: 1;
+  transition: opacity 900ms linear
+}
+.flip-container-enter-done {
+
+}
+.flip-container-exit {
+  opacity: 0;
+}
+.flip-container-exit.flip-container-exit-active {
+  opacity: 0;
+  transition: opacity 200ms linear
+}
+.flip-container-exit-done {
+  opacity: 0;
 }
 
-/* #back-of-card {
-  transition: width 2s, height 2s;
-}
 
-#back-of-card:hover {
-  width: 0;
-  height: 0;
+/* entire container, keeps perspective */
+/* .flip-container {
+	perspective: 1000px;
 } */
+
+	/* flip the pane when hovered */
+	/* .flip-container:hover .flipper, .flip-container.hover .flipper {
+		transform: rotateY(180deg);
+	} */
 
 /* Sub Question Displayed Transition Group */
 

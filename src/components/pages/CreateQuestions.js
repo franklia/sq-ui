@@ -6,9 +6,9 @@ import { Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
-  // pageContainer: {
-    // margin: 30,
-  // },
+  pageContainer: {
+    margin: '0 30px',
+  },
 });
 
 class CreateQuestion extends Component {

@@ -13,8 +13,8 @@ import {
 } from '@material-ui/core';
 
 const styles = theme => ({
-  root: {
-
+  dialogSubText: {
+    padding: '0 24px 12px 24px',
   },
 });
 
@@ -62,7 +62,7 @@ class ModalCreateCategory extends Component {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">Create New Category</DialogTitle>
-        <DialogContentText>Categories are used to group questions so that you can focus on that category during a test</DialogContentText>
+        <DialogContentText className={classes.dialogSubText}>Categories are used to group questions so that you can focus on that category during a test</DialogContentText>
         <DialogContent>
           <TextField
             id='outlined-name'

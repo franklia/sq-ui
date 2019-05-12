@@ -110,11 +110,12 @@ class App extends Component {
           </Router>
         </MuiThemeProvider>
         </div>
+        {/*
         <footer class='footer'>
           <div className={classes.footerContainer}>
             <Copyright className={classes.copyright} /><span>Frank Liardet</span>
           </div>
-        </footer>
+        </footer> */}
       </React.Fragment>
     );
   }

@@ -203,9 +203,7 @@ export default class Test extends Component {
                   <h1 class='front-question-mark'>?</h1>
             		</div>
                 {/* Back of card containing sub questions */}
-        		     <div className='back' id='back-of-card'>
-                {/*  <div className='card-border-top'>
-                  </div>*/}
+        		    <div className='back' id='back-of-card'>
                   {/* Display summary and transition for sub questions already asked */}
                   {this.state.subQuestionsAsked !== [] || this.state.subQuestionsAsked !== null ?
                     this.state.subQuestionsAsked.map(subQuestion => (
@@ -219,7 +217,8 @@ export default class Test extends Component {
                         >
                           <div className='sub-questions-asked-container'>
                             <span className='test-question-numbering'>{`${subQuestion.id} of ${this.state.subQuestionsNumber}`}</span>
-                            <p>{subQuestion.sub_question}</p>
+                            <p className='test-question-paragraph'>{subQuestion.sub_question}</p>
+                            <div className='test-line-separator'></div>
                             <div className='sub-question-asked-answer-wrapper'>
                               <p className='sub-question-asked-answer'>{subQuestion.sub_answer}</p>
                             </div>
@@ -230,40 +229,41 @@ export default class Test extends Component {
                     : null
                   }
                   {/* Display sub question currently being asked */}
-                  <div class='back-card-question'>
+                  <div class='sub-question-being-asked-container'>
                     <span className='test-question-numbering'>{`${this.state.subQuestionBeingAsked[0].id} of ${this.state.subQuestionsNumber}`}</span>
               			<p className='test-question-paragraph'>{this.state.subQuestionBeingAsked[0].sub_question}</p>
                     {this.state.showAnswerButtonDisplayed === true ?
                       <Button
                         onClick={this.revealAnswer}
                         variant='contained' color='secondary'
+                        className='test-show-answer-button'
                       >
                         Show Answer
                       </Button>
+                      : <div className='test-line-separator'></div>
+                    }
+                    {/* Display sub answer currently being asked */}
+                    {this.state.subAnswerDisplayed === true ?
+                      <div class='back-card-answer'>
+                        <p>{this.state.subQuestionBeingAsked[0].sub_answer}</p>
+                      </div>
                       : null
                     }
-                  </div>
-                  {/* Display sub answer currently being asked */}
-                  {this.state.subAnswerDisplayed === true ?
-                    <div class='back-card-answer'>
-                      <p>{this.state.subQuestionBeingAsked[0].sub_answer}</p>
-                    </div>
-                    : null
-                  }
-                  {/* Display button to trigger new question */}
-                  {this.state.subAnswerDisplayed === true ?
-                    <Button
-                      onClick={this.renderNewQuestion}
-                      variant='contained' color='secondary'
-                      style={{margin: 10}}
-                    >
-                      {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
-                    </Button>
-                    : null
-                  }
-                </div>
-            	</div>
-            </div>
+                    {/* Display button to trigger new question */}
+                    {this.state.subAnswerDisplayed === true ?
+                      <Button
+                        onClick={this.renderNewQuestion}
+                        variant='contained' color='secondary'
+                        className='test-new-question-button'
+                      >
+                        {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
+                      </Button>
+                      : null
+                    }
+                  </div> {/* Finish sub-question-being-asked-container */}
+                </div> {/* Finish back-of-card */}
+            	</div> {/* Finish flipper */}
+            </div> {/* Finish flip-container */}
             </Grid>
           </Grid>
           </CSSTransition>
