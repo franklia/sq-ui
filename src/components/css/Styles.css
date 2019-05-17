@@ -294,6 +294,12 @@ h6 {
   max-width: 50px;
 }
 
+.test-spinner {
+  display: table;
+  margin: auto;
+  margin-top: 50px;
+}
+
 /* Answer on back of card */
 .answer-slider {
   overflow-y: hidden;

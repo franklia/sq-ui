@@ -23,5 +23,7 @@ export default function ConfirmUserCredentials(auth, setAuth0Id, dataFunction) {
         }
       })
     });
+  } else if (localStorage.getItem('isLoggedIn') === null) {
+    console.log('User is not logged in.');
   }
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper, Hidden } from '@material-ui/core';
-// import TouchApp from '@material-ui/icons/TouchApp';
+import { Button, Grid, Paper, Hidden, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 
 export default class Test extends Component {
@@ -11,11 +10,14 @@ export default class Test extends Component {
     super(props);
 
     this.state = {
+      parentQuestionDataReceived: false,
       parentQuestionAsked: [],
       subQuestionsAsked: [],
       subQuestionBeingAsked: [],
       subQuestionsToAsk: [],
       subQuestionsNumber: '',
+      adminCategoriesDataReceived: false,
+      userCategoriesDataReceived: false,
       adminCategories: [],
       userCategories: [],
       testCategoryId: '',
@@ -28,18 +30,32 @@ export default class Test extends Component {
 
   componentDidMount = () => {
     const { auth } = this.props;
-    ConfirmUserCredentials(auth, this.setAuth0Id, this.getCategories);
+    this.getAdminCategories();
+    ConfirmUserCredentials(auth, this.setAuth0Id, this.getUserCategories);
   };
 
   setAuth0Id = id => {
     this.setState({ auth0_id: id })
   };
 
-  getCategories = (userId) => {
-    axios.get('http://localhost:3001/api/questions/index/category?', { params: { userId: userId } })
+  getAdminCategories = () => {
+    axios.get('http://localhost:3001/api/questions/index/admin/categories')
       .then((res) => {
+        console.log(res);
         this.setState({
-          adminCategories: res.data.adminCategories,
+          adminCategoriesDataReceived: true,
+          adminCategories: res.data,
+        }, () => console.log(this.state))
+      })
+      .catch(error => console.log(error))
+  };
+
+  getUserCategories = (userId) => {
+    axios.get('http://localhost:3001/api/questions/index/user/categories?', { params: { userId: userId } })
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          userCategoriesDataReceived: true,
           userCategories: res.data.userCategories,
         }, () => console.log(this.state))
       })
@@ -55,6 +71,7 @@ export default class Test extends Component {
         const subsequentSubQuestions = res.data.questions.slice(1);
         const subQuestionsNumber = res.data.questions.length;
         this.setState({
+          parentQuestionDataReceived: true,
           parentQuestionAsked: [parentQuestion],
           subQuestionBeingAsked: [firstSubQuestion],
           subQuestionsToAsk: subsequentSubQuestions,
@@ -92,6 +109,15 @@ export default class Test extends Component {
       return (
         <>
           <h1 className='center-align'>Choose a category to test</h1>
+
+          {
+            this.state.adminCategoriesDataReceived === false && (
+              <div className='test-spinner'>
+                <CircularProgress />
+              </div>
+            )
+          }
+
           <Grid
             container
             direction='row'
@@ -155,7 +181,9 @@ export default class Test extends Component {
 
   renderNewQuestion = () => {
     if (this.state.subQuestionsToAsk === undefined || this.state.subQuestionsToAsk.length === 0) {
-      this.getQuestion();
+       this.setState({
+         parentQuestionDataReceived: false,
+       },this.getQuestion());
     } else {
       const nextSubQuestion = [this.state.subQuestionsToAsk[0]];
       const updateSubQuestionsAsked = this.state.subQuestionsAsked.concat(this.state.subQuestionBeingAsked);
@@ -178,6 +206,13 @@ export default class Test extends Component {
       return (
         <>
         {/* Container and transition for parent question */}
+        { /*
+          this.state.parentQuestionDataReceived === false && (
+            <div className='test-spinner'>
+              <CircularProgress />
+            </div>
+          )
+        */}
         <TransitionGroup>
           <CSSTransition
             key={this.state.parentQuestionAsked[0]}
