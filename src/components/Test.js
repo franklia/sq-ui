@@ -39,7 +39,7 @@ export default class Test extends Component {
   };
 
   getAdminCategories = () => {
-    axios.get('http://localhost:3001/api/questions/index/admin/categories')
+    axios.get(`${process.env.REACT_APP_API_URI}/questions/index/admin/categories`)
       .then((res) => {
         console.log(res);
         this.setState({
@@ -51,7 +51,7 @@ export default class Test extends Component {
   };
 
   getUserCategories = (userId) => {
-    axios.get('http://localhost:3001/api/questions/index/user/categories?', { params: { userId: userId } })
+    axios.get(`${process.env.REACT_APP_API_URI}/questions/index/user/categories?`, { params: { userId: userId } })
       .then((res) => {
         console.log(res);
         this.setState({
@@ -64,7 +64,7 @@ export default class Test extends Component {
 
   getQuestion = () => {
     const { testCategoryId } = this.state;
-    axios.get(`http://localhost:3001/api/question/test/${testCategoryId}`)
+    axios.get(`${process.env.REACT_APP_API_URI}/question/test/${testCategoryId}`)
       .then((res) => {
         const parentQuestion = res.data._id;
         const firstSubQuestion = res.data.questions[0];

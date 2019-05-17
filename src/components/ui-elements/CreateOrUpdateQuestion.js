@@ -92,7 +92,7 @@ class CreateOrUpdateQuestion extends Component {
     };
 
     setUserData = id => {
-      axios.get('http://localhost:3001/api/user/categories?', { params: { auth0Id: id } })
+      axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: id } })
         .then((res) => {
           console.log('categories data');
           console.log(res.data);
@@ -115,7 +115,7 @@ class CreateOrUpdateQuestion extends Component {
     }
 
     getQuestion = () => {
-      axios.get('http://localhost:3001/api/question/' + this.props.id)
+      axios.get(`${process.env.REACT_APP_API_URI}/question/` + this.props.id)
         .then((res) => {
 
           // Check if topic exists and if so, update state
@@ -324,7 +324,7 @@ class CreateOrUpdateQuestion extends Component {
       // Add topic text to the dataObject if a value exists
       if (this.state.topic !== ''){ dataObject['topic'] = this.state.topic };
 
-      axios.post('http://localhost:3001/api/question/create', dataObject)
+      axios.post(`${process.env.REACT_APP_API_URI}/question/create`, dataObject)
         .then(res => console.log(res))
         .catch(error => console.log(error));
 
@@ -360,7 +360,7 @@ class CreateOrUpdateQuestion extends Component {
       };
       console.log(dataObject);
 
-      axios.post(`http://localhost:3001/api/question/${dataObject._id}`, dataObject)
+      axios.post(`${process.env.REACT_APP_API_URI}/question/${dataObject._id}`, dataObject)
         .then(res => console.log(res))
         .then(history.replace('/questions/index'))
         .catch(error => console.log(error));

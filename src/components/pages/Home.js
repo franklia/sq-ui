@@ -107,7 +107,6 @@ class Home extends Component {
             <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
           </Grid>
         </Grid>
-        <p>The environment is: {process.env.REACT_APP_ENVIRONMENT_TEST}</p>
       </div>
     );
   }

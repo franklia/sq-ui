@@ -55,7 +55,7 @@ class CategoryList extends Component {
   }
 
   setUserData = id => {
-    axios.get('http://localhost:3001/api/user/categories?', { params: { auth0Id: id } })
+    axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: id } })
       .then((res) => {
         if (res.data.length < 1){
           this.setState({

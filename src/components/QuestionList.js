@@ -63,7 +63,7 @@ class QuestionList extends React.Component {
   }
 
   getQuestions = (userId) => {
-    axios.get('http://localhost:3001/api/questions/index', { params: { userId: userId } })
+    axios.get(`${process.env.REACT_APP_API_URI}/questions/index`, { params: { userId: userId } })
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -88,7 +88,7 @@ class QuestionList extends React.Component {
 
   deleteQuestion = () => {
     this.setState({dialogOpen: false});
-    axios.delete(`http://localhost:3001/api/question/delete/${this.state.deleteId}`)
+    axios.delete(`${process.env.REACT_APP_API_URI}/question/delete/${this.state.deleteId}`)
       .then(() => {
           // This causes component to re-mount and data to be updated
           this.getQuestions(this.state.auth0_id);

@@ -25,7 +25,7 @@ class ModalDeleteCategory extends Component {
       updateOrDeleteCategoryId: this.props.updateOrDeleteCategoryId,
     }
 
-    axios.put('http://localhost:3001/api/user/category/delete', dataObject)
+    axios.put(`${process.env.REACT_APP_API_URI}/user/category/delete`, dataObject)
       .then(res => {
         this.props.setUserData(this.props.auth0Id);
         this.props.closeModal('deleteCategoryModalOpen');

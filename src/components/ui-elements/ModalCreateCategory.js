@@ -35,7 +35,7 @@ class ModalCreateCategory extends Component {
 
     console.log(dataObject);
 
-    axios.put('http://localhost:3001/api/user/category/create', dataObject)
+    axios.put(`${process.env.REACT_APP_API_URI}/user/category/create`, dataObject)
       .then(res => {
         console.log(res);
         this.props.setUserData(this.props.auth0Id);

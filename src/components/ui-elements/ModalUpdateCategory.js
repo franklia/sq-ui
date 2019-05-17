@@ -26,7 +26,7 @@ class ModalUpdateCategory extends Component {
       updateCategoryName: this.props.updateCategoryName,
     }
 
-    axios.put('http://localhost:3001/api/user/category/update', dataObject)
+    axios.put(`${process.env.REACT_APP_API_URI}/user/category/update`, dataObject)
       .then(res => {
         this.props.setUserData(this.props.auth0Id);
         this.props.closeModal('updateCategoryModalOpen');
