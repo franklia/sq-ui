@@ -39,7 +39,7 @@ export default class Test extends Component {
   };
 
   getAdminCategories = () => {
-    axios.get(`${process.env.REACT_APP_API_URI}/questions/index/admin/categories`)
+    axios.get(`${process.env.REACT_APP_API_URI}/admin/categories`)
       .then((res) => {
         console.log(res);
         this.setState({
