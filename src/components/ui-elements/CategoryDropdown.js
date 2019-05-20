@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { FormControl, Select, Button, InputLabel, FormHelperText, CircularProgress } from '@material-ui/core';
+import { FormControl, Select, Button, InputLabel, FormHelperText, CircularProgress, Link } from '@material-ui/core';
 import ModalCreateCategory from './ModalCreateCategory';
 
 const styles = theme => ({
@@ -89,7 +89,7 @@ class CategoryDropdown extends Component {
             </Select>
             <FormHelperText>Categories contains questions on a similar theme (e.g. Javascript)</FormHelperText>
           </FormControl>
-          <Button component={Link} to='/categories' className={classes.manageCategoriesButton}>Manage Categories</Button>
+          <Button component={RouterLink} to='/categories' className={classes.manageCategoriesButton}>Manage Categories</Button>
 
         </>
       )

@@ -65,7 +65,6 @@ class QuestionList extends React.Component {
   getQuestions = (userId) => {
     axios.get(`${process.env.REACT_APP_API_URI}/questions/index`, { params: { userId: userId } })
       .then((res) => {
-        console.log(res.data);
         this.setState({
           questionsData: res.data,
           receivedData: true,

@@ -103,9 +103,15 @@ class Home extends Component {
           <Grid item>
             <Button component={Link} to='/test' variant='contained' className='button-general'>Test Drive</Button>
           </Grid>
-          <Grid item>
-            <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
-          </Grid>
+          {
+            !localStorage.isLoggedIn && (
+              <>
+                <Grid item>
+                  <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
+                </Grid>
+              </>
+            )
+          }
         </Grid>
       </div>
     );
