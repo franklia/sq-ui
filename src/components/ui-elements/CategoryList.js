@@ -148,13 +148,13 @@ class CategoryList extends Component {
                       {category.name}
                     </TableCell>
                     <TableCell className='link' align='center'>
-                      <IconButton>
-                        <EditIcon onClick={() => this.openUpdateOrDeleteModal('updateCategoryModalOpen', category._id, category.name)} />
+                      <IconButton onClick={() => this.openUpdateOrDeleteModal('updateCategoryModalOpen', category._id, category.name)}>
+                        <EditIcon />
                       </IconButton>
                     </TableCell>
                     <TableCell className='link' align='center'>
-                      <IconButton>
-                        <DeleteForeverIcon onClick={() => this.openUpdateOrDeleteModal('deleteCategoryModalOpen', category._id)} />
+                      <IconButton onClick={() => this.openUpdateOrDeleteModal('deleteCategoryModalOpen', category._id)}>
+                        <DeleteForeverIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>

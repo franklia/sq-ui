@@ -75,6 +75,7 @@ class QuestionList extends React.Component {
   };
 
   openDeleteModal = (id) => {
+    console.log('Clicked');
     this.setState({
       dialogOpen: true,
       deleteId: id
@@ -148,11 +149,9 @@ class QuestionList extends React.Component {
                       </IconButton>
                     </Link>
                   </TableCell>
-                  <TableCell className='link'>
-                    <IconButton>
-                      <DeleteForeverIcon
-                        onClick={() => this.openDeleteModal(question._id)}
-                      />
+                  <TableCell>
+                    <IconButton onClick={() => this.openDeleteModal(question._id)}>
+                      <DeleteForeverIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
