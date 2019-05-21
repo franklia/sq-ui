@@ -3,6 +3,9 @@ import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Button, Grid, Paper, Hidden, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
+import reactLogo from '../images/react.png';
+import javascriptLogo from '../images/javascript.png';
+import htmlLogo from '../images/html.png';
 
 export default class Test extends Component {
 
@@ -17,8 +20,8 @@ export default class Test extends Component {
       subQuestionsToAsk: [],
       subQuestionsNumber: '',
       adminCategoriesDataReceived: false,
-      userCategoriesDataReceived: false,
       adminCategories: [],
+      userCategoriesDataReceived: false,
       userCategories: [],
       testCategoryId: '',
       testCategoryName: '',
@@ -50,11 +53,11 @@ export default class Test extends Component {
   };
 
   getUserCategories = (userId) => {
-    axios.get(`${process.env.REACT_APP_API_URI}/questions/index/user/categories?`, { params: { userId: userId } })
+    axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { userId: userId } })
       .then((res) => {
         this.setState({
           userCategoriesDataReceived: true,
-          userCategories: res.data.userCategories,
+          userCategories: res.data,
         })
       })
       .catch(error => console.log(error))
@@ -103,40 +106,77 @@ export default class Test extends Component {
   };
 
   renderHeader = () => {
-    if(this.state.testCategoryId === undefined || this.state.testCategoryId === '') {
+
+    const { testCategoryId, adminCategoriesDataReceived, userCategoriesDataReceived, adminCategories, userCategories } = this.state;
+
+    if( testCategoryId === undefined || testCategoryId === '') {
       return (
         <>
           <h1 className='center-align'>Choose a category to test</h1>
 
           {
-            this.state.adminCategoriesDataReceived === false && (
+            adminCategoriesDataReceived === false && (
               <div className='test-spinner'>
                 <CircularProgress />
               </div>
             )
           }
 
-          <Grid
-            container
-            direction='row'
-            alignItems='flex-start'
-            justify='center'
-            spacing={40}
-          >
-            {this.state.adminCategories.map(category => (
+          {
+            adminCategoriesDataReceived === true && (
+              <Grid
+                container
+                direction='row'
+                alignItems='flex-start'
+                justify='center'
+                spacing={40}
+              >
+                {adminCategories.map(category => (
+                  <Grid item lg={3} md={3} sm={6} xs={12} key={category._id}>
+                    <Paper
+                      className='test-category-paper'
+                      onClick={this.setCategory}
+                      categoryid={category._id}
+                      categoryname={category.name}
+                    >
+                      <h6 className='test-paper-headings'>{category.name}</h6>
+                      <img src={process.env.PUBLIC_URL + `/images/${category.image}.png`} width='80' height='80' alt={category.image_alt} />
+                      <p className='test-paper-paragraph'>(System Generated)</p>
+                    </Paper>
+                  </Grid>
+                ))}
+              </Grid>
+            )
+          }
 
-                <Grid item lg={3} md={3} sm={6} xs={12} key={category._id}>
-                  <Paper
-                    className='test-category-paper'
-                    onClick={this.setCategory}
-                    categoryid={category._id}
-                    categoryname={category.name}
-                  >
-                    {category.name}
-                  </Paper>
+          {
+            userCategoriesDataReceived === true && (
+              <>
+                <Grid
+                  container
+                  direction='row'
+                  alignItems='flex-start'
+                  justify='center'
+                  spacing={40}
+                >
+                  {userCategories.map(category => (
+
+                      <Grid item lg={3} md={3} sm={6} xs={12} key={category._id}>
+                        <Paper
+                          className='test-category-paper'
+                          onClick={this.setCategory}
+                          categoryid={category._id}
+                          categoryname={category.name}
+                        >
+                          {category.name}
+                          <p>(User Generated)</p>
+                        </Paper>
+                      </Grid>
+                  ))}
                 </Grid>
-            ))}
-          </Grid>
+              </>
+            )
+          }
         </>
       );
     } else {

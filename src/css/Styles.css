@@ -128,7 +128,6 @@ body {
 }
 
 .test-category-paper {
-  text-transform: uppercase;
   padding: 40px 20px;
   margin-top: 30px;
   text-align: center;
@@ -138,6 +137,23 @@ body {
 
 .test-sub-heading {
   margin: 40px 0 15px 0;
+}
+
+.test-category-headings {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 0px;
+}
+
+.test-paper-headings {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.test-paper-paragraph {
+  margin-top: 10px;
+  margin-bottom: 0;
 }
 
 .test-card-column {
