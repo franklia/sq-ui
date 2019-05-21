@@ -75,7 +75,6 @@ class QuestionList extends React.Component {
   };
 
   openDeleteModal = (id) => {
-    console.log('Clicked');
     this.setState({
       dialogOpen: true,
       deleteId: id
@@ -170,12 +169,19 @@ class QuestionList extends React.Component {
                 Are you sure you wish to delete this question?
               </DialogContentText>
             </DialogContent>
-            <DialogActions>
-              <Button onClick={this.closeModal} color="primary">
-                No
+            <DialogActions className='modalActionsRoot'>
+              <Button
+                className='modalButton modalCancelOption'
+                onClick={this.closeModal}
+                color="primary">
+                  Cancel
               </Button>
-              <Button onClick={this.deleteQuestion} color="primary" autoFocus>
-                Yes
+              <Button
+                className='modalButton modalConfirmOption'
+                onClick={this.deleteQuestion}
+                color="primary"
+                autoFocus>
+                  Yes
               </Button>
             </DialogActions>
           </Dialog>

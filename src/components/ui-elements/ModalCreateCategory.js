@@ -74,12 +74,19 @@ class ModalCreateCategory extends Component {
             variant='outlined'
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => this.props.closeModal('createCategoryModalOpen')} color="primary">
-            Cancel
+        <DialogActions className='modalActionsRoot'>
+          <Button
+            className='modalButton modalCancelOption'
+            onClick={() => this.props.closeModal('createCategoryModalOpen')}
+            color="primary">
+              Cancel
           </Button>
-          <Button onClick={this.createCategory} color="primary" autoFocus>
-            Save
+          <Button
+            className='modalButton modalConfirmOption'
+            onClick={this.createCategory}
+            color="primary"
+            autoFocus>
+              Save
           </Button>
         </DialogActions>
       </Dialog>

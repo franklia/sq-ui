@@ -57,12 +57,19 @@ class ModalUpdateCategory extends Component {
            variant='outlined'
         />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => this.props.closeModal('updateCategoryModalOpen')} color="primary">
-            No
+        <DialogActions className='modalActionsRoot'>
+          <Button
+            className='modalButton modalCancelOption'
+            onClick={() => this.props.closeModal('updateCategoryModalOpen')}
+            color="primary">
+              Cancel
           </Button>
-          <Button onClick={this.updateCategory} color="primary" autoFocus>
-            Yes
+          <Button
+            className='modalButton modalConfirmOption'
+            onClick={this.updateCategory}
+            color="primary"
+            autoFocus>
+              Yes
           </Button>
         </DialogActions>
       </Dialog>

@@ -35,8 +35,6 @@ class ModalDeleteCategory extends Component {
 
   render() {
 
-    const { classes } = this.props;
-
     return (
       <Dialog
         open={this.props.deleteCategoryModalOpen}
@@ -50,12 +48,19 @@ class ModalDeleteCategory extends Component {
             Are you sure you wish to delete this category?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => this.props.closeModal('deleteCategoryModalOpen')} color="primary">
-            No
+        <DialogActions className='modalActionsRoot'>
+          <Button
+            className='modalButton modalCancelOption'
+            onClick={() => this.props.closeModal('deleteCategoryModalOpen')}
+            color="primary">
+              Cancel
           </Button>
-          <Button onClick={this.deleteCategory} color="primary" autoFocus>
-            Yes
+          <Button
+            className='modalButton modalConfirmOption'
+            onClick={this.deleteCategory}
+            color="primary"
+            autoFocus>
+              Yes
           </Button>
         </DialogActions>
       </Dialog>

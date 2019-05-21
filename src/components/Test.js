@@ -41,11 +41,10 @@ export default class Test extends Component {
   getAdminCategories = () => {
     axios.get(`${process.env.REACT_APP_API_URI}/admin/categories`)
       .then((res) => {
-        console.log(res);
         this.setState({
           adminCategoriesDataReceived: true,
           adminCategories: res.data,
-        }, () => console.log(this.state))
+        })
       })
       .catch(error => console.log(error))
   };
@@ -53,11 +52,10 @@ export default class Test extends Component {
   getUserCategories = (userId) => {
     axios.get(`${process.env.REACT_APP_API_URI}/questions/index/user/categories?`, { params: { userId: userId } })
       .then((res) => {
-        console.log(res);
         this.setState({
           userCategoriesDataReceived: true,
           userCategories: res.data.userCategories,
-        }, () => console.log(this.state))
+        })
       })
       .catch(error => console.log(error))
   };

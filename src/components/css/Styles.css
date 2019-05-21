@@ -1,41 +1,4 @@
-/* Sticky Footer */
-
-html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  /* flex-direction: column; */
-}
-
-.page-wrapper {
-  flex: 1 0 auto;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-.footer {
-  flex-shrink: 0;
-  background-color: #7d93b2;
-  color: #fff;
-}
-
-/* Defaults */
-
-a, .link {
-  cursor: pointer;
-}
-
-a:hover , .link:hover {
-  text-decoration: none !important;
-}
-
-.page-content-wrapper {
-  margin: 20px;
-}
-
-/* Typography */
+/* Typography styles */
 
 p, div {
   font-size: 16px;
@@ -45,7 +8,6 @@ p, div {
 
 h1, h2, h3, h4, h5, h6 {
   color: #4c6280;
-  /* color: #234c87; */
   font-family: Nunito, sans-serif;
   font-weight: 400;
 }
@@ -74,6 +36,8 @@ h6 {
   font-size: 20px;
 }
 
+/* Button and modal button styles */
+
 .button-general {
   text-decoration: none !important;
   font-weight: 600 !important;
@@ -87,6 +51,46 @@ h6 {
   background-color: #ff5c72 !important;
 }
 
+.modalButton span {
+  text-transform: capitalize;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.modalActionsRoot {
+  margin: 8px 15px !important;
+}
+
+.modalCancelOption {
+  border: 2px solid #ff5c7214;
+}
+
+.modalConfirmOption {
+  background-color: #ff5c7214 !important;
+  border: 2px solid #fff !important;
+  border-radius: 5px !important;
+}
+
+/* General default styles */
+
+.page-content-wrapper {
+  margin: 20px;
+}
+
+.body-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+a, .link {
+  cursor: pointer;
+}
+
+a:hover , .link:hover {
+  text-decoration: none !important;
+}
+
 .word-highlight {
   color: #ff5c72;
 }
@@ -95,10 +99,26 @@ h6 {
   text-align: center;
 }
 
-.body-container {
+/* Sticky Footer */
+
+html, body {
+  height: 100%;
+}
+
+body {
   display: flex;
+}
+
+.page-wrapper {
+  flex: 1 0 auto;
   min-height: 100vh;
   flex-direction: column;
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: #7d93b2;
+  color: #fff;
 }
 
 /* Test Page Styles */

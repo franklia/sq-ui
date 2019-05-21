@@ -94,8 +94,6 @@ class CreateOrUpdateQuestion extends Component {
     setUserData = id => {
       axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: id } })
         .then((res) => {
-          console.log('categories data');
-          console.log(res.data);
           if (res.data.length < 1){
             this.setState({
               ...this.state,
@@ -124,8 +122,6 @@ class CreateOrUpdateQuestion extends Component {
 
           // Prepare const categoryData for eventual update to this.state.category
           const categoryData = res.data[0].category;
-          console.log('categoryData');
-          console.log(categoryData);
 
           // Prepare const questionsDataObject for eventual update to this.state.questions
           // We need to convert questions array into a nested object to match this.state.questions format

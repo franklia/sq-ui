@@ -11,12 +11,12 @@ import CreateQuestions from './pages/CreateQuestions';
 import ViewQuestions from './ViewQuestions';
 import Notfound from './Notfound';
 import NavMenu from './ui-elements/NavMenu';
-import EditQuestion from './EditQuestion';
+import EditQuestion from './pages/EditQuestion';
 import ManageCategories from './pages/ManageCategories';
 import Callback from './helpers/Callback';
 import Auth from './helpers/Auth';
 import history from './helpers/history';
-import Copyright from '@material-ui/icons/Copyright';
+// import Copyright from '@material-ui/icons/Copyright';
 
 const theme = createMuiTheme({
   palette: {

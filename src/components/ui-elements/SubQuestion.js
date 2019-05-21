@@ -98,6 +98,7 @@ class SubQuestion extends Component {
                 fullWidth
                 multiline={true}
                 rows='3'
+                rowsMax='12'
                 margin='normal'
                 variant='outlined'
                 InputLabelProps={{
@@ -115,6 +116,7 @@ class SubQuestion extends Component {
                 fullWidth
                 multiline={true}
                 rows='3'
+                rowsMax='12'
                 margin='normal'
                 variant='outlined'
                 InputLabelProps={{
