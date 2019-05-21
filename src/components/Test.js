@@ -3,9 +3,6 @@ import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Button, Grid, Paper, Hidden, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
-import reactLogo from '../images/react.png';
-import javascriptLogo from '../images/javascript.png';
-import htmlLogo from '../images/html.png';
 
 export default class Test extends Component {
 
