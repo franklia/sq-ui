@@ -3,8 +3,7 @@ import { Router, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import './css/Styles.css';
-
+import '../css/Styles.css';
 import Home from './pages/Home';
 import Test from './Test';
 import CreateQuestions from './pages/CreateQuestions';

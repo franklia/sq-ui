@@ -23,7 +23,7 @@ export default class Test extends Component {
       testCategoryId: '',
       testCategoryName: '',
       auth0_id: '',
-      subAnswerDisplayed: true,
+      subAnswerDisplayed: false,
       showAnswerButtonDisplayed: true,
     }
   }
@@ -49,8 +49,8 @@ export default class Test extends Component {
       .catch(error => console.log(error))
   };
 
-  getUserCategories = (userId) => {
-    axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { userId: userId } })
+  getUserCategories = (auth0Id) => {
+    axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: auth0Id } })
       .then((res) => {
         this.setState({
           userCategoriesDataReceived: true,
@@ -75,7 +75,7 @@ export default class Test extends Component {
           subQuestionsToAsk: subsequentSubQuestions,
           subQuestionsAsked: [],
           subQuestionsNumber: subQuestionsNumber,
-          subAnswerDisplayed: !this.state.subAnswerDisplayed,
+          subAnswerDisplayed: false,
           showAnswerButtonDisplayed: true,
         });
       }
@@ -84,6 +84,7 @@ export default class Test extends Component {
   };
 
   setCategory = event => {
+    console.log('clicked');
     this.setState({
       testCategoryId: event.target.getAttribute('categoryid'),
       testCategoryName: event.target.getAttribute('categoryname')
@@ -136,9 +137,28 @@ export default class Test extends Component {
                       categoryid={category._id}
                       categoryname={category.name}
                     >
-                      <h6 className='test-paper-headings'>{category.name}</h6>
-                      <img src={process.env.PUBLIC_URL + `/images/${category.image}.png`} width='80' height='80' alt={category.image_alt} />
-                      <p className='test-paper-paragraph'>(System Generated)</p>
+                      <h6
+                        className='test-paper-headings test-move-under'
+                        categoryid={category._id}
+                        categoryname={category.name}
+                      >
+                        {category.name}
+                      </h6>
+                      <img
+                        className='test-move-under'
+                        src={process.env.PUBLIC_URL + `/images/${category.image}.png`}
+                        width='80' height='80'
+                        alt={category.image_alt}
+                        categoryid={category._id}
+                        categoryname={category.name}
+                      />
+                      <p
+                        className='test-paper-paragraph'
+                        categoryid={category._id}
+                        categoryname={category.name}
+                      >
+                        (System Generated)
+                      </p>
                     </Paper>
                   </Grid>
                 ))}
@@ -209,8 +229,8 @@ export default class Test extends Component {
 
   revealAnswer = () => {
     this.setState({
-      subAnswerDisplayed: !this.state.subAnswerDisplayed,
-      showAnswerButtonDisplayed: !this.state.showAnswerButtonDisplayed,
+      subAnswerDisplayed: true,
+      showAnswerButtonDisplayed: false,
     });
   }
 
@@ -228,8 +248,8 @@ export default class Test extends Component {
         subQuestionBeingAsked: nextSubQuestion,
         subQuestionsAsked: updateSubQuestionsAsked,
         subQuestionsToAsk: updateSubQuestionsToAsk,
-        subAnswerDisplayed: !this.state.subAnswerDisplayed,
-        showAnswerButtonDisplayed: !this.state.showAnswerButtonDisplayed,
+        subAnswerDisplayed: false,
+        showAnswerButtonDisplayed: true,
       })
     }
   }

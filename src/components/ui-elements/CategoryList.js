@@ -67,7 +67,7 @@ class CategoryList extends Component {
           this.setState({
             ...this.state,
             auth0Id: id,
-            userCategories: res.data[0].categories,
+            userCategories: res.data,
             receivedCategories: true
           })
         }

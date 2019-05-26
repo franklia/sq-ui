@@ -104,7 +104,7 @@ class CreateOrUpdateQuestion extends Component {
             this.setState({
               ...this.state,
               auth0Id: id,
-              userCategories: res.data[0].categories,
+              userCategories: res.data,
               receivedCategories: true
             })
           }
@@ -351,7 +351,7 @@ class CreateOrUpdateQuestion extends Component {
       };
 
       // Add topic text to the dataObject if a value exists
-      if (this.state.topic !== '' && this.state.columns['column-1'].questionIds > 1){
+      if (this.state.topic !== '' && this.state.columns['column-1'].questionIds.length > 1){
         dataObject['topic'] = this.state.topic;
       };
       console.log(dataObject);
