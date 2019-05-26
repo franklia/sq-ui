@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper, Hidden, CircularProgress } from '@material-ui/core';
+import { Button, Grid, Paper, Hidden, CircularProgress, Link } from '@material-ui/core';
 import axios from 'axios';
 
 export default class Test extends Component {
@@ -13,7 +14,7 @@ export default class Test extends Component {
       parentQuestionDataReceived: false,
       parentQuestionAsked: [],
       subQuestionsAsked: [],
-      subQuestionBeingAsked: [],
+      subQuestionAskingNow: [],
       subQuestionsToAsk: [],
       subQuestionsNumber: '',
       adminCategoriesDataReceived: false,
@@ -64,6 +65,12 @@ export default class Test extends Component {
     const { testCategoryId } = this.state;
     axios.get(`${process.env.REACT_APP_API_URI}/question/test/${testCategoryId}`)
       .then((res) => {
+        if (res.data.length === 0){
+          this.setState({
+            parentQuestionDataReceived: true,
+            parentQuestionAsked: []
+          })
+        } else {
         const parentQuestion = res.data._id;
         const firstSubQuestion = res.data.questions[0];
         const subsequentSubQuestions = res.data.questions.slice(1);
@@ -71,20 +78,19 @@ export default class Test extends Component {
         this.setState({
           parentQuestionDataReceived: true,
           parentQuestionAsked: [parentQuestion],
-          subQuestionBeingAsked: [firstSubQuestion],
+          subQuestionAskingNow: [firstSubQuestion],
           subQuestionsToAsk: subsequentSubQuestions,
           subQuestionsAsked: [],
           subQuestionsNumber: subQuestionsNumber,
           subAnswerDisplayed: false,
           showAnswerButtonDisplayed: true,
-        });
+        }, console.log(this.state));
       }
-    )
+    })
       .catch(error => console.log(error))
   };
 
   setCategory = event => {
-    console.log('clicked');
     this.setState({
       testCategoryId: event.target.getAttribute('categoryid'),
       testCategoryName: event.target.getAttribute('categoryname')
@@ -99,13 +105,15 @@ export default class Test extends Component {
       testCategoryName: '',
       subQuestionsToAsk: [],
       subQuestionsAsked: [],
-      subQuestionBeingAsked: []
+      subQuestionAskingNow: [],
+      parentQuestionDataReceived: false,
+      parentQuestionAsked: [],
     });
   };
 
   renderHeader = () => {
 
-    const { testCategoryId, adminCategoriesDataReceived, userCategoriesDataReceived, adminCategories, userCategories } = this.state;
+    const { testCategoryId, testCategoryName, adminCategoriesDataReceived, userCategoriesDataReceived, adminCategories, userCategories } = this.state;
 
     if( testCategoryId === undefined || testCategoryId === '') {
       return (
@@ -210,7 +218,7 @@ export default class Test extends Component {
               <Hidden xsDown>
                 <h1 className='center-align test-in-progress-heading'>Test in progress...</h1>
               </Hidden>
-              <h6 className='test-sub-heading center-align'>Category being tested: <span className='word-highlight'>{this.state.testCategoryName}</span></h6>
+              <h6 className='test-sub-heading center-align'>Category being tested: <span className='word-highlight'>{testCategoryName}</span></h6>
               <button onClick={this.resetCategory} className='test-change-categories-button'>Change Category</button>
             </Grid>
           </Grid>
@@ -235,17 +243,20 @@ export default class Test extends Component {
   }
 
   renderNewQuestion = () => {
-    if (this.state.subQuestionsToAsk === undefined || this.state.subQuestionsToAsk.length === 0) {
+    const { subQuestionsToAsk, subQuestionsAsked } = this.state;
+
+    if (subQuestionsToAsk === undefined || subQuestionsToAsk.length === 0) {
        this.setState({
          parentQuestionDataReceived: false,
+         subQuestionAskingNow: [],
        },this.getQuestion());
     } else {
-      const nextSubQuestion = [this.state.subQuestionsToAsk[0]];
-      const updateSubQuestionsAsked = this.state.subQuestionsAsked.concat(this.state.subQuestionBeingAsked);
-      const updateSubQuestionsToAsk = this.state.subQuestionsToAsk.splice(1);
+      const nextSubQuestion = [subQuestionsToAsk[0]];
+      const updateSubQuestionsAsked = subQuestionsAsked.concat(this.state.subQuestionAskingNow);
+      const updateSubQuestionsToAsk = subQuestionsToAsk.splice(1);
 
       this.setState({
-        subQuestionBeingAsked: nextSubQuestion,
+        subQuestionAskingNow: nextSubQuestion,
         subQuestionsAsked: updateSubQuestionsAsked,
         subQuestionsToAsk: updateSubQuestionsToAsk,
         subAnswerDisplayed: false,
@@ -254,23 +265,36 @@ export default class Test extends Component {
     }
   }
 
+  renderSpinner = () => {
+    const { parentQuestionDataReceived, parentQuestionAsked, testCategoryId } = this.state;
+
+    if (testCategoryId === '') {
+      return null;
+    } else if (parentQuestionDataReceived === false) {
+      return (
+        <div className='test-spinner'>
+          <CircularProgress />
+        </div>
+      )
+    } else if (parentQuestionDataReceived === true && parentQuestionAsked.length === 0) {
+      return (
+        <p className='test-no-questions'>You haven't added any questions for this category yet. <Link component={RouterLink} to='/question/create'  className='link'>Add some now</Link></p>
+      )
+    }
+  };
+
   renderQuestionAsked = () => {
-    if(this.state.subQuestionBeingAsked === undefined || this.state.subQuestionBeingAsked.length === 0) {
+    const { parentQuestionAsked, subQuestionAskingNow, subQuestionsAsked, subQuestionsToAsk, subQuestionsNumber, showAnswerButtonDisplayed, subAnswerDisplayed } = this.state;
+
+    if (subQuestionAskingNow.length === 0 || subQuestionAskingNow === undefined) {
       return null;
     } else {
       return (
         <>
         {/* Container and transition for parent question */}
-        { /*
-          this.state.parentQuestionDataReceived === false && (
-            <div className='test-spinner'>
-              <CircularProgress />
-            </div>
-          )
-        */}
         <TransitionGroup>
           <CSSTransition
-            key={this.state.parentQuestionAsked[0]}
+            key={parentQuestionAsked[0]}
             in={true}
             appear={true}
             onEntered={this.flipCard}
@@ -295,18 +319,18 @@ export default class Test extends Component {
                 {/* Back of card containing sub questions */}
         		    <div className='back' id='back-of-card'>
                   {/* Display summary and transition for sub questions already asked */}
-                  {this.state.subQuestionsAsked !== [] || this.state.subQuestionsAsked !== null ?
-                    this.state.subQuestionsAsked.map(subQuestion => (
+                  {subQuestionsAsked !== [] || subQuestionsAsked !== null ?
+                    subQuestionsAsked.map(subQuestion => (
                       <TransitionGroup>
                         <CSSTransition
-                          key={this.state.subQuestionsAsked[0]}
+                          key={subQuestionsAsked[0]}
                           in={true}
                           appear={true}
                           timeout={300}
                           classNames='sub-questions'
                         >
                           <div className='sub-questions-asked-container'>
-                            <span className='test-question-numbering'>{`${subQuestion.id} of ${this.state.subQuestionsNumber}`}</span>
+                            <span className='test-question-numbering'>{`${subQuestion.id} of ${subQuestionsNumber}`}</span>
                             <p className='test-question-paragraph'>{subQuestion.sub_question}</p>
                             <div className='test-line-separator'></div>
                             <div className='sub-question-asked-answer-wrapper'>
@@ -320,9 +344,9 @@ export default class Test extends Component {
                   }
                   {/* Display sub question currently being asked */}
                   <div class='sub-question-being-asked-container'>
-                    <span className='test-question-numbering'>{`${this.state.subQuestionBeingAsked[0].id} of ${this.state.subQuestionsNumber}`}</span>
-              			<p className='test-question-paragraph'>{this.state.subQuestionBeingAsked[0].sub_question}</p>
-                    {this.state.showAnswerButtonDisplayed === true ?
+                    <span className='test-question-numbering'>{`${subQuestionAskingNow[0].id} of ${subQuestionsNumber}`}</span>
+              			<p className='test-question-paragraph'>{subQuestionAskingNow[0].sub_question}</p>
+                    {showAnswerButtonDisplayed === true ?
                       <Button
                         onClick={this.revealAnswer}
                         variant='contained' color='secondary'
@@ -333,20 +357,20 @@ export default class Test extends Component {
                       : <div className='test-line-separator'></div>
                     }
                     {/* Display sub answer currently being asked */}
-                    {this.state.subAnswerDisplayed === true ?
+                    {subAnswerDisplayed === true ?
                       <div class='back-card-answer'>
-                        <p>{this.state.subQuestionBeingAsked[0].sub_answer}</p>
+                        <p>{subQuestionAskingNow[0].sub_answer}</p>
                       </div>
                       : null
                     }
                     {/* Display button to trigger new question */}
-                    {this.state.subAnswerDisplayed === true ?
+                    {subAnswerDisplayed === true ?
                       <Button
                         onClick={this.renderNewQuestion}
                         variant='contained' color='secondary'
                         className='test-new-question-button'
                       >
-                        {this.state.subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
+                        {subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
                       </Button>
                       : null
                     }
@@ -367,6 +391,7 @@ export default class Test extends Component {
     return (
       <div className='wrapper'>
         {this.renderHeader()}
+        {this.renderSpinner()}
         {this.renderQuestionAsked()}
       </div>
     )

@@ -123,10 +123,6 @@ body {
 
 /* Test Page Styles */
 
-.test-header {
-
-}
-
 .test-category-paper {
   padding: 40px 20px;
   margin-top: 30px;
@@ -196,6 +192,11 @@ body {
 
 .test-in-progress-text-container {
   padding-top: 0 !important;
+}
+
+.test-no-questions {
+  margin-top: 50px;
+  text-align: center;
 }
 
 .flip-container {
