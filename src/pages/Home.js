@@ -70,11 +70,11 @@ class Home extends Component {
     this.setState({ auth0_id: id })
   }
 
-  login() {
+  login = () => {
     this.props.auth.login();
   }
 
-  logout() {
+  logout = () => {
     this.props.auth.logout();
   }
 

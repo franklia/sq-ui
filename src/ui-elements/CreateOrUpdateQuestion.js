@@ -103,7 +103,7 @@ class CreateOrUpdateQuestion extends Component {
             this.setState({
               ...this.state,
               auth0Id: id,
-              userCategories: res.data,
+              userCategories: res.data[0].categories,
               receivedCategories: true
             })
           }

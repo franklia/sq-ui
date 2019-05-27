@@ -43,10 +43,17 @@ export default class Test extends Component {
   getAdminCategories = () => {
     axios.get(`${process.env.REACT_APP_API_URI}/admin/categories`)
       .then((res) => {
-        this.setState({
-          adminCategoriesDataReceived: true,
-          adminCategories: res.data,
-        })
+        if (res.data.length > 0){
+          this.setState({
+            adminCategoriesDataReceived: true,
+            adminCategories: res.data[0].categories,
+          });
+        } else {
+          this.setState({
+            adminCategoriesDataReceived: true,
+            adminCategories: [],
+          });
+        }
       })
       .catch(error => console.log(error))
   };
@@ -54,10 +61,17 @@ export default class Test extends Component {
   getUserCategories = (auth0Id) => {
     axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: auth0Id } })
       .then((res) => {
-        this.setState({
-          userCategoriesDataReceived: true,
-          userCategories: res.data,
-        })
+        if (res.data.length > 0){
+          this.setState({
+            userCategoriesDataReceived: true,
+            userCategories: res.data[0].categories,
+          });
+        } else {
+          this.setState({
+            userCategoriesDataReceived: true,
+            userCategories: [],
+          });
+        }
       })
       .catch(error => console.log(error))
   };
