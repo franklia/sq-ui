@@ -6,13 +6,13 @@
 // achieved much faster with the first condition if the userProfile already exists in memory. If it doesn't
 // exist due to a page refresh, then we need to provide another way to get it (the long way).
 export default function ConfirmUserCredentials(auth, setAuth0Id, dataFunction) {
-  // If a session already exists...
+  // if a session already exists...
   if (auth.userProfile) {
     // console.log('already had auth');
     setAuth0Id(auth.userProfile.sub);
     dataFunction(auth.userProfile.sub);
     auth.renewSession(() => {});
-    // If the page is refreshed...
+    // if the page is refreshed...
   } else if (localStorage.getItem('isLoggedIn') === 'true') {
     // console.log('had to get auth');
     auth.renewSession((profile) => {
@@ -23,6 +23,7 @@ export default function ConfirmUserCredentials(auth, setAuth0Id, dataFunction) {
         }
       })
     });
+  // this is for debugging purposes only
   } else if (localStorage.getItem('isLoggedIn') === null) {
     // console.log('user is not logged in.');
   }

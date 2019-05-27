@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
+import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper, Hidden, CircularProgress, Link } from '@material-ui/core';
+import { Button, Grid, Paper, Hidden, CircularProgress, Link, Tooltip } from '@material-ui/core';
 import axios from 'axios';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 
 export default class Test extends Component {
 
@@ -112,7 +113,6 @@ export default class Test extends Component {
   };
 
   renderHeader = () => {
-
     const { testCategoryId, testCategoryName, adminCategoriesDataReceived, userCategoriesDataReceived, adminCategories, userCategories } = this.state;
 
     if( testCategoryId === undefined || testCategoryId === '') {
@@ -165,8 +165,23 @@ export default class Test extends Component {
                         categoryid={category._id}
                         categoryname={category.name}
                       >
-                        (System Generated)
+                        System Generated
                       </p>
+                      <Tooltip
+                        classes={{
+                          tooltip: 'test-tooltip',
+                          popper: 'test-tooltip-popper'
+                        }}
+                        title={
+                          <>
+                            <p className='test-tooltip-p'>System generated categories are created by the software provider. </p>
+                            <p className='test-tooltip-p'>The category name and it's associated questions cannot be edited.</p>
+                          </>
+                        }
+                        aria-label='Add'
+                      >
+                        <HelpOutline className='test-helpOutlineIcon' />
+                      </Tooltip>
                     </Paper>
                   </Grid>
                 ))}
@@ -194,7 +209,28 @@ export default class Test extends Component {
                           categoryname={category.name}
                         >
                           {category.name}
-                          <p>(User Generated)</p>
+                          <p
+                            className='test-paper-paragraph'
+                            categoryid={category._id}
+                            categoryname={category.name}
+                          >
+                            User Generated
+                          </p>
+                          <Tooltip
+                            classes={{
+                              tooltip: 'test-tooltip',
+                              popper: 'test-tooltip-popper'
+                            }}
+                            title={
+                              <>
+                                <p className='test-tooltip-p'>User generated categories are created by you, the user. </p>
+                                <p className='test-tooltip-p'>You can edit the name of the category and all it's questions.</p>
+                              </>
+                            }
+                            aria-label='Add'
+                          >
+                            <HelpOutline className='test-helpOutlineIcon' />
+                          </Tooltip>
                         </Paper>
                       </Grid>
                   ))}

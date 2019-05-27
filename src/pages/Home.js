@@ -79,7 +79,7 @@ class Home extends Component {
   }
 
   render() {
-    // const { isAuthenticated } = this.props.auth;
+
     const { classes } = this.props;
 
     return (
@@ -107,7 +107,7 @@ class Home extends Component {
             !localStorage.isLoggedIn && (
               <>
                 <Grid item>
-                  <Button onClick={this.logout} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
+                  <Button onClick={this.login} variant='contained' className={classes.ctaMinorButton}>Login / Sign Up</Button>
                 </Grid>
               </>
             )

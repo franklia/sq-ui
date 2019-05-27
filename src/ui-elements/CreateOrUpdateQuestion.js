@@ -38,11 +38,10 @@ const styles = theme => ({
   },
   htmlTooltip: {
     backgroundColor: '#627a9c',
-    color: 'rgba(0, 0, 0, 0.87)',
     maxWidth: 250,
     border: '1px solid #dadde9',
     opacity: 1,
-    padding: 20,
+    padding: '0 20px',
   },
   toolTipPopper: {
     opacity: 1,
@@ -164,21 +163,6 @@ class CreateOrUpdateQuestion extends Component {
         .catch(error => console.log(error))
     };
 
-  handleCategoryChange = event => {
-    const categoryId = event.target.value;
-    this.setState({
-      category: categoryId
-    });
-  };
-
-  // handleTopicChange = event => {
-  //   // const value = event.target.value;
-  //   this.setState({
-  //     topic: event.target.value
-  //   });
-  // }
-
-  // Refactor the two functions above into this one
   handleDataChange = name => event => {
     this.setState({
       [name]: event.target.value,
@@ -391,7 +375,7 @@ class CreateOrUpdateQuestion extends Component {
             category={this.state.category}
             userCategories={this.state.userCategories}
             receivedCategories={this.state.receivedCategories}
-            handleCategoryChange={this.handleCategoryChange}
+            handleCategoryChange={this.handleDataChange('category')}
             required={true}
             handleModalOpen={this.handleModalOpen}
             handleModalClose={this.handleModalClose}
@@ -427,10 +411,10 @@ class CreateOrUpdateQuestion extends Component {
               }}
               title={
                 <React.Fragment>
-                  <p className={classes.toolTipSubText}>Sometimes you'll want to ask a series of questions in a row. For example:</p>
+                  <p className={classes.toolTipSubText}>Sometimes you'll want to ask a series of related questions in a row. For example:</p>
                   <p className={classes.toolTipSubText}>1. What is ES6?</p>
-                  <p className={classes.toolTipSubText}>2. What is the syntax for writing javascript functions in ES6?</p>
-                  <p className={classes.toolTipSubText}>By adding sub questions you can ensure these questions are asked consecutively during otherwise random tests.</p>
+                  <p className={classes.toolTipSubText}>2. What is the ES6 syntax for writing javascript functions?</p>
+                  <p className={classes.toolTipSubText}>By using sub questions you can ensure these questions are asked consecutively during otherwise random tests.</p>
                 </React.Fragment>
               }
               aria-label='Add'

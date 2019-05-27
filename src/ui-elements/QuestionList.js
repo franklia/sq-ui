@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ConfirmUserCredentials from './helpers/ConfirmUserCredentials.js';
+import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -89,7 +89,7 @@ class QuestionList extends React.Component {
     this.setState({dialogOpen: false});
     axios.delete(`${process.env.REACT_APP_API_URI}/question/delete/${this.state.deleteId}`)
       .then(() => {
-          // This causes component to re-mount and data to be updated
+          // This causes component to re-mount and update data
           this.getQuestions(this.state.auth0_id);
         })
       .catch(error => console.log(error))

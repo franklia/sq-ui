@@ -13,7 +13,6 @@ import {
 
 const styles = theme => ({
   root: {
-
   },
 });
 

@@ -5,13 +5,11 @@ import SubQuestion from './SubQuestion';
 
 const styles = theme => ({
   root: {
-    // width: '100%',
   },
 });
 
 class Column extends Component {
   render() {
-    // const { classes } = this.props;
     return (
       <div>
         <Droppable droppableId={this.props.column.id}>

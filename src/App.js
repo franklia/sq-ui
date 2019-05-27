@@ -3,12 +3,12 @@ import { Router, Route, Switch } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import '../css/Styles.css';
+import './css/Styles.css';
 import Home from './pages/Home';
-import Test from './Test';
+import Test from './pages/Test';
 import CreateQuestions from './pages/CreateQuestions';
-import ViewQuestions from './ViewQuestions';
-import Notfound from './Notfound';
+import ManageQuestions from './pages/ManageQuestions';
+import Notfound from './pages/Notfound';
 import NavMenu from './ui-elements/NavMenu';
 import EditQuestion from './pages/EditQuestion';
 import ManageCategories from './pages/ManageCategories';
@@ -20,10 +20,10 @@ import history from './helpers/history';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      // light: will be calculated from palette.primary.main,
+      // light: calculated from palette.primary.main
       main: '#ff5c72', // main orange color eg. logo and buttons
       dark: '#f23f57', // darker orange for hover over buttons
-      // contrastText: will be calculated to contrast with palette.primary.main
+      // contrastText: calculated to contrast with palette.primary.main
     },
     secondary: {
       light: '#fafcff', // background color of pages
@@ -70,6 +70,7 @@ const styles = theme => ({
   }
 });
 
+// Auth0 
 const auth = new Auth();
 
 const handleAuthentication = ({location}) => {
@@ -95,7 +96,7 @@ class App extends Component {
                   <Route exact path="/" render={(props) => <Home auth={auth} {...props} />} />
                   <Route exact path="/test" render={(props) => <Test auth={auth} {...props} />} />
                   <Route exact path='/question/create' render={(props) => <CreateQuestions auth={auth} {...props} />} />
-                  <Route exact path='/questions/index' render={(props) => <ViewQuestions auth={auth} {...props} />} />
+                  <Route exact path='/questions/index' render={(props) => <ManageQuestions auth={auth} {...props} />} />
                   <Route exact path='/question/:id' render={(props) => <EditQuestion auth={auth} {...props} />} />
                   <Route exact path='/callback' render={(props) => {
                     handleAuthentication(props);

@@ -1,10 +1,30 @@
 # Spot Quiz Frontend
 
-This React project is designed to work in unison with it's backend api found here: https://github.com/franklia/spot-quiz-api
+This React app is hosted in a live environment here: https://spotquiz.loboadventures.com.au
+... and is designed to work in unison with it's backend api found here: https://github.com/franklia/spot-quiz-api
 
-The app is designed to assist in learning the fundamentals of any subject matter via repetition. Enter your own questions and answers, then test yourself regularly using a random question generator.
+The purpose of the app is to assist in learning the fundamentals of any subject matter via repetition. Enter your own questions and answers, then test yourself regularly using a random question generator.
 
 It was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## About The Project
+
+Spot Quiz was the first end to end app I've built using React, Node, and Mongo. I also used Auth0 for user authentication. I hadn't done much with JS or no-SQL db's before, so I learned a LOT!
+
+Like any learning exercise, you run on your instincts and move forward by trial and error. Here are some notes about what I learned and how I can improve.
+
+### Things I've learned Across The Stack
+
+* Mixing nested arrays and objects in React state is tricky and can make things more complicated. State should be kept as simple as possible. I am interested in taking a look at Redux in the future.
+* Compare to SQL databases, no-SQL is very flexible with how you achieve things. But with flexibility comes the need to know why and how to do things correctly. I would probably make some changes to my schema if starting out again.
+* CSS - like any other framework, you need a solid CSS strategy from the outset. I used the "@material-ui/core" package which offers its own CSS structure using a version of the "styled-components". However I found that there were some issues with this e.g. it didn't play nicely with another npm package I used (react-transition-group), plus there were limitations with the theme functionality. Hence, to get a result without major refactoring, I had to use a combination of styling solutions including CSS in JS, regular stylesheets and inline styles.
+
+### Things I Can Improve On
+
+* Inconsistent code - there are inconsistencies in terms of syntax and methodologies because I tried different ways of doing things as I gained more experience in the frameworks. Consistent code improves productivity, especially in teams.
+* Catching errors - I was not in the habit of handling exceptions as I did the work, rather it was an after thought, usually as a result of QA testing. Clearly this is not ideal, and my goal is to get in the habit of thinking through this during every ticket.
+* TDD - I did not write tests for this app and in fact, at the time of writing, I do not have any experience writing tests. Like anyone learning, you want to get in and create something straight away without getting bogged down. I know that testing is important and I am committed to learning TDD in future.
+* Bloated classes - I suspect that some of my classes might be too large and should be split up into smaller components. I did have some challenges maintaining state when I tried to do this in some classes. It would be good to have a discussion with an experienced React developer about this in order to improve going forwards.
 
 ## Getting Started
 
@@ -14,24 +34,49 @@ These instructions will get you a copy of the project up and running on your loc
 
 * NPM
 * React.js
+* Auth0 account: https://auth0.com/
 * Google Chrome or Firefox
 
 ### Installation
 
+Clone the repo and install dependencies:
 * Clone the repo `git clone https://github.com/franklia/spot-quiz-frontend.git`
 * Navigate into the repo `cd spot-quiz-frontend`
 * Run `npm install` to install the node modules
 
-### About This Project
+Set up Auth0 account:
+* Go to https://auth0.com/ and create an Auth0 account.
+* Create a new Application called "Spot Quiz", then configure the following settings:
+* Application Type = Single Page Application
+* Allowed callback URL's: http://localhost:3000/callback
+* Allowed web origins: http://localhost:3000, [your Auth0 domain]
+* Allowed logout URL's: http://localhost:3000
+* Allowed origins (CORS): http://localhost:3000
+* Click save
 
-## CSS and Styling
+Set up your environment variables:
+* Create a .env.local file in the root directory using the template below
 
-This project uses the react @material-ui/core library. For the most part I have used the CSS in JS method recommended by the authors. I also utilised their "theme" option, however it didn't always provide the granularity I need so I also have a Styles.css file with some default values.
+REACT_APP_AUTH0_DOMAIN=[your Auth0 domain]
+REACT_APP_AUTH0_CLIENT_ID=[your Auth0 client ID]
+REACT_APP_REDIRECT_URL=http://localhost:3000/callback
+REACT_APP_AUDIENCE=http://localhost:3001/api/
+REACT_APP_API_URI=http://localhost:3001/api
 
-## What I've Learned Along The way
+Launch app:
+* Run `npm start` to start your local server, view the app on http://localhost:3000
 
+Set up API:
+* Set up api by following README file here: https://github.com/franklia/spot-quiz-api
 
-## Available Scripts
+## Author & Licence
+
+This project was written by Frank Liardet
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## About Create React App
+
+### Available Scripts
 
 In the project directory, you can run:
 
@@ -97,11 +142,3 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-## Author
-
-Frank Liardet
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

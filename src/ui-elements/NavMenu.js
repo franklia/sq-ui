@@ -196,7 +196,6 @@ class NavMenu extends Component {
                  <Menu
                    id="simple-menu"
                    anchorEl={anchorEl}
-                   // open={Boolean(anchorEl)}
                    open={open}
                    onClose={this.handleClose}
                  >

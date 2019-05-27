@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import loading from './loading.svg';
+import { CircularProgress } from '@material-ui/core';
+// import loading from './loading.svg';
 
 const styles = theme => ({
-  loadingImg: {
+  root: {
     margin: 'auto',
-    display: 'block',
-    paddingTop: 60
+    display: 'block'
   },
   loadingText: {
     textAlign: 'center',
@@ -20,8 +20,8 @@ class Callback extends Component {
 
     return (
       <div className={classes.wrapper}>
-        <img src={loading} className={classes.loadingImg} alt="loading"/>
-        <h4 className={classes.loadingText}>Loading...</h4>
+        <CircularProgress className={classes.root} />
+        <h4 className={classes.loadingText}>Checking login credentials..</h4>
       </div>
     );
   }
