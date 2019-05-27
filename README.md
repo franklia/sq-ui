@@ -65,6 +65,7 @@ REACT_APP_API_URI=http://localhost:3001/api
 
 Launch app:
 * Run `npm start` to start your local server, view the app on http://localhost:3000
+* Click "Login / Sign Up" and create a user which will act as your admin user
 
 Set up API:
 * Set up api by following README file here: https://github.com/franklia/spot-quiz-api
