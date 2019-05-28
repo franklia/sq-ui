@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Button, IconButton, Grid, Hidden, Menu, MenuItem } from '@material-ui/core';
+import { Button, IconButton, Grid, Hidden, Menu, MenuItem, Link } from '@material-ui/core';
 import SchoolIcon from '@material-ui/icons/School';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -192,19 +193,54 @@ class NavMenu extends Component {
                     aria-owns={open ? 'simple-menu' : undefined}
                   >
                      <MenuIcon fontSize="large" color='primary' />
-                   </IconButton>
-                 <Menu
+                  </IconButton>
+                  <Menu
                    id="simple-menu"
                    anchorEl={anchorEl}
                    open={open}
                    onClose={this.handleClose}
-                 >
-                   <MenuItem onClick={this.handleClose}>Home</MenuItem>
-                   <MenuItem onClick={this.handleClose}>Test</MenuItem>
-                   <MenuItem onClick={this.handleClose}>Add Question</MenuItem>
-                   <MenuItem onClick={this.handleClose}>Manage Questions</MenuItem>
-                   <MenuItem onClick={this.handleClose}>Manage Categories</MenuItem>
-                 </Menu>
+                  >
+                    <MenuItem onClick={this.handleClose}>
+                      <Link component={RouterLink} to='/' className='navLinks'>
+                        Home
+                      </Link>
+                    </MenuItem>
+                    <MenuItem onClick={this.handleClose}>
+                      <Link component={RouterLink} to='/test' className='navLinks'>
+                        Test
+                      </Link>
+                    </MenuItem>
+                    {
+                      localStorage.isLoggedIn && (
+                        <>
+                          <MenuItem onClick={this.handleClose}>
+                            <Link component={RouterLink} to='/question/create' className='navLinks'>
+                              Add Question
+                            </Link>
+                          </MenuItem>
+                          <MenuItem onClick={this.handleClose}>
+                            <Link component={RouterLink} to='/questions/index' className='navLinks'>
+                              Manage Questions
+                            </Link>
+                          </MenuItem>
+                          <MenuItem onClick={this.handleClose}>
+                            <Link onClick={this.logout} className='navLinks'>
+                              Logout
+                            </Link>
+                          </MenuItem>
+                        </>
+                      )
+                    }
+                    {
+                      !localStorage.isLoggedIn && (
+                        <MenuItem onClick={this.handleClose}>
+                          <Link onClick={this.login} className='navLinks'>
+                            Login
+                          </Link>
+                        </MenuItem>
+                      )
+                    }
+                  </Menu>
                 </div>
               </Hidden>
             </Grid>
