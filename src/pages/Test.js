@@ -359,12 +359,12 @@ export default class Test extends Component {
             spacing={40}
           >
             <Grid item lg={6}>
-            <div id='question-card' class='flip-container'>
-            	<div class='flipper'>
+            <div id='question-card' className='flip-container'>
+            	<div className='flipper'>
                 {/* Front of card */}
-            		<div class='front' id='front-of-card'>
+            		<div className='front' id='front-of-card'>
             			<h1>Question</h1>
-                  <h1 class='front-question-mark'>?</h1>
+                  <h1 className='front-question-mark'>?</h1>
             		</div>
                 {/* Back of card containing sub questions */}
         		    <div className='back' id='back-of-card'>
@@ -393,7 +393,7 @@ export default class Test extends Component {
                     : null
                   }
                   {/* Display sub question currently being asked */}
-                  <div class='sub-question-being-asked-container'>
+                  <div className='sub-question-being-asked-container'>
                     <span className='test-question-numbering'>{`${subQuestionAskingNow[0].id} of ${subQuestionsNumber}`}</span>
               			<p className='test-question-paragraph'>{subQuestionAskingNow[0].sub_question}</p>
                     {showAnswerButtonDisplayed === true ?
@@ -408,7 +408,7 @@ export default class Test extends Component {
                     }
                     {/* Display sub answer currently being asked */}
                     {subAnswerDisplayed === true ?
-                      <div class='back-card-answer'>
+                      <div className='back-card-answer'>
                         <p>{subQuestionAskingNow[0].sub_answer}</p>
                       </div>
                       : null
