@@ -57,7 +57,7 @@ class CategoryList extends Component {
   setUserData = id => {
     axios.get(`${process.env.REACT_APP_API_URI}/user/categories?`, { params: { auth0Id: id } })
       .then((res) => {
-        if (res.data.length < 1){
+        if (res.data[0].categories.length < 1){
           this.setState({
             ...this.state,
             auth0Id: id,
@@ -67,9 +67,9 @@ class CategoryList extends Component {
           this.setState({
             ...this.state,
             auth0Id: id,
-            userCategories: res.data,
+            userCategories: res.data[0].categories,
             receivedCategories: true
-          })
+          }, () => {console.log(this.state);})
         }
       })
       .catch(error => console.log(error))
