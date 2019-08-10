@@ -340,9 +340,9 @@ class CreateOrUpdateQuestion extends Component {
       };
       console.log(dataObject);
 
-      axios.post(`${process.env.REACT_APP_API_URI}/question/${dataObject._id}`, dataObject)
+      axios.put(`${process.env.REACT_APP_API_URI}/question/${dataObject._id}`, dataObject)
         .then(res => console.log(res))
-        .then(history.replace('/questions/index'))
+        // .then(history.replace('/questions/index'))
         .catch(error => console.log(error));
     }
   };
