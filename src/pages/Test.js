@@ -349,7 +349,7 @@ export default class Test extends Component {
   };
 
   renderQuestionAsked = () => {
-    const { parentQuestionAsked, subQuestionAskingNow, subQuestionsAsked, subQuestionsToAsk, subQuestionsNumber, showAnswerButtonDisplayed, subAnswerDisplayed } = this.state;
+    const { parentQuestionAsked, subQuestionAskingNow, subQuestionsAsked, subQuestionsToAsk, subQuestionsNumber, showAnswerButtonDisplayed, subAnswerDisplayed, auth0_id } = this.state;
 
     if (subQuestionAskingNow.length === 0 || subQuestionAskingNow === undefined) {
       return null;
@@ -409,11 +409,14 @@ export default class Test extends Component {
                   }
                   {/* Display sub question currently being asked */}
                   <div className='sub-question-being-asked-container'>
+                    {auth0_id !== '' ?
                     <Link component={RouterLink} to={`/question/${parentQuestionAsked[0]}`} className='test-question-edit'>
                       <IconButton>
                         <EditIcon />
                       </IconButton>
                     </Link>
+                    : null
+                  }
                     <span className='test-question-numbering'>{`${subQuestionAskingNow[0].id} of ${subQuestionsNumber}`}</span>
               			<p className='test-question-paragraph'>{subQuestionAskingNow[0].sub_question}</p>
                     {showAnswerButtonDisplayed === true ?
