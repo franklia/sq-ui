@@ -311,10 +311,25 @@ body {
 .test-question-paragraph {
   clear: both;
   white-space: pre-wrap;
+  margin-top: 20px;
+}
+
+.test-question-edit button {
+  padding: 0 20px 12px 0 !important;
+}
+
+.test-question-edit button:hover {
+  background-color: #fff;
 }
 
 .test-show-answer-button {
   margin-top: 14px !important;
+}
+
+.skip-button {
+  float: right;
+  margin-top: 13px !important;
+  background-color: #fff !important;
 }
 
 .test-new-question-button {

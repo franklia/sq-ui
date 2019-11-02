@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { Button, Grid, Paper, Hidden, CircularProgress, Link, Tooltip } from '@material-ui/core';
+import { Button, Grid, Paper, Hidden, CircularProgress, Link, Tooltip, IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 
@@ -315,6 +316,20 @@ export default class Test extends Component {
     }
   }
 
+  // This code is required if you want to change the skip action to skipping all sub questions at once
+  // skipQuestion = () => {
+  //   this.setState({
+  //     parentQuestionDataReceived: false,
+  //     parentQuestionAsked: [],
+  //     subQuestionsAsked: [],
+  //     subQuestionAskingNow: [],
+  //     subQuestionsToAsk: [],
+  //     subQuestionsNumber: '',
+  //     subAnswerDisplayed: false,
+  //     showAnswerButtonDisplayed: true,
+  //   },this.getQuestion());
+  // }
+
   renderSpinner = () => {
     const { parentQuestionDataReceived, parentQuestionAsked, testCategoryId } = this.state;
 
@@ -394,9 +409,15 @@ export default class Test extends Component {
                   }
                   {/* Display sub question currently being asked */}
                   <div className='sub-question-being-asked-container'>
+                    <Link component={RouterLink} to={`/question/${parentQuestionAsked[0]}`} className='test-question-edit'>
+                      <IconButton>
+                        <EditIcon />
+                      </IconButton>
+                    </Link>
                     <span className='test-question-numbering'>{`${subQuestionAskingNow[0].id} of ${subQuestionsNumber}`}</span>
               			<p className='test-question-paragraph'>{subQuestionAskingNow[0].sub_question}</p>
                     {showAnswerButtonDisplayed === true ?
+                      <>
                       <Button
                         onClick={this.revealAnswer}
                         variant='contained' color='secondary'
@@ -404,6 +425,14 @@ export default class Test extends Component {
                       >
                         Show Answer
                       </Button>
+                      <Button
+                        onClick={this.renderNewQuestion}
+                        variant='contained'
+                        className='skip-button'
+                      >
+                        Skip
+                      </Button>
+                      </>
                       : <div className='test-line-separator'></div>
                     }
                     {/* Display sub answer currently being asked */}
