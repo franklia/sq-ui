@@ -100,7 +100,7 @@ export default class Test extends Component {
           subQuestionsNumber: subQuestionsNumber,
           subAnswerDisplayed: false,
           showAnswerButtonDisplayed: true,
-        }, console.log(this.state));
+        });
       }
     })
       .catch(error => console.log(error))
@@ -313,6 +313,32 @@ export default class Test extends Component {
         subAnswerDisplayed: false,
         showAnswerButtonDisplayed: true,
       })
+
+      const subQuestionContainer = document.querySelector('#back-of-card');
+      const coordinates = subQuestionContainer.getBoundingClientRect();
+      console.log(coordinates, subQuestionContainer);
+
+      setTimeout(function(){
+        // subQuestionContainer.scrollIntoView(false);
+        window.scrollTo({
+          top: coordinates.height,
+          left: 0,
+          behavior: 'smooth'
+        });
+        // window.scrollTo(0,document.querySelector('#sub-question-being-asked-container').scrollHeight);
+      }, 300);
+
+      // subQuestionContainer.scrollIntoView(true);
+      // window.scrollTo(0,document.body.scrollHeight);
+      // window.scrollTo(0,document.querySelector('#sub-question-being-asked-container').scrollHeight);
+      // subQuestionContainer.scrollTop = subQuestionContainer.scrollHeight - subQuestionContainer.clientHeight;
+      // window.scrollTop = 1000;
+      // window.scrollTo(0, document.body.scrollHeight);
+      subQuestionContainer.scroll({
+        top: 588,
+        left: 2000,
+        behavior: 'smooth'
+      });
     }
   }
 
@@ -386,7 +412,9 @@ export default class Test extends Component {
                   {/* Display summary and transition for sub questions already asked */}
                   {subQuestionsAsked !== [] || subQuestionsAsked !== null ?
                     subQuestionsAsked.map(subQuestion => (
-                      <TransitionGroup>
+                      <TransitionGroup
+                        key={subQuestionsAsked[0]}
+                      >
                         <CSSTransition
                           key={subQuestionsAsked[0]}
                           in={true}
@@ -394,7 +422,7 @@ export default class Test extends Component {
                           timeout={300}
                           classNames='sub-questions'
                         >
-                          <div className='sub-questions-asked-container'>
+                          <div id='sub-question-being-asked-container' className='sub-questions-asked-container'>
                             <span className='test-question-numbering'>{`${subQuestion.id} of ${subQuestionsNumber}`}</span>
                             <p className='test-question-paragraph'>{subQuestion.sub_question}</p>
                             <div className='test-line-separator'></div>
