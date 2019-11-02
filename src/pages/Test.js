@@ -318,27 +318,14 @@ export default class Test extends Component {
       const coordinates = subQuestionContainer.getBoundingClientRect();
       console.log(coordinates, subQuestionContainer);
 
+      // Timeout required because otherwise scrollTo does work - element is not present in DOM until a short delay due to React rendering
       setTimeout(function(){
-        // subQuestionContainer.scrollIntoView(false);
         window.scrollTo({
           top: coordinates.height,
           left: 0,
           behavior: 'smooth'
         });
-        // window.scrollTo(0,document.querySelector('#sub-question-being-asked-container').scrollHeight);
       }, 300);
-
-      // subQuestionContainer.scrollIntoView(true);
-      // window.scrollTo(0,document.body.scrollHeight);
-      // window.scrollTo(0,document.querySelector('#sub-question-being-asked-container').scrollHeight);
-      // subQuestionContainer.scrollTop = subQuestionContainer.scrollHeight - subQuestionContainer.clientHeight;
-      // window.scrollTop = 1000;
-      // window.scrollTo(0, document.body.scrollHeight);
-      subQuestionContainer.scroll({
-        top: 588,
-        left: 2000,
-        behavior: 'smooth'
-      });
     }
   }
 
