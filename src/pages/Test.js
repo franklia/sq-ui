@@ -2,16 +2,7 @@ import React, { Component } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ConfirmUserCredentials from '../helpers/ConfirmUserCredentials.js';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import {
-  Button,
-  Grid,
-  Paper,
-  Hidden,
-  CircularProgress,
-  Link,
-  Tooltip,
-  IconButton,
-} from '@material-ui/core';
+import { Button, Grid, Paper, Hidden, CircularProgress, Link, Tooltip, IconButton } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
 import HelpOutline from '@material-ui/icons/HelpOutline';
@@ -42,7 +33,6 @@ export default class Test extends Component {
 
   componentDidMount = () => {
     const { auth } = this.props;
-    // this.getCategories();
     ConfirmUserCredentials(auth, this.setAuth0Id, this.getCategories);
   };
 
@@ -173,11 +163,7 @@ export default class Test extends Component {
                       categoryid={category._id}
                       categoryname={category.name}
                     />
-                    <p
-                      className='test-paper-paragraph'
-                      categoryid={category._id}
-                      categoryname={category.name}
-                    >
+                    <p className='test-paper-paragraph' categoryid={category._id} categoryname={category.name}>
                       System Generated
                     </p>
                     <Tooltip
@@ -370,14 +356,10 @@ export default class Test extends Component {
                                     className='sub-questions-asked-container'
                                   >
                                     <span className='test-question-numbering'>{`${subQuestion.id} of ${subQuestionsNumber}`}</span>
-                                    <p className='test-question-paragraph'>
-                                      {subQuestion.sub_question}
-                                    </p>
+                                    <p className='test-question-paragraph'>{subQuestion.sub_question}</p>
                                     <div className='test-line-separator'></div>
                                     <div className='sub-question-asked-answer-wrapper'>
-                                      <p className='sub-question-asked-answer'>
-                                        {subQuestion.sub_answer}
-                                      </p>
+                                      <p className='sub-question-asked-answer'>{subQuestion.sub_answer}</p>
                                     </div>
                                   </div>
                                 </CSSTransition>
@@ -398,9 +380,7 @@ export default class Test extends Component {
                             </Link>
                           ) : null}
                           <span className='test-question-numbering'>{`${subQuestionAskingNow[0].id} of ${subQuestionsNumber}`}</span>
-                          <p className='test-question-paragraph'>
-                            {subQuestionAskingNow[0].sub_question}
-                          </p>
+                          <p className='test-question-paragraph'>{subQuestionAskingNow[0].sub_question}</p>
                           {showAnswerButtonDisplayed === true ? (
                             <>
                               <Button
@@ -411,11 +391,7 @@ export default class Test extends Component {
                               >
                                 Show Answer
                               </Button>
-                              <Button
-                                onClick={this.renderNewQuestion}
-                                variant='contained'
-                                className='skip-button'
-                              >
+                              <Button onClick={this.renderNewQuestion} variant='contained' className='skip-button'>
                                 Skip
                               </Button>
                             </>
@@ -439,14 +415,10 @@ export default class Test extends Component {
                               {subQuestionsToAsk.length >= 1 ? 'Next' : 'New Question'}
                             </Button>
                           ) : null}
-                        </div>{' '}
-                        {/* Finish sub-question-being-asked-container */}
-                      </div>{' '}
-                      {/* Finish back-of-card */}
-                    </div>{' '}
-                    {/* Finish flipper */}
-                  </div>{' '}
-                  {/* Finish flip-container */}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </Grid>
               </Grid>
             </CSSTransition>

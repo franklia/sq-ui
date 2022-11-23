@@ -15,16 +15,15 @@ Like any learning exercise, you run on your instincts and move forward by trial 
 
 ### Things I've learned Across The Stack
 
-* Mixing nested arrays and objects in React state is tricky and can make things more complicated. State should be kept as simple as possible. I am interested in taking a look at Redux in the future.
-* Compare to SQL databases, no-SQL is very flexible with how you achieve things. But with flexibility comes the need to know why and how to do things correctly. I would probably make some changes to my schema if starting out again.
-* CSS - like any other framework, you need a solid CSS strategy from the outset. I used the "@material-ui/core" package which offers its own CSS structure using a version of the "styled-components". However I found that there were some issues with this e.g. it didn't play nicely with another npm package I used (react-transition-group), plus there were limitations with the theme functionality. Hence, to get a result without major refactoring, I had to use a combination of styling solutions including CSS in JS, regular stylesheets and inline styles.
+- Compare to SQL databases, no-SQL is very flexible with how you achieve things. But with flexibility comes the need to know why and how to do things correctly. I would probably make some changes to my schema if starting out again.
+- CSS - like any other framework, you need a solid CSS strategy from the outset. I used the "@material-ui/core" package which offers its own CSS structure using a version of the "styled-components". However I found that there were some issues with this e.g. it didn't play nicely with another npm package I used (react-transition-group), plus there were limitations with the theme functionality. Hence, to get a result without major refactoring, I had to use a combination of styling solutions including CSS in JS, regular stylesheets and inline styles.
 
 ### Things I Can Improve On
 
-* Inconsistent code - there are inconsistencies in terms of syntax and methodologies because I tried different ways of doing things as I gained more experience in the frameworks. Consistent code improves productivity, especially in teams.
-* Catching errors - I was not in the habit of handling exceptions as I did the work, rather it was an after thought, usually as a result of QA testing. Clearly this is not ideal, and my goal is to get in the habit of thinking through this during every ticket.
-* TDD - I did not write tests for this app and in fact, at the time of writing, I do not have any experience writing tests. Like anyone learning, you want to get in and create something straight away without getting bogged down. I know that testing is important and I am committed to learning TDD in future.
-* Bloated classes - I suspect that some of my classes might be too large and should be split up into smaller components. I did have some challenges maintaining state when I tried to do this in some classes. It would be good to have a discussion with an experienced React developer about this in order to improve going forwards.
+- Inconsistent code - there are inconsistencies in terms of syntax and methodologies because I tried different ways of doing things as I gained more experience in the frameworks. Consistent code improves productivity, especially in teams.
+- Catching errors - in the quest to get the project up and running I did not handling exceptions but it needs them.
+- Unit Tests - I did not write tests for this app but I should have.
+- Bloated components - generally speaking, my components are too large and should be split up into smaller components.
 
 ## Getting Started
 
@@ -32,30 +31,32 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* NPM
-* React.js
-* Auth0 account: https://auth0.com/
-* Google Chrome or Firefox
+- NPM
+- React.js
+- Your own Auth0 account: https://auth0.com/
 
 ### Installation
 
 Clone the repo and install dependencies:
-* Clone the repo `git clone https://github.com/franklia/spot-quiz-frontend.git`
-* Navigate into the repo `cd spot-quiz-frontend`
-* Run `npm install` to install the node modules
+
+- Clone the repo `git clone https://github.com/franklia/sq-ui.git`
+- Navigate into the repo `cd sq-ui`
+- Run `npm install` to install the node modules
 
 Set up Auth0 account:
-* Go to https://auth0.com/ and create an Auth0 account.
-* Create a new Application called "Spot Quiz", then configure the following settings:
-* Application Type = Single Page Application
-* Allowed callback URL's: http://localhost:3000/callback
-* Allowed web origins: http://localhost:3000, [your Auth0 domain]
-* Allowed logout URL's: http://localhost:3000
-* Allowed origins (CORS): http://localhost:3000
-* Click save
+
+- Go to https://auth0.com/ and create an Auth0 account.
+- Create a new Application called "Spot Quiz", then configure the following settings:
+- Application Type = Single Page Application
+- Allowed callback URL's: http://localhost:3000/callback
+- Allowed web origins: http://localhost:3000, [your Auth0 domain]
+- Allowed logout URL's: http://localhost:3000
+- Allowed origins (CORS): http://localhost:3000
+- Click save
 
 Set up your environment variables:
-* Create a .env.local file in the root directory using the template below
+
+- Create a .env.local file in the root directory using the template below
 
 REACT_APP_AUTH0_DOMAIN=[your Auth0 domain]
 REACT_APP_AUTH0_CLIENT_ID=[your Auth0 client ID]
@@ -64,11 +65,9 @@ REACT_APP_AUDIENCE=http://localhost:3001/api/
 REACT_APP_API_URI=http://localhost:3001/api
 
 Launch app:
-* Run `npm start` to start your local server, view the app on http://localhost:3000
-* Click "Login / Sign Up" and create a user which will act as your admin user
 
-Set up API:
-* Set up api by following README file here: https://github.com/franklia/spot-quiz-api
+- Run `npm start` to start your local server, view the app on http://localhost:3000
+- Click "Login / Sign Up" and create a user which will act as your admin user
 
 ## Author & Licence
 
